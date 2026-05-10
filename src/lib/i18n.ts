@@ -125,6 +125,7 @@ const translations = {
 
     // Cookbook
     cookbookTitle: "Alle recepten",
+    cookbookFeatured: "Uitgelicht",
     cookbookLoadError: "Recepten konden niet worden geladen.",
     noRecipes: "Geen recepten gevonden.",
     cookingTimeMinutes: "min",
@@ -257,6 +258,7 @@ const translations = {
 
     // Cookbook
     cookbookTitle: "Alle Rezepte",
+    cookbookFeatured: "Empfehlungen",
     cookbookLoadError: "Rezepte konnten nicht geladen werden.",
     noRecipes: "Keine Rezepte gefunden.",
     cookingTimeMinutes: "Min.",
