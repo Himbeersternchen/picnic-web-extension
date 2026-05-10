@@ -123,6 +123,12 @@ const translations = {
     noPageSpecified: "Geen pagina opgegeven.",
     productsLoadError: "Kan producten niet laden.",
 
+    // Cookbook
+    cookbookTitle: "Alle recepten",
+    cookbookLoadError: "Recepten konden niet worden geladen.",
+    noRecipes: "Geen recepten gevonden.",
+    cookingTimeMinutes: "min",
+
     // Toast / error view
     dismissAriaLabel: "Sluiten",
     retryButton: "Opnieuw proberen",
@@ -248,6 +254,12 @@ const translations = {
     defaultPageTitle: "Produkte",
     noPageSpecified: "Keine Seite angegeben.",
     productsLoadError: "Produkte konnten nicht geladen werden.",
+
+    // Cookbook
+    cookbookTitle: "Alle Rezepte",
+    cookbookLoadError: "Rezepte konnten nicht geladen werden.",
+    noRecipes: "Keine Rezepte gefunden.",
+    cookingTimeMinutes: "Min.",
 
     // Toast / error view
     dismissAriaLabel: "Schließen",
