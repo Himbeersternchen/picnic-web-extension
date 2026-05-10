@@ -131,6 +131,9 @@ const translations = {
     noRecipes: "Geen recepten gevonden.",
     cookingTimeMinutes: "min",
 
+    // Auth
+    signOut: "Uitloggen",
+
     // Toast / error view
     dismissAriaLabel: "Sluiten",
     retryButton: "Opnieuw proberen",
@@ -264,6 +267,9 @@ const translations = {
     cookbookLoadError: "Rezepte konnten nicht geladen werden.",
     noRecipes: "Keine Rezepte gefunden.",
     cookingTimeMinutes: "Min.",
+
+    // Auth
+    signOut: "Abmelden",
 
     // Toast / error view
     dismissAriaLabel: "Schließen",
