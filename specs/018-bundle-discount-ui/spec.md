@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "picnic-api version 4.3.0 now supports bundle discounts. Update the package, remove the warning banner, and add the bundle discount info to the cart, plp and pdp, the same way that the app does."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - PDP Bundle Price Tiers (Priority: P1)
 
@@ -89,7 +89,7 @@ The picnic-api dependency is updated from ^4.1.0 to ^4.3.0 to enable bundle disc
 - What happens when bundle data is missing or null for a product? The UI falls back to standard pricing with no tier grid, no dots, and no savings badge.
 - What happens when the API returns bundle data in an unexpected format after the upgrade? The UI degrades gracefully to standard pricing display.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -111,7 +111,7 @@ The picnic-api dependency is updated from ^4.1.0 to ^4.3.0 to enable bundle disc
 - **BundleProgress**: Tracks a product's bundle thresholds alongside the shopper's current cart quantity, enabling active tier computation.
 - **BundleOption**: PDP-specific enriched bundle data including image and max count information.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

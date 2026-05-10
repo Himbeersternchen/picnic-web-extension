@@ -21,15 +21,15 @@ Complete the category browsing hierarchy by displaying products when users tap a
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP/DRY/DI | PASS | `containerToProduct` extracted to shared module for DRY reuse; new parser is single-purpose |
-| II. Naming | PASS | verb-first functions (`parseL2ProductPage`, `fetchCategoryProducts`), kebab-case files |
-| III. Forbidden Anti-Patterns | PASS | All files under 300 lines; no deep nesting; named constants for PML IDs |
-| IV. Self-Refactor Protocol | PASS | Will be enforced during implementation |
-| V. Readability Over Cleverness | PASS | Linear control flow; explicit state machine |
+| Principle                      | Status | Notes                                                                                       |
+| ------------------------------ | ------ | ------------------------------------------------------------------------------------------- |
+| I. SRP/DRY/DI                  | PASS   | `containerToProduct` extracted to shared module for DRY reuse; new parser is single-purpose |
+| II. Naming                     | PASS   | verb-first functions (`parseL2ProductPage`, `fetchCategoryProducts`), kebab-case files      |
+| III. Forbidden Anti-Patterns   | PASS   | All files under 300 lines; no deep nesting; named constants for PML IDs                     |
+| IV. Self-Refactor Protocol     | PASS   | Will be enforced during implementation                                                      |
+| V. Readability Over Cleverness | PASS   | Linear control flow; explicit state machine                                                 |
 
 No violations. No complexity tracking needed.
 

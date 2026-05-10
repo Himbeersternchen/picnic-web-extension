@@ -26,6 +26,7 @@
 **Rationale**: The reference image shows a red "BundelBonus" badge on cart line items. The existing badge component has a `discount` variant (orange) but the app uses red. A new variant or custom styling may be needed.
 
 **Implementation approach**:
+
 - The cart parser (`parse-cart.ts`) already handles `BUNDLES_BUTTON` decorator → "info" badge with text "Bundel". This needs to be changed to produce a "BundelBonus" badge with appropriate styling.
 - Cart line items already show `originalPrice` strikethrough when `originalPrice > displayPrice`. Bundle discounts should already trigger this if the API sends corrected `display_price` values.
 - The `CartItem` type does not need `priceRanges` — the badge and strikethrough pricing come from the API response data (decorator overrides and price fields).
@@ -35,6 +36,7 @@
 **Decision**: The PLP bundle display is already implemented and likely functional once picnic-api 4.3.0 provides proper data. Verify after upgrade rather than redesign.
 
 **Rationale**: The codebase already has:
+
 - `product-card.tsx`: Computes `getActiveBundlePrice()`, shows bundle-discounted price with strikethrough
 - `quantity-stepper.tsx`: Renders `BundleDots` and `SavingsLabel` when bundle progress exists
 - `savings-label.tsx`: Shows "€X.XX bespaard" text

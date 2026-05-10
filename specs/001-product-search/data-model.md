@@ -11,31 +11,32 @@ Represents a sellable item in the Picnic catalog as displayed in search
 results. This is our application-level model, extracted from the upstream
 API's `SellingUnit` + `Decorator[]` data.
 
-| Field | Type | Source | Description |
-|-------|------|--------|-------------|
-| `id` | string | `sellingUnit.id` | Unique product identifier (e.g., `"s1001524"`) |
-| `name` | string | `sellingUnit.name` | Product display name |
-| `imageId` | string | `sellingUnit.image_id` | Image identifier for CDN URL construction |
-| `currentPrice` | number | `sellingUnit.display_price` | Current price in cents (e.g., `865` = €8.65) |
-| `originalPrice` | number or null | `PRICE` decorator or PML `isCrossed` | Original price in cents if discounted, null otherwise |
-| `unitQuantity` | string | `sellingUnit.unit_quantity` | Quantity/unit text (e.g., `"6 x 300 ml"`) |
-| `basePrice` | string or null | `BASE_PRICE` decorator | Price per unit text (e.g., `"€4.81/l"`) |
-| `brand` | string or null | PML tree extraction (best-effort) | Brand/company name, null if not extractable |
-| `labels` | Label[] | Extracted from `decorators[]` | All badges and labels |
-| `isAvailable` | boolean | Absence of `UNAVAILABLE` decorator | Whether product can be ordered |
-| `unavailableReason` | string or null | `UNAVAILABLE` decorator | Reason text if unavailable |
-| `maxCount` | number | `sellingUnit.max_count` | Maximum order quantity |
+| Field               | Type           | Source                               | Description                                           |
+| ------------------- | -------------- | ------------------------------------ | ----------------------------------------------------- |
+| `id`                | string         | `sellingUnit.id`                     | Unique product identifier (e.g., `"s1001524"`)        |
+| `name`              | string         | `sellingUnit.name`                   | Product display name                                  |
+| `imageId`           | string         | `sellingUnit.image_id`               | Image identifier for CDN URL construction             |
+| `currentPrice`      | number         | `sellingUnit.display_price`          | Current price in cents (e.g., `865` = €8.65)          |
+| `originalPrice`     | number or null | `PRICE` decorator or PML `isCrossed` | Original price in cents if discounted, null otherwise |
+| `unitQuantity`      | string         | `sellingUnit.unit_quantity`          | Quantity/unit text (e.g., `"6 x 300 ml"`)             |
+| `basePrice`         | string or null | `BASE_PRICE` decorator               | Price per unit text (e.g., `"€4.81/l"`)               |
+| `brand`             | string or null | PML tree extraction (best-effort)    | Brand/company name, null if not extractable           |
+| `labels`            | Label[]        | Extracted from `decorators[]`        | All badges and labels                                 |
+| `isAvailable`       | boolean        | Absence of `UNAVAILABLE` decorator   | Whether product can be ordered                        |
+| `unavailableReason` | string or null | `UNAVAILABLE` decorator              | Reason text if unavailable                            |
+| `maxCount`          | number         | `sellingUnit.max_count`              | Maximum order quantity                                |
 
 ### Label
 
 Represents a visual badge/tag displayed on a product card.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `type` | LabelType enum | Category of the label |
-| `text` | string | Display text for the label |
+| Field  | Type           | Description                |
+| ------ | -------------- | -------------------------- |
+| `type` | LabelType enum | Category of the label      |
+| `text` | string         | Display text for the label |
 
 **LabelType values**:
+
 - `promotion` — Promotional labels (e.g., "3 voor €5", "1+1 gratis", "10% korting")
 - `size` — Size indicator (e.g., "Klein", "Groot")
 - `freshness` — Freshness guarantee (e.g., "Vers gegarandeerd 3 dagen")
@@ -47,19 +48,19 @@ Represents a visual badge/tag displayed on a product card.
 
 Represents an autocomplete suggestion returned by the API.
 
-| Field | Type | Source | Description |
-|-------|------|--------|-------------|
-| `id` | string | `SearchSuggestion.id` | Unique suggestion identifier |
-| `text` | string | `SearchSuggestion.suggestion` | The suggestion display text |
+| Field  | Type   | Source                        | Description                  |
+| ------ | ------ | ----------------------------- | ---------------------------- |
+| `id`   | string | `SearchSuggestion.id`         | Unique suggestion identifier |
+| `text` | string | `SearchSuggestion.suggestion` | The suggestion display text  |
 
 ### SearchResult
 
 Container for a complete search response.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `products` | Product[] | List of matching products |
-| `query` | string | The search query that produced these results |
+| Field      | Type      | Description                                  |
+| ---------- | --------- | -------------------------------------------- |
+| `products` | Product[] | List of matching products                    |
+| `query`    | string    | The search query that produced these results |
 
 ## Relationships
 

@@ -35,8 +35,8 @@ export type CategoriesApiResponse = {
 Uses existing pml-helpers for tree traversal. Defensive extraction with fallbacks.
 
 ```ts
-import { findNodeByIdSubstring, collectPropertyValues } from "@/lib/pml-helpers";
 import type { CategoryItem } from "@/lib/category-types";
+import { collectPropertyValues, findNodeByIdSubstring } from "@/lib/pml-helpers";
 
 const CATEGORY_LIST_BLOCK_ID = "category-tree-wrapper-list";
 const CATEGORY_ITEM_PREFIX = "core-list-item-category-";
@@ -71,7 +71,7 @@ export function parseCategoryPage(rawPage: unknown): CategoryItem[] {
 
 function extractCategoryFromPmlItem(
   item: Record<string, unknown>,
-  itemId: string,
+  itemId: string
 ): CategoryItem | null {
   const id = itemId.slice(CATEGORY_ITEM_PREFIX.length);
   if (!id) return null;
@@ -113,21 +113,22 @@ Follow the same pattern as `src/app/api/search/route.ts`:
 
 ```ts
 import { NextRequest, NextResponse } from "next/server";
-import { readAuthToken } from "@/lib/auth";
-import { buildPicnicClient } from "@/lib/picnic-client";
-import { parseCategoryPage } from "@/lib/parse-categories";
+
 import { isApiAuthError } from "@/lib/api-error";
+import { readAuthToken } from "@/lib/auth";
 import type { CategoriesApiResponse } from "@/lib/category-types";
+import { parseCategoryPage } from "@/lib/parse-categories";
+import { buildPicnicClient } from "@/lib/picnic-client";
 import type { ApiErrorResponse } from "@/lib/types";
 
 export async function GET(
-  request: NextRequest,
+  request: NextRequest
 ): Promise<NextResponse<CategoriesApiResponse | ApiErrorResponse>> {
   const token = readAuthToken(request);
   if (!token) {
     return NextResponse.json(
       { error: "Authentication required", code: "TOKEN_EXPIRED" as const },
-      { status: 401 },
+      { status: 401 }
     );
   }
 
@@ -140,14 +141,14 @@ export async function GET(
     if (isApiAuthError(error)) {
       return NextResponse.json(
         { error: "Your token has expired", code: "TOKEN_EXPIRED" as const },
-        { status: 401 },
+        { status: 401 }
       );
     }
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error("[/api/categories] Failed:", message);
     return NextResponse.json(
       { error: "Kan categorieën niet laden. Probeer het later opnieuw." },
-      { status: 502 },
+      { status: 502 }
     );
   }
 }
@@ -161,8 +162,9 @@ Renders a responsive grid of category tiles. Each tile shows an image and name.
 "use client";
 
 import Image from "next/image";
-import { buildImageUrl } from "@/lib/image-url";
+
 import type { CategoryItem } from "@/lib/category-types";
+import { buildImageUrl } from "@/lib/image-url";
 
 type CategoryGridProps = {
   categories: CategoryItem[];
@@ -171,9 +173,7 @@ type CategoryGridProps = {
 export function CategoryGrid({ categories }: CategoryGridProps) {
   return (
     <div>
-      <h2 className="mb-4 text-lg font-semibold text-foreground">
-        Alle categorieën
-      </h2>
+      <h2 className="text-foreground mb-4 text-lg font-semibold">Alle categorieën</h2>
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
         {categories.map((category) => (
           <CategoryTile key={category.id} category={category} />
@@ -192,8 +192,7 @@ function CategoryTile({ category }: { category: CategoryItem }) {
   return (
     <button
       onClick={handleClick}
-      className="flex flex-col items-center rounded-xl bg-white p-3 shadow-sm
-                 transition-shadow hover:shadow-md active:bg-gray-50"
+      className="flex flex-col items-center rounded-xl bg-white p-3 shadow-sm transition-shadow hover:shadow-md active:bg-gray-50"
     >
       <div className="relative mb-2 h-20 w-20 overflow-hidden rounded-lg">
         <Image
@@ -204,7 +203,7 @@ function CategoryTile({ category }: { category: CategoryItem }) {
           sizes="80px"
         />
       </div>
-      <span className="line-clamp-2 text-center text-sm font-medium text-foreground">
+      <span className="text-foreground line-clamp-2 text-center text-sm font-medium">
         {category.name}
       </span>
     </button>
@@ -221,6 +220,7 @@ Replace `LandingView` with a `CategoryBrowseView` that fetches and displays cate
 Key changes:
 
 1. **Add a categories state** alongside the existing search state:
+
 ```ts
 type CategoriesState =
   | { status: "idle" }
@@ -230,6 +230,7 @@ type CategoriesState =
 ```
 
 2. **Fetch categories on mount** (when `searchState.status === "idle"`):
+
 ```ts
 useEffect(() => {
   if (searchState.status !== "idle") return;
@@ -258,18 +259,19 @@ useEffect(() => {
 ```
 
 3. **Replace `<LandingView />` in JSX**:
+
 ```tsx
-{searchState.status === "idle" && (
-  <>
-    {categoriesState.status === "loading" && <LoadingSpinner />}
-    {categoriesState.status === "error" && (
-      <ErrorView message={categoriesState.message} />
-    )}
-    {categoriesState.status === "success" && (
-      <CategoryGrid categories={categoriesState.categories} />
-    )}
-  </>
-)}
+{
+  searchState.status === "idle" && (
+    <>
+      {categoriesState.status === "loading" && <LoadingSpinner />}
+      {categoriesState.status === "error" && <ErrorView message={categoriesState.message} />}
+      {categoriesState.status === "success" && (
+        <CategoryGrid categories={categoriesState.categories} />
+      )}
+    </>
+  );
+}
 ```
 
 4. **Remove `LandingView` and `PicnicLogo`** functions (no longer needed).

@@ -21,20 +21,20 @@ Build a read-only cart page at `/cart` that displays the user's shopping cart co
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP | PASS | Each file has one responsibility: API route (fetch + proxy), transformer (parse + validate), page (state + layout), components (display) |
-| I. DRY | PASS | `isApiAuthError` extracted to shared `src/lib/api-error.ts`; reusable components (`PriceDisplay`, `Badge`, `ProductSlider`) reused directly; shared header component replaces per-page inline headers |
-| I. Dependency Injection | PASS | `buildPicnicClient(token)` injects auth; `parseCartResponse(rawData)` is a pure function accepting injected data |
-| II. Naming Conventions | PASS | All names follow verb-first camelCase for functions, noun-based camelCase for variables, kebab-case for files |
-| III. No God Objects | PASS | No file exceeds 300 lines; transformer logic split by concern |
-| III. No Deep Nesting | PASS | Early returns for auth checks; guard clauses for missing data |
-| III. No Magic Numbers | PASS | All prices in cents (integer arithmetic); no magic strings |
-| III. No Catch-All Error Swallowing | PASS | Errors are caught, classified (auth vs. upstream), and handled with appropriate responses |
-| IV. Self-Refactor | PASS | Applied during implementation |
-| V. Readability | PASS | Explicit transformations; no clever constructs |
+| Principle                          | Status | Notes                                                                                                                                                                                                 |
+| ---------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. SRP                             | PASS   | Each file has one responsibility: API route (fetch + proxy), transformer (parse + validate), page (state + layout), components (display)                                                              |
+| I. DRY                             | PASS   | `isApiAuthError` extracted to shared `src/lib/api-error.ts`; reusable components (`PriceDisplay`, `Badge`, `ProductSlider`) reused directly; shared header component replaces per-page inline headers |
+| I. Dependency Injection            | PASS   | `buildPicnicClient(token)` injects auth; `parseCartResponse(rawData)` is a pure function accepting injected data                                                                                      |
+| II. Naming Conventions             | PASS   | All names follow verb-first camelCase for functions, noun-based camelCase for variables, kebab-case for files                                                                                         |
+| III. No God Objects                | PASS   | No file exceeds 300 lines; transformer logic split by concern                                                                                                                                         |
+| III. No Deep Nesting               | PASS   | Early returns for auth checks; guard clauses for missing data                                                                                                                                         |
+| III. No Magic Numbers              | PASS   | All prices in cents (integer arithmetic); no magic strings                                                                                                                                            |
+| III. No Catch-All Error Swallowing | PASS   | Errors are caught, classified (auth vs. upstream), and handled with appropriate responses                                                                                                             |
+| IV. Self-Refactor                  | PASS   | Applied during implementation                                                                                                                                                                         |
+| V. Readability                     | PASS   | Explicit transformations; no clever constructs                                                                                                                                                        |
 
 ## Project Structure
 

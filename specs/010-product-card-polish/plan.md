@@ -21,15 +21,15 @@ Product card prices appear at inconsistent vertical positions across a grid row 
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP, DRY, Dependency Injection | PASS | Single component change. No new responsibilities added. No duplication. |
-| II. Naming Conventions | PASS | No new variables, functions, or files. Existing names unchanged. |
-| III. Forbidden Anti-Patterns | PASS | `product-card.tsx` is 248 lines, well under 300. No deep nesting added. No magic numbers (spacing uses Tailwind's semantic scale). |
-| IV. Mandatory Self-Refactor Protocol | PASS | Will self-review all class changes before committing. |
-| V. Readability Over Cleverness | PASS | Tailwind utility classes are explicit and self-documenting. No clever CSS tricks. |
+| Principle                            | Status | Notes                                                                                                                              |
+| ------------------------------------ | ------ | ---------------------------------------------------------------------------------------------------------------------------------- |
+| I. SRP, DRY, Dependency Injection    | PASS   | Single component change. No new responsibilities added. No duplication.                                                            |
+| II. Naming Conventions               | PASS   | No new variables, functions, or files. Existing names unchanged.                                                                   |
+| III. Forbidden Anti-Patterns         | PASS   | `product-card.tsx` is 248 lines, well under 300. No deep nesting added. No magic numbers (spacing uses Tailwind's semantic scale). |
+| IV. Mandatory Self-Refactor Protocol | PASS   | Will self-review all class changes before committing.                                                                              |
+| V. Readability Over Cleverness       | PASS   | Tailwind utility classes are explicit and self-documenting. No clever CSS tricks.                                                  |
 
 **Gate result**: All principles pass. Proceeding to Phase 0.
 

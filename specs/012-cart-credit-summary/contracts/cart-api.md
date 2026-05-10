@@ -14,13 +14,13 @@ The internal `GET /api/cart` response (`CartData`) gains one new field: `creditS
 ```typescript
 type CartApiResponse = {
   items: CartItem[];
-  totalPrice: number;          // checkout_total_price in cents
+  totalPrice: number; // checkout_total_price in cents
   totalCount: number;
-  totalDiscount: number;       // calculated, in cents
-  depositTotal: number;        // calculated, in cents
+  totalDiscount: number; // calculated, in cents
+  depositTotal: number; // calculated, in cents
   depositBreakdown: DepositEntry[];
-  membershipSavings: number;   // in cents
-  creditSettlement: number;    // NEW: Picnic credit applied, in cents (0 if none)
+  membershipSavings: number; // in cents
+  creditSettlement: number; // NEW: Picnic credit applied, in cents (0 if none)
   minimumOrderValue: number | null;
   suggestions: SliderProduct[];
 };
@@ -28,8 +28,8 @@ type CartApiResponse = {
 
 **New field details**:
 
-| Field | Type | Range | Description |
-|-------|------|-------|-------------|
+| Field              | Type     | Range  | Description                                                                                                                                         |
+| ------------------ | -------- | ------ | --------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `creditSettlement` | `number` | `>= 0` | Amount of Picnic credit (tegoed) applied to this order, in cents. `0` when no credit is applied or when the upstream API does not return the field. |
 
 **Example** (with credit applied):
@@ -65,10 +65,10 @@ The `creditSettlement` value is extracted from the raw Picnic API `GET /cart` re
 
 **Candidate upstream fields**:
 
-| Candidate | Shape | Extraction |
-|-----------|-------|------------|
-| Top-level scalar (e.g., `verrekening_picnic_tegoed`) | `number` (cents) | `asNumber(rawData["<field>"])` |
-| Entry in `fees` array | `{ type: string, amount: number, label?: string }` | Filter by type, extract amount |
+| Candidate                                            | Shape                                              | Extraction                     |
+| ---------------------------------------------------- | -------------------------------------------------- | ------------------------------ |
+| Top-level scalar (e.g., `verrekening_picnic_tegoed`) | `number` (cents)                                   | `asNumber(rawData["<field>"])` |
+| Entry in `fees` array                                | `{ type: string, amount: number, label?: string }` | Filter by type, extract amount |
 
 **Fallback behavior**: If neither candidate is present, `creditSettlement` defaults to `0` and the UI row is not rendered. No error is thrown.
 

@@ -9,24 +9,24 @@
 
 Already defined in `src/lib/category-types.ts`.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| id | string | Image ID (used as unique key) |
-| name | string | Display name (e.g. "Brood & gebak") |
-| imageId | string | Image asset identifier |
-| deepLinkTarget | string | Raw deep-link URI from Picnic API |
-| badge | string \| null | Optional badge text (e.g. "900+ producten") |
+| Field          | Type           | Description                                 |
+| -------------- | -------------- | ------------------------------------------- |
+| id             | string         | Image ID (used as unique key)               |
+| name           | string         | Display name (e.g. "Brood & gebak")         |
+| imageId        | string         | Image asset identifier                      |
+| deepLinkTarget | string         | Raw deep-link URI from Picnic API           |
+| badge          | string \| null | Optional badge text (e.g. "900+ producten") |
 
 ### CategoryItem
 
 Already defined in `src/lib/category-types.ts`.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| id | string | Category ID (stripped from PML item ID prefix) |
-| name | string | Display name |
-| imageId | string | Image asset identifier |
-| deepLinkTarget | string | Raw deep-link URI from Picnic API |
+| Field          | Type   | Description                                    |
+| -------------- | ------ | ---------------------------------------------- |
+| id             | string | Category ID (stripped from PML item ID prefix) |
+| name           | string | Display name                                   |
+| imageId        | string | Image asset identifier                         |
+| deepLinkTarget | string | Raw deep-link URI from Picnic API              |
 
 ## Relationships
 

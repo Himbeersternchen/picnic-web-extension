@@ -9,9 +9,9 @@ Fetches comprehensive product detail information for a single product by its sel
 
 ### Request
 
-| Parameter | Location | Type | Required | Description |
-|-----------|----------|------|----------|-------------|
-| `id` | URL path | `string` | Yes | The product selling unit ID (e.g. `s1001524`) |
+| Parameter | Location | Type     | Required | Description                                   |
+| --------- | -------- | -------- | -------- | --------------------------------------------- |
+| `id`      | URL path | `string` | Yes      | The product selling unit ID (e.g. `s1001524`) |
 
 **Authentication**: Requires `picnic_auth_token` HTTP-only cookie.
 
@@ -115,38 +115,38 @@ Returned when the upstream Picnic API is unreachable or returns an unexpected er
 
 ### Field Reference
 
-| Field | Type | Nullable | Description |
-|-------|------|----------|-------------|
-| `id` | `string` | No | Selling unit ID |
-| `name` | `string` | No | Product name |
-| `brand` | `string` | No | Brand name (empty string if unavailable) |
-| `unitQuantity` | `string` | No | Weight/volume description |
-| `unitPrice` | `string` | Yes | Price per unit (e.g. "€4.81/l") |
-| `displayPrice` | `number` | No | Price in euro cents |
-| `maxCount` | `number` | No | Maximum cart quantity |
-| `imageIds` | `string[]` | No | Gallery image IDs (may be empty) |
-| `description` | `string` | Yes | Product description (markdown) |
-| `highlights` | `string[]` | No | Highlight phrases (may be empty) |
-| `allergens` | `object` | No | `{ confirmed: string[], mayContain: string[] }` |
-| `allergens.confirmed` | `string[]` | No | Confirmed allergens |
-| `allergens.mayContain` | `string[]` | No | "Bevat mogelijk" allergens |
-| `infoSections` | `array` | No | Accordion sections (may be empty) |
-| `infoSections[].title` | `string` | No | Section title |
-| `infoSections[].content` | `string` | No | Section content (markdown) |
-| `promotion` | `object` | Yes | Active promotion |
-| `promotion.id` | `string` | No | Promotion identifier |
-| `promotion.label` | `string` | No | Display label |
-| `bundles` | `array` | No | Bundle options (may be empty) |
-| `bundles[].id` | `string` | No | Bundle selling unit ID |
-| `bundles[].quantity` | `number` | No | Items in bundle |
-| `bundles[].pricePerUnit` | `number` | No | Per-unit price in cents |
-| `bundles[].imageId` | `string` | No | Bundle image ID |
-| `bundles[].maxCount` | `number` | No | Max cart quantity |
-| `similarProducts` | `array` | No | Similar products (may be empty) |
-| `similarProducts[].id` | `string` | No | Selling unit ID |
-| `similarProducts[].name` | `string` | No | Product name |
-| `similarProducts[].imageId` | `string` | No | Image ID |
-| `similarProducts[].displayPrice` | `number` | No | Price in cents |
-| `similarProducts[].unitQuantity` | `string` | No | Weight/volume description |
-| `similarProducts[].maxCount` | `number` | No | Max cart quantity |
-| `similarProducts[].deposit` | `number` | Yes | Deposit in cents (if applicable) |
+| Field                            | Type       | Nullable | Description                                     |
+| -------------------------------- | ---------- | -------- | ----------------------------------------------- |
+| `id`                             | `string`   | No       | Selling unit ID                                 |
+| `name`                           | `string`   | No       | Product name                                    |
+| `brand`                          | `string`   | No       | Brand name (empty string if unavailable)        |
+| `unitQuantity`                   | `string`   | No       | Weight/volume description                       |
+| `unitPrice`                      | `string`   | Yes      | Price per unit (e.g. "€4.81/l")                 |
+| `displayPrice`                   | `number`   | No       | Price in euro cents                             |
+| `maxCount`                       | `number`   | No       | Maximum cart quantity                           |
+| `imageIds`                       | `string[]` | No       | Gallery image IDs (may be empty)                |
+| `description`                    | `string`   | Yes      | Product description (markdown)                  |
+| `highlights`                     | `string[]` | No       | Highlight phrases (may be empty)                |
+| `allergens`                      | `object`   | No       | `{ confirmed: string[], mayContain: string[] }` |
+| `allergens.confirmed`            | `string[]` | No       | Confirmed allergens                             |
+| `allergens.mayContain`           | `string[]` | No       | "Bevat mogelijk" allergens                      |
+| `infoSections`                   | `array`    | No       | Accordion sections (may be empty)               |
+| `infoSections[].title`           | `string`   | No       | Section title                                   |
+| `infoSections[].content`         | `string`   | No       | Section content (markdown)                      |
+| `promotion`                      | `object`   | Yes      | Active promotion                                |
+| `promotion.id`                   | `string`   | No       | Promotion identifier                            |
+| `promotion.label`                | `string`   | No       | Display label                                   |
+| `bundles`                        | `array`    | No       | Bundle options (may be empty)                   |
+| `bundles[].id`                   | `string`   | No       | Bundle selling unit ID                          |
+| `bundles[].quantity`             | `number`   | No       | Items in bundle                                 |
+| `bundles[].pricePerUnit`         | `number`   | No       | Per-unit price in cents                         |
+| `bundles[].imageId`              | `string`   | No       | Bundle image ID                                 |
+| `bundles[].maxCount`             | `number`   | No       | Max cart quantity                               |
+| `similarProducts`                | `array`    | No       | Similar products (may be empty)                 |
+| `similarProducts[].id`           | `string`   | No       | Selling unit ID                                 |
+| `similarProducts[].name`         | `string`   | No       | Product name                                    |
+| `similarProducts[].imageId`      | `string`   | No       | Image ID                                        |
+| `similarProducts[].displayPrice` | `number`   | No       | Price in cents                                  |
+| `similarProducts[].unitQuantity` | `string`   | No       | Weight/volume description                       |
+| `similarProducts[].maxCount`     | `number`   | No       | Max cart quantity                               |
+| `similarProducts[].deposit`      | `number`   | Yes      | Deposit in cents (if applicable)                |

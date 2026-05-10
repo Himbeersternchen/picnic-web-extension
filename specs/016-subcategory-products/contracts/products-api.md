@@ -5,9 +5,9 @@
 
 ## Request
 
-| Parameter | Location | Type | Required | Description |
-|-----------|----------|------|----------|-------------|
-| `categoryId` | Path | `string` | Yes | The L2 sub-category ID |
+| Parameter    | Location | Type     | Required | Description            |
+| ------------ | -------- | -------- | -------- | ---------------------- |
+| `categoryId` | Path     | `string` | Yes      | The L2 sub-category ID |
 
 ## Response
 

@@ -26,9 +26,9 @@ type CategoriesApiResponse = {
 };
 
 type CategoryItem = {
-  id: string;            // "21724" or "CustomCatGlutenvrijL1"
-  name: string;          // "Fruit"
-  imageId: string;       // "396767b8acb6f8f3..."
+  id: string; // "21724" or "CustomCatGlutenvrijL1"
+  name: string; // "Fruit"
+  imageId: string; // "396767b8acb6f8f3..."
   deepLinkTarget: string; // "app.picnic://store/page;id=L1-category-page-root,category_id=21724"
 };
 ```
@@ -60,14 +60,14 @@ type CategoryItem = {
 }
 ```
 
-*Full response contains ~26 categories in the order returned by the API.*
+_Full response contains ~26 categories in the order returned by the API._
 
 ### Error Responses
 
-| Status | Body | When |
-|--------|------|------|
-| 401 | `{ "error": "Authentication required", "code": "TOKEN_EXPIRED" }` | Missing/expired auth token |
-| 502 | `{ "error": "Kan categorieën niet laden. Probeer het later opnieuw." }` | Upstream API failure |
+| Status | Body                                                                    | When                       |
+| ------ | ----------------------------------------------------------------------- | -------------------------- |
+| 401    | `{ "error": "Authentication required", "code": "TOKEN_EXPIRED" }`       | Missing/expired auth token |
+| 502    | `{ "error": "Kan categorieën niet laden. Probeer het later opnieuw." }` | Upstream API failure       |
 
 ---
 

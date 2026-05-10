@@ -5,7 +5,7 @@
 **Status**: Draft
 **Input**: User description: "I want a website for the online supermarket picnic, which currently only has a mobile app. It does not need all the features that the current app has. In the initial version I only want a search function that returns a list of products. I want the products to show up with their image, name, company, price (both regular and if present the discounted price), pieces or kgs etc (basically unit and/or qt, whatever comes out of the API). Also include possible labels like '3 voor €5', 'Klein', '10% korting', 'Snel weer terug', 'Nu buiten het seizoen', etc. Basically whatever label is returned from the API. I used query 'tomaten' to test this."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Search for Products by Name (Priority: P1)
 
@@ -54,7 +54,7 @@ As a user types into the search bar, the system suggests matching search terms i
 - What happens when the user presses Enter with an empty search bar? No search request is made.
 - What happens when a user tries to click on a product card? Nothing — product cards are display-only and MUST NOT be clickable or link to any detail page.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -80,7 +80,7 @@ As a user types into the search bar, the system suggests matching search terms i
 - **Search Suggestion**: An autocomplete recommendation returned by the API. Key attributes: suggestion text.
 - **Search Query**: The text input submitted by the user to find products. Key attributes: query string.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

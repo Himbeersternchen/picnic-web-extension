@@ -9,10 +9,10 @@
 
 Response type for the `GET /api/categories/{categoryId}/products` endpoint.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | `string \| null` | Page title from FusionPage header (sub-category name) |
-| `products` | `Product[]` | Products in the sub-category |
+| Field      | Type             | Description                                           |
+| ---------- | ---------------- | ----------------------------------------------------- |
+| `title`    | `string \| null` | Page title from FusionPage header (sub-category name) |
+| `products` | `Product[]`      | Products in the sub-category                          |
 
 ### Product (EXISTING — no changes)
 
@@ -22,22 +22,22 @@ Reused from `src/lib/types.ts`. The L2 category page contains the same selling-u
 
 Extended discriminated union for the 3-level navigation state.
 
-| Variant | Fields | Description |
-|---------|--------|-------------|
-| `{ level: "top" }` | — | Viewing top-level categories |
-| `{ level: "l1", categoryId, categoryName }` | `categoryId: string`, `categoryName: string` | Viewing sub-categories of an L1 category |
-| `{ level: "l2", categoryId, categoryName, parentCategoryId, parentCategoryName }` | `categoryId: string`, `categoryName: string`, `parentCategoryId: string`, `parentCategoryName: string` | Viewing products of an L2 sub-category |
+| Variant                                                                           | Fields                                                                                                 | Description                              |
+| --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------- |
+| `{ level: "top" }`                                                                | —                                                                                                      | Viewing top-level categories             |
+| `{ level: "l1", categoryId, categoryName }`                                       | `categoryId: string`, `categoryName: string`                                                           | Viewing sub-categories of an L1 category |
+| `{ level: "l2", categoryId, categoryName, parentCategoryId, parentCategoryName }` | `categoryId: string`, `categoryName: string`, `parentCategoryId: string`, `parentCategoryName: string` | Viewing products of an L2 sub-category   |
 
 ### CategoryProductsState (NEW)
 
 Client-side state for the L2 product fetch lifecycle.
 
-| Variant | Fields | Description |
-|---------|--------|-------------|
-| `{ status: "idle" }` | — | No fetch in progress |
-| `{ status: "loading" }` | — | Fetching products |
-| `{ status: "success", title, products }` | `title: string`, `products: Product[]` | Products loaded |
-| `{ status: "error", message }` | `message: string` | Fetch failed |
+| Variant                                  | Fields                                 | Description          |
+| ---------------------------------------- | -------------------------------------- | -------------------- |
+| `{ status: "idle" }`                     | —                                      | No fetch in progress |
+| `{ status: "loading" }`                  | —                                      | Fetching products    |
+| `{ status: "success", title, products }` | `title: string`, `products: Product[]` | Products loaded      |
+| `{ status: "error", message }`           | `message: string`                      | Fetch failed         |
 
 ## State Transitions
 

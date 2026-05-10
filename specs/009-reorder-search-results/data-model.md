@@ -11,10 +11,10 @@ This feature introduces no new entities or types. It relies entirely on existing
 
 **Location**: `src/lib/types.ts`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | `string` | Section heading from API (e.g., "Opnieuw bestellen", "Boter") |
-| `products` | `Product[]` | Non-empty array of products in this section |
+| Field      | Type        | Description                                                   |
+| ---------- | ----------- | ------------------------------------------------------------- |
+| `title`    | `string`    | Section heading from API (e.g., "Opnieuw bestellen", "Boter") |
+| `products` | `Product[]` | Non-empty array of products in this section                   |
 
 **Validation**: Sections with zero products are not included in the array (enforced by parser).
 
@@ -24,25 +24,25 @@ This feature introduces no new entities or types. It relies entirely on existing
 
 **Location**: `src/lib/types.ts`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `string` | Unique product identifier |
-| `name` | `string` | Product display name |
-| `namePrefix` | `string \| null` | Bold prefix (e.g., "Bio") |
-| `subtitle` | `string \| null` | Text above the name |
-| `brand` | `string \| null` | Brand or subtext |
-| `highlight` | `Highlight \| null` | Colored subtext (e.g., "Prijskampioen") |
-| `flagIconKey` | `string \| null` | Country flag icon key |
-| `flagFallbackImageId` | `string \| null` | Fallback image for flag |
-| `imageId` | `string` | Product image ID for CDN |
-| `displayPrice` | `number` | Current price in cents |
-| `originalPrice` | `number \| null` | Pre-discount price (cents), null if no discount |
-| `unitQuantity` | `string` | Quantity label (e.g., "250 gram") |
-| `maxCount` | `number` | Maximum orderable quantity |
-| `priceRanges` | `BundleThreshold[] \| null` | Volume discount thresholds |
-| `badges` | `Badge[]` | Labels (promo, size, freshness, etc.) |
-| `isUnavailable` | `boolean` | Whether product is unavailable |
-| `unavailableReason` | `string \| null` | Reason for unavailability |
+| Field                 | Type                        | Description                                     |
+| --------------------- | --------------------------- | ----------------------------------------------- |
+| `id`                  | `string`                    | Unique product identifier                       |
+| `name`                | `string`                    | Product display name                            |
+| `namePrefix`          | `string \| null`            | Bold prefix (e.g., "Bio")                       |
+| `subtitle`            | `string \| null`            | Text above the name                             |
+| `brand`               | `string \| null`            | Brand or subtext                                |
+| `highlight`           | `Highlight \| null`         | Colored subtext (e.g., "Prijskampioen")         |
+| `flagIconKey`         | `string \| null`            | Country flag icon key                           |
+| `flagFallbackImageId` | `string \| null`            | Fallback image for flag                         |
+| `imageId`             | `string`                    | Product image ID for CDN                        |
+| `displayPrice`        | `number`                    | Current price in cents                          |
+| `originalPrice`       | `number \| null`            | Pre-discount price (cents), null if no discount |
+| `unitQuantity`        | `string`                    | Quantity label (e.g., "250 gram")               |
+| `maxCount`            | `number`                    | Maximum orderable quantity                      |
+| `priceRanges`         | `BundleThreshold[] \| null` | Volume discount thresholds                      |
+| `badges`              | `Badge[]`                   | Labels (promo, size, freshness, etc.)           |
+| `isUnavailable`       | `boolean`                   | Whether product is unavailable                  |
+| `unavailableReason`   | `string \| null`            | Reason for unavailability                       |
 
 **Validation**: Products must have a non-empty `id`. Products are deduplicated by `id` across sections (first occurrence wins via `seenIds` Set in parser).
 
@@ -50,11 +50,11 @@ This feature introduces no new entities or types. It relies entirely on existing
 
 **Location**: `src/lib/types.ts`
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `products` | `Product[]` | Flat list of all products (from all sections) |
+| Field      | Type              | Description                                                       |
+| ---------- | ----------------- | ----------------------------------------------------------------- |
+| `products` | `Product[]`       | Flat list of all products (from all sections)                     |
 | `sections` | `SearchSection[]` | Ordered array of sections; re-order section is first when present |
-| `query` | `string` | The search query that produced these results |
+| `query`    | `string`          | The search query that produced these results                      |
 
 ### SearchApiResponse (existing, unchanged)
 

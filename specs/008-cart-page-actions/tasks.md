@@ -17,8 +17,8 @@
 
 **Purpose**: Confirm local implementation baseline and manual validation flow for this feature
 
-- [X] T001 Validate cart feature scripts and lint command coverage in `package.json`
-- [X] T002 Confirm and finalize manual validation checklist entries for cart actions in `specs/008-cart-page-actions/quickstart.md`
+- [x] T001 Validate cart feature scripts and lint command coverage in `package.json`
+- [x] T002 Confirm and finalize manual validation checklist entries for cart actions in `specs/008-cart-page-actions/quickstart.md`
 
 ---
 
@@ -28,9 +28,9 @@
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete
 
-- [X] T003 [P] Add `maxCount: number` to `CartItem` in `src/lib/types.ts`
-- [X] T004 [P] Extract `max_count` into `CartItem.maxCount` in `src/lib/parse-cart.ts`
-- [X] T005 Add optional cart badge override props to `SharedHeader` in `src/components/shared-header.tsx`
+- [x] T003 [P] Add `maxCount: number` to `CartItem` in `src/lib/types.ts`
+- [x] T004 [P] Extract `max_count` into `CartItem.maxCount` in `src/lib/parse-cart.ts`
+- [x] T005 Add optional cart badge override props to `SharedHeader` in `src/components/shared-header.tsx`
 
 **Checkpoint**: Foundation ready - user story implementation can now begin
 
@@ -44,12 +44,12 @@
 
 ### Implementation for User Story 1
 
-- [X] T006 [P] [US1] Refactor cart item row structure to keep product link separate from controls in `src/components/cart-item.tsx`
-- [X] T007 [US1] Add `onIncrement` and `onDecrement` callback props to `CartItemCard` in `src/components/cart-item.tsx`
-- [X] T008 [US1] Render `QuantityStepper` for available items using `item.quantity` and `item.maxCount` in `src/components/cart-item.tsx`
-- [X] T009 [P] [US1] Add cart page mutation queue, confirmed snapshot refs, and POST mutation helper in `src/app/cart/page.tsx`
-- [X] T010 [US1] Implement optimistic increment/decrement handlers with per-product queue enqueueing in `src/app/cart/page.tsx`
-- [X] T011 [US1] Wire `CartPageContent` to pass cart action callbacks into each `CartItemCard` in `src/app/cart/page.tsx`
+- [x] T006 [P] [US1] Refactor cart item row structure to keep product link separate from controls in `src/components/cart-item.tsx`
+- [x] T007 [US1] Add `onIncrement` and `onDecrement` callback props to `CartItemCard` in `src/components/cart-item.tsx`
+- [x] T008 [US1] Render `QuantityStepper` for available items using `item.quantity` and `item.maxCount` in `src/components/cart-item.tsx`
+- [x] T009 [P] [US1] Add cart page mutation queue, confirmed snapshot refs, and POST mutation helper in `src/app/cart/page.tsx`
+- [x] T010 [US1] Implement optimistic increment/decrement handlers with per-product queue enqueueing in `src/app/cart/page.tsx`
+- [x] T011 [US1] Wire `CartPageContent` to pass cart action callbacks into each `CartItemCard` in `src/app/cart/page.tsx`
 
 **Checkpoint**: User Story 1 is functional and independently testable
 
@@ -63,9 +63,9 @@
 
 ### Implementation for User Story 2
 
-- [X] T012 [US2] Update optimistic decrement flow to remove an item when its quantity reaches zero in `src/app/cart/page.tsx`
-- [X] T013 [US2] Reconcile server cart responses so removed lines stay removed after queue settlement in `src/app/cart/page.tsx`
-- [X] T014 [US2] Transition cart page state to empty when `totalCount` becomes zero after optimistic or confirmed updates in `src/app/cart/page.tsx`
+- [x] T012 [US2] Update optimistic decrement flow to remove an item when its quantity reaches zero in `src/app/cart/page.tsx`
+- [x] T013 [US2] Reconcile server cart responses so removed lines stay removed after queue settlement in `src/app/cart/page.tsx`
+- [x] T014 [US2] Transition cart page state to empty when `totalCount` becomes zero after optimistic or confirmed updates in `src/app/cart/page.tsx`
 
 **Checkpoint**: User Stories 1 and 2 both work independently
 
@@ -79,10 +79,10 @@
 
 ### Implementation for User Story 3
 
-- [X] T015 [US3] Store mutable cart data in local page state and derive all cart subcomponent props from that state in `src/app/cart/page.tsx`
-- [X] T016 [US3] Reconcile full `CartData` from every successful mutation to refresh totals, deposits, and suggestions in `src/app/cart/page.tsx`
-- [X] T017 [US3] Pass reactive `totalPrice` and `totalCount` from cart page into `SharedHeader` in `src/app/cart/page.tsx`
-- [X] T018 [US3] Use header badge override values before context/fetch fallback logic in `src/components/shared-header.tsx`
+- [x] T015 [US3] Store mutable cart data in local page state and derive all cart subcomponent props from that state in `src/app/cart/page.tsx`
+- [x] T016 [US3] Reconcile full `CartData` from every successful mutation to refresh totals, deposits, and suggestions in `src/app/cart/page.tsx`
+- [x] T017 [US3] Pass reactive `totalPrice` and `totalCount` from cart page into `SharedHeader` in `src/app/cart/page.tsx`
+- [x] T018 [US3] Use header badge override values before context/fetch fallback logic in `src/components/shared-header.tsx`
 
 **Checkpoint**: User Stories 1, 2, and 3 are independently functional
 
@@ -96,10 +96,10 @@
 
 ### Implementation for User Story 4
 
-- [X] T019 [US4] Add cart toast visibility/message state and render `CartToast` at page level in `src/app/cart/page.tsx`
-- [X] T020 [US4] Roll back failed product mutations to the last confirmed cart snapshot in `src/app/cart/page.tsx`
-- [X] T021 [US4] Trigger Dutch error toast from mutation queue settlement error handling in `src/app/cart/page.tsx`
-- [X] T022 [US4] Ensure cart action handlers remain reusable after rollback so users can retry immediately in `src/app/cart/page.tsx`
+- [x] T019 [US4] Add cart toast visibility/message state and render `CartToast` at page level in `src/app/cart/page.tsx`
+- [x] T020 [US4] Roll back failed product mutations to the last confirmed cart snapshot in `src/app/cart/page.tsx`
+- [x] T021 [US4] Trigger Dutch error toast from mutation queue settlement error handling in `src/app/cart/page.tsx`
+- [x] T022 [US4] Ensure cart action handlers remain reusable after rollback so users can retry immediately in `src/app/cart/page.tsx`
 
 **Checkpoint**: All user stories are independently functional
 
@@ -109,9 +109,9 @@
 
 **Purpose**: Final quality pass across all user stories
 
-- [X] T023 [P] Run lint and resolve feature-related issues in `src/app/cart/page.tsx`
-- [X] T024 [P] Run lint and resolve feature-related issues in `src/components/cart-item.tsx`
-- [X] T025 [P] Run lint and resolve feature-related issues in `src/components/shared-header.tsx`
+- [x] T023 [P] Run lint and resolve feature-related issues in `src/app/cart/page.tsx`
+- [x] T024 [P] Run lint and resolve feature-related issues in `src/components/cart-item.tsx`
+- [x] T025 [P] Run lint and resolve feature-related issues in `src/components/shared-header.tsx`
 - [ ] T026 Execute full manual validation checklist and capture outcomes in `specs/008-cart-page-actions/quickstart.md`
 
 ---
@@ -120,10 +120,10 @@
 
 **Purpose**: Replace standalone `MinimumOrderIndicator` progress bar with a compact line item inside `OrderSummary`
 
-- [X] T027 Add `minimumOrderValue: number | null` prop to `OrderSummaryProps` and render as a line item in `src/components/order-summary.tsx`. Shows "Minimale bestelwaarde" with formatted value; green checkmark when threshold met.
-- [X] T028 Remove `MinimumOrderIndicator` import and usage from `src/app/cart/page.tsx`; pass `minimumOrderValue={cart.minimumOrderValue}` to `OrderSummary`.
-- [X] T029 Delete `src/components/minimum-order-indicator.tsx` (no other consumers).
-- [X] T030 Lint and typecheck all modified files — 0 errors.
+- [x] T027 Add `minimumOrderValue: number | null` prop to `OrderSummaryProps` and render as a line item in `src/components/order-summary.tsx`. Shows "Minimale bestelwaarde" with formatted value; green checkmark when threshold met.
+- [x] T028 Remove `MinimumOrderIndicator` import and usage from `src/app/cart/page.tsx`; pass `minimumOrderValue={cart.minimumOrderValue}` to `OrderSummary`.
+- [x] T029 Delete `src/components/minimum-order-indicator.tsx` (no other consumers).
+- [x] T030 Lint and typecheck all modified files — 0 errors.
 
 ---
 

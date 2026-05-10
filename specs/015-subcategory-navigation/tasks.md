@@ -15,8 +15,8 @@
 
 **Purpose**: Add the new type and extract shared parser logic needed by both existing and new code
 
-- [X] T001 Add `SubcategoriesApiResponse` type to `src/lib/category-types.ts` per data-model.md
-- [X] T002 Extract shared `extractCategoryFromPmlItem` helper from `src/lib/parse-categories.ts` into a reusable function (DRY: both top-level and sub-category parsers need identical PML item extraction). The helper should be exported from `src/lib/parse-categories.ts` or a new shared file like `src/lib/parse-category-items.ts`
+- [x] T001 Add `SubcategoriesApiResponse` type to `src/lib/category-types.ts` per data-model.md
+- [x] T002 Extract shared `extractCategoryFromPmlItem` helper from `src/lib/parse-categories.ts` into a reusable function (DRY: both top-level and sub-category parsers need identical PML item extraction). The helper should be exported from `src/lib/parse-categories.ts` or a new shared file like `src/lib/parse-category-items.ts`
 
 **Checkpoint**: Existing functionality unchanged, lint+build passes
 
@@ -26,8 +26,8 @@
 
 **Purpose**: Create the sub-category parser and API route — these are blocking prerequisites for the UI work
 
-- [X] T003 [P] Create `src/lib/parse-subcategories.ts` — implement `parseSubcategoryPage(rawPage: unknown): CategoryItem[]` that finds the `core-L1-category-page-list` block via `findNodeByIdSubstring` and extracts sub-category items using the shared helper from T002. Also implement `extractPageTitle(rawPage: unknown): string | null` that reads `header.title` from the FusionPage
-- [X] T004 [P] Create `src/app/api/categories/[categoryId]/subcategories/route.ts` — implement `GET` handler per contracts/subcategories-api.md: read `categoryId` from path params, read auth token, call `client.app.getPage("L1-category-page-root?category_id={categoryId}")`, parse with `parseSubcategoryPage`, extract title with `extractPageTitle`, return `{ title, subcategories }`. Handle 401 (TOKEN_EXPIRED) and 502 (upstream failure) error responses
+- [x] T003 [P] Create `src/lib/parse-subcategories.ts` — implement `parseSubcategoryPage(rawPage: unknown): CategoryItem[]` that finds the `core-L1-category-page-list` block via `findNodeByIdSubstring` and extracts sub-category items using the shared helper from T002. Also implement `extractPageTitle(rawPage: unknown): string | null` that reads `header.title` from the FusionPage
+- [x] T004 [P] Create `src/app/api/categories/[categoryId]/subcategories/route.ts` — implement `GET` handler per contracts/subcategories-api.md: read `categoryId` from path params, read auth token, call `client.app.getPage("L1-category-page-root?category_id={categoryId}")`, parse with `parseSubcategoryPage`, extract title with `extractPageTitle`, return `{ title, subcategories }`. Handle 401 (TOKEN_EXPIRED) and 502 (upstream failure) error responses
 
 **Checkpoint**: `GET /api/categories/{id}/subcategories` returns valid JSON, lint+build passes
 
@@ -41,11 +41,11 @@
 
 ### Implementation for User Story 1
 
-- [X] T005 [US1] Modify `src/components/category-grid.tsx` — add optional `onCategoryTap?: (category: CategoryItem) => void` prop to `CategoryGrid`. When provided, call it on row tap instead of the current no-op. Pass the callback through to individual category row buttons
-- [X] T006 [US1] Modify `src/app/page.tsx` — add `CategoryNavState` type (`{ level: "top" } | { level: "l1"; categoryId: string; categoryName: string }`), add `categoryNav` state initialized to `{ level: "top" }`, and add `subcategoriesState` discriminated union state (`idle | loading | success | error`) per data-model.md display rules
-- [X] T007 [US1] Modify `src/app/page.tsx` — add `useEffect` that fetches `/api/categories/${categoryNav.categoryId}/subcategories` when `categoryNav.level === "l1"`, handles success (set subcategories + title), handles TOKEN_EXPIRED (redirect to login per FR-008), handles error (set error message). Include cleanup/abort for cancelled navigations
-- [X] T008 [US1] Modify `src/app/page.tsx` — update the idle-state JSX: when `categoryNav.level === "top"`, render existing `CategoryGrid` with `onCategoryTap` that sets `categoryNav` to `{ level: "l1", categoryId, categoryName }`. When `categoryNav.level === "l1"`, render: back button (← Terug), category title heading (FR-009), loading spinner (FR-004), error view with retry+back (FR-005), or sub-category `CategoryGrid` (FR-002). Hide shortcuts section when viewing sub-categories per spec assumptions
-- [X] T009 [US1] Handle edge cases in `src/app/page.tsx` — empty sub-categories list shows appropriate message with back button (edge case from spec), leaf sub-category taps (L2 deep links) are no-ops (FR-006, check if `deepLinkTarget` contains `L2-category-page-root`)
+- [x] T005 [US1] Modify `src/components/category-grid.tsx` — add optional `onCategoryTap?: (category: CategoryItem) => void` prop to `CategoryGrid`. When provided, call it on row tap instead of the current no-op. Pass the callback through to individual category row buttons
+- [x] T006 [US1] Modify `src/app/page.tsx` — add `CategoryNavState` type (`{ level: "top" } | { level: "l1"; categoryId: string; categoryName: string }`), add `categoryNav` state initialized to `{ level: "top" }`, and add `subcategoriesState` discriminated union state (`idle | loading | success | error`) per data-model.md display rules
+- [x] T007 [US1] Modify `src/app/page.tsx` — add `useEffect` that fetches `/api/categories/${categoryNav.categoryId}/subcategories` when `categoryNav.level === "l1"`, handles success (set subcategories + title), handles TOKEN_EXPIRED (redirect to login per FR-008), handles error (set error message). Include cleanup/abort for cancelled navigations
+- [x] T008 [US1] Modify `src/app/page.tsx` — update the idle-state JSX: when `categoryNav.level === "top"`, render existing `CategoryGrid` with `onCategoryTap` that sets `categoryNav` to `{ level: "l1", categoryId, categoryName }`. When `categoryNav.level === "l1"`, render: back button (← Terug), category title heading (FR-009), loading spinner (FR-004), error view with retry+back (FR-005), or sub-category `CategoryGrid` (FR-002). Hide shortcuts section when viewing sub-categories per spec assumptions
+- [x] T009 [US1] Handle edge cases in `src/app/page.tsx` — empty sub-categories list shows appropriate message with back button (edge case from spec), leaf sub-category taps (L2 deep links) are no-ops (FR-006, check if `deepLinkTarget` contains `L2-category-page-root`)
 
 **Checkpoint**: Full US1 flow works — tap category → loading → sub-categories → back. Lint+build passes. Run `npm run lint && npm run build`
 
@@ -59,7 +59,7 @@
 
 > **NOTE**: Based on research findings (R2, R3), the Picnic category hierarchy is strictly Top → L1 → L2(products). There are no L1 → L1 chains. All sub-categories at the L1 level link to L2 product pages. Therefore, US2 requires no additional implementation beyond what US1 delivers. If future API changes introduce deeper category nesting, the architecture from US1 can be extended.
 
-- [X] T010 [US2] Verify leaf detection in `src/app/page.tsx` — confirm that sub-category items with `L2-category-page-root` in their `deepLinkTarget` are correctly treated as no-ops. No code changes expected; this is a verification task
+- [x] T010 [US2] Verify leaf detection in `src/app/page.tsx` — confirm that sub-category items with `L2-category-page-root` in their `deepLinkTarget` are correctly treated as no-ops. No code changes expected; this is a verification task
 
 **Checkpoint**: US2 verified — leaf sub-categories are properly handled as no-ops
 
@@ -69,9 +69,9 @@
 
 **Purpose**: Cleanup, validation, and final quality checks
 
-- [X] T011 Ensure `src/app/api/debug-category/route.ts` is deleted (research artifact — should already be removed)
-- [X] T012 Run `npm run lint && npm run build` — verify zero errors (SC-005)
-- [X] T013 Self-refactor review of all changed files against constitution: verify < 300 lines per file, max 3 nesting levels, no magic strings, verb-first function names, no duplicated logic between `parse-categories.ts` and `parse-subcategories.ts`
+- [x] T011 Ensure `src/app/api/debug-category/route.ts` is deleted (research artifact — should already be removed)
+- [x] T012 Run `npm run lint && npm run build` — verify zero errors (SC-005)
+- [x] T013 Self-refactor review of all changed files against constitution: verify < 300 lines per file, max 3 nesting levels, no magic strings, verb-first function names, no duplicated logic between `parse-categories.ts` and `parse-subcategories.ts`
 
 ---
 

@@ -1,9 +1,9 @@
 "use client";
 
-import { ProductGrid } from "@/components/product-grid";
-import { LoadingSpinner } from "@/components/loading-spinner";
-import { ErrorView } from "@/components/error-view";
 import { BackArrowIcon } from "@/components/back-arrow-icon";
+import { ErrorView } from "@/components/error-view";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { ProductGrid } from "@/components/product-grid";
 import type { Product, SearchSection } from "@/lib/types";
 
 export type CategoryProductsState =
@@ -41,13 +41,9 @@ export function CategoryProductsView({
         Terug
       </button>
 
-      <h2 className="mb-3 text-lg font-semibold text-foreground">
-        {categoryName}
-      </h2>
+      <h2 className="text-foreground mb-3 text-lg font-semibold">{categoryName}</h2>
 
-      {(state.status === "loading" || state.status === "idle") && (
-        <LoadingSpinner />
-      )}
+      {(state.status === "loading" || state.status === "idle") && <LoadingSpinner />}
       {state.status === "error" && (
         <div>
           <ErrorView message={state.message} />
@@ -68,8 +64,7 @@ export function CategoryProductsView({
       {state.status === "success" && state.products.length > 0 && (
         <div>
           <p className="mb-4 text-sm text-gray-500">
-            {state.products.length}{" "}
-            {state.products.length === 1 ? "product" : "producten"}
+            {state.products.length} {state.products.length === 1 ? "product" : "producten"}
           </p>
           {state.sections.length > 0 ? (
             <ProductGrid sections={state.sections} />

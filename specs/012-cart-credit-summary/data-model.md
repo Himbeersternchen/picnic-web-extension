@@ -13,22 +13,22 @@ This feature adds a single numeric field to the existing `CartData` type and ren
 
 Add one field to the existing type:
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `creditSettlement` | `number` | `0` | Picnic credit (tegoed) applied to this order, in cents. `0` when no credit applied or field absent from API. |
+| Field              | Type     | Default | Description                                                                                                  |
+| ------------------ | -------- | ------- | ------------------------------------------------------------------------------------------------------------ |
+| `creditSettlement` | `number` | `0`     | Picnic credit (tegoed) applied to this order, in cents. `0` when no credit applied or field absent from API. |
 
 Updated type definition:
 
 ```typescript
 export type CartData = {
   items: CartItem[];
-  totalPrice: number;          // checkout_total_price in cents
+  totalPrice: number; // checkout_total_price in cents
   totalCount: number;
-  totalDiscount: number;       // calculated, in cents
-  depositTotal: number;        // calculated, in cents
+  totalDiscount: number; // calculated, in cents
+  depositTotal: number; // calculated, in cents
   depositBreakdown: DepositEntry[];
-  membershipSavings: number;   // in cents
-  creditSettlement: number;    // NEW: Picnic credit applied, in cents
+  membershipSavings: number; // in cents
+  creditSettlement: number; // NEW: Picnic credit applied, in cents
   minimumOrderValue: number | null;
   suggestions: SliderProduct[];
 };
@@ -38,31 +38,31 @@ export type CartData = {
 
 Add one prop to the existing component props type:
 
-| Prop | Type | Description |
-|------|------|-------------|
+| Prop               | Type     | Description                                      |
+| ------------------ | -------- | ------------------------------------------------ |
 | `creditSettlement` | `number` | Credit amount in cents. Row rendered when `> 0`. |
 
 ## Field Mapping
 
 ### Raw API → CartData
 
-| Raw API field | CartData field | Extraction |
-|--------------|----------------|------------|
+| Raw API field                             | CartData field     | Extraction                                                              |
+| ----------------------------------------- | ------------------ | ----------------------------------------------------------------------- |
 | `<to be discovered>` (see research.md R1) | `creditSettlement` | `asNumber(rawData["<field_name>"])` — returns `0` if absent/non-numeric |
 
 ### CartData → OrderSummary
 
-| CartData field | OrderSummary prop | Mapping |
-|----------------|-------------------|---------|
+| CartData field     | OrderSummary prop  | Mapping                                          |
+| ------------------ | ------------------ | ------------------------------------------------ |
 | `creditSettlement` | `creditSettlement` | Direct pass-through from `cart.creditSettlement` |
 
 ## Display Rules
 
-| Condition | Behavior |
-|-----------|----------|
-| `creditSettlement > 0` | Show row: label "Verrekening Picnic Tegoed", value `−{formatPrice(creditSettlement)}`, styled `text-picnic-green` |
-| `creditSettlement === 0` | Hide row (no render) |
-| Field absent from API | `asNumber` returns `0` → hide row |
+| Condition                | Behavior                                                                                                          |
+| ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| `creditSettlement > 0`   | Show row: label "Verrekening Picnic Tegoed", value `−{formatPrice(creditSettlement)}`, styled `text-picnic-green` |
+| `creditSettlement === 0` | Hide row (no render)                                                                                              |
+| Field absent from API    | `asNumber` returns `0` → hide row                                                                                 |
 
 ## Existing Types Referenced
 

@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "We have result pages for categories and search results. I also want a page like that for the 'Snel naar' categories. Currently these are not clickable. They should work in a similar way to the other category pages."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Navigate to a "Snel naar" category (Priority: P1)
 
@@ -44,7 +44,7 @@ When a user hovers over or taps a "Snel naar" tile, they receive visual feedback
 - What happens when the shortcut's deep link target does not map to a known category ID format? The system should gracefully handle unrecognized targets without crashing.
 - What happens if the user rapidly taps multiple shortcut tiles? Only one navigation should occur.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -60,7 +60,7 @@ When a user hovers over or taps a "Snel naar" tile, they receive visual feedback
 - **ShortcutItem**: Represents a "Snel naar" quick-access tile. Key attributes: identifier, display name, image, target category reference, and optional badge text (e.g. "900+ producten").
 - **Category**: The destination entity that a shortcut points to. Contains subcategories and/or products.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

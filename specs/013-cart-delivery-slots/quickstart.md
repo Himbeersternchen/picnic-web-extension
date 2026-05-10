@@ -70,22 +70,34 @@ export type SetDeliverySlotRequest = {
 
 ```ts
 const DUTCH_DAY_NAMES = [
-  "Zondag", "Maandag", "Dinsdag", "Woensdag",
-  "Donderdag", "Vrijdag", "Zaterdag",
+  "Zondag",
+  "Maandag",
+  "Dinsdag",
+  "Woensdag",
+  "Donderdag",
+  "Vrijdag",
+  "Zaterdag",
 ] as const;
 
 const DUTCH_MONTH_ABBREVIATIONS = [
-  "jan", "feb", "mrt", "apr", "mei", "jun",
-  "jul", "aug", "sep", "okt", "nov", "dec",
+  "jan",
+  "feb",
+  "mrt",
+  "apr",
+  "mei",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "okt",
+  "nov",
+  "dec",
 ] as const;
 
 const NO_SLOT_TEXT = "Kies je bezorgmoment";
 
 /** Format a delivery window for the cart banner. */
-export function formatBannerText(
-  windowStart: string | null,
-  windowEnd: string | null,
-): string {
+export function formatBannerText(windowStart: string | null, windowEnd: string | null): string {
   if (!windowStart || !windowEnd) return NO_SLOT_TEXT;
 
   const start = new Date(windowStart);
@@ -175,7 +187,9 @@ Follow the same pattern as `src/app/api/cart/route.ts`:
 
 ```ts
 // GET: fetch available delivery slots
-export async function GET(request: NextRequest): Promise<NextResponse<DeliverySlotPickerData | ApiErrorResponse>> {
+export async function GET(
+  request: NextRequest
+): Promise<NextResponse<DeliverySlotPickerData | ApiErrorResponse>> {
   // 1. Read auth token
   // 2. Build client
   // 3. client.cart.getDeliverySlots() via sendRequest pattern
@@ -184,7 +198,9 @@ export async function GET(request: NextRequest): Promise<NextResponse<DeliverySl
 }
 
 // POST: set delivery slot
-export async function POST(request: NextRequest): Promise<NextResponse<CartData | ApiErrorResponse>> {
+export async function POST(
+  request: NextRequest
+): Promise<NextResponse<CartData | ApiErrorResponse>> {
   // 1. Read auth token
   // 2. Validate request body (slotId)
   // 3. Build client
@@ -199,15 +215,17 @@ export async function POST(request: NextRequest): Promise<NextResponse<CartData 
 Simple display component showing the delivery slot status on the cart page.
 
 Props:
+
 ```ts
 type DeliverySlotBannerProps = {
-  bannerText: string;       // "Kies je bezorgmoment" or "Morgen 14:40 - 15:40"
-  isExplicit: boolean;      // true if user has selected a slot
-  onTap: () => void;        // opens the picker modal
+  bannerText: string; // "Kies je bezorgmoment" or "Morgen 14:40 - 15:40"
+  isExplicit: boolean; // true if user has selected a slot
+  onTap: () => void; // opens the picker modal
 };
 ```
 
 Layout (matching native app):
+
 - Left: truck icon with clock overlay (SVG inline or emoji placeholder)
 - Center: banner text (bold when explicit selection, regular when prompt)
 - Right: three-dot menu icon (⋯)
@@ -219,6 +237,7 @@ Layout (matching native app):
 Complex interactive component with its own fetch + state management.
 
 Props:
+
 ```ts
 type DeliverySlotPickerProps = {
   isOpen: boolean;
@@ -228,15 +247,22 @@ type DeliverySlotPickerProps = {
 ```
 
 Internal state:
+
 ```ts
 type PickerState =
   | { status: "loading" }
   | { status: "ready"; data: DeliverySlotPickerData; selectedDayIndex: number }
-  | { status: "selecting"; data: DeliverySlotPickerData; selectedDayIndex: number; selectingSlotId: string }
+  | {
+      status: "selecting";
+      data: DeliverySlotPickerData;
+      selectedDayIndex: number;
+      selectingSlotId: string;
+    }
   | { status: "error"; message: string };
 ```
 
 Layout sections:
+
 1. **Header**: "Kies je bezorgmoment" + "Altijd gratis bezorgd!" + X close button
 2. **Day tabs**: Horizontal scroll of day buttons
 3. **Slot list** for selected day:
@@ -259,6 +285,7 @@ deliveryBannerText: string;
 ```
 
 Add to `emptyCartData()` in parse-cart.ts:
+
 ```ts
 selectedSlot: null,
 deliveryBannerText: "Kies je bezorgmoment",
@@ -269,11 +296,14 @@ deliveryBannerText: "Kies je bezorgmoment",
 Add ~5 lines to `parseCartResponse` to extract delivery slot data:
 
 ```ts
+import { NO_SLOT_TEXT, formatBannerText } from "@/lib/format-delivery-window";
 import { parseSelectedSlot } from "@/lib/parse-delivery-slots";
-import { formatBannerText, NO_SLOT_TEXT } from "@/lib/format-delivery-window";
 
 // In parseCartResponse, after suggestions extraction:
-const selectedSlot = parseSelectedSlot(rawData["selected_slot"], asArray(rawData["delivery_slots"]));
+const selectedSlot = parseSelectedSlot(
+  rawData["selected_slot"],
+  asArray(rawData["delivery_slots"])
+);
 const deliveryBannerText = selectedSlot?.isExplicitSelection
   ? formatBannerText(selectedSlot.windowStart, selectedSlot.windowEnd)
   : NO_SLOT_TEXT;

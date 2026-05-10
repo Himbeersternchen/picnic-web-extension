@@ -1,16 +1,17 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import type { CartData, ApiErrorResponse } from "@/lib/types";
-import { SharedHeader } from "@/components/shared-header";
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { CartPageContent, EmptyView } from "@/components/cart-page-content";
 import { CartToast } from "@/components/cart-toast";
-import { LoadingSpinner } from "@/components/loading-spinner";
-import { ErrorView } from "@/components/error-view";
 import { DeliverySlotPicker } from "@/components/delivery-slot-picker";
-import { EmptyView, CartPageContent } from "@/components/cart-page-content";
-import { createMutationQueue } from "@/lib/mutation-queue";
-import { TOKEN_EXPIRED_REDIRECT, TOKEN_EXPIRED_MESSAGE } from "@/lib/constants";
+import { ErrorView } from "@/components/error-view";
+import { LoadingSpinner } from "@/components/loading-spinner";
+import { SharedHeader } from "@/components/shared-header";
 import { usePageTitle } from "@/hooks/use-page-title";
+import { TOKEN_EXPIRED_MESSAGE, TOKEN_EXPIRED_REDIRECT } from "@/lib/constants";
+import { createMutationQueue } from "@/lib/mutation-queue";
+import type { ApiErrorResponse, CartData } from "@/lib/types";
 
 type CartPageState =
   | { status: "loading" }
@@ -45,10 +46,7 @@ async function fetchCart(): Promise<CartPageState> {
   }
 }
 
-async function postCartMutation(
-  productId: string,
-  action: "add" | "remove",
-): Promise<CartData> {
+async function postCartMutation(productId: string, action: "add" | "remove"): Promise<CartData> {
   const response = await fetch("/api/cart", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -165,9 +163,7 @@ export default function CartPage() {
             ...prev.cart,
             totalCount: prev.cart.totalCount + 1,
             items: prev.cart.items.map((line) =>
-              line.productId === productId
-                ? { ...line, quantity: line.quantity + 1 }
-                : line,
+              line.productId === productId ? { ...line, quantity: line.quantity + 1 } : line
             ),
           },
         };
@@ -175,7 +171,7 @@ export default function CartPage() {
 
       enqueueMutation(productId, "add");
     },
-    [enqueueMutation, pageState],
+    [enqueueMutation, pageState]
   );
 
   const handleDecrement = useCallback(
@@ -197,9 +193,7 @@ export default function CartPage() {
           nextQuantity === 0
             ? prev.cart.items.filter((line) => line.productId !== productId)
             : prev.cart.items.map((line) =>
-                line.productId === productId
-                  ? { ...line, quantity: nextQuantity }
-                  : line,
+                line.productId === productId ? { ...line, quantity: nextQuantity } : line
               );
         const nextCount = Math.max(0, prev.cart.totalCount - 1);
 
@@ -219,7 +213,7 @@ export default function CartPage() {
 
       enqueueMutation(productId, "remove");
     },
-    [enqueueMutation, pageState],
+    [enqueueMutation, pageState]
   );
 
   const cartBadgeOverride =
@@ -266,5 +260,3 @@ export default function CartPage() {
     </div>
   );
 }
-
-

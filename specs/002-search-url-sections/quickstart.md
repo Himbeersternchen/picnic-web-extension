@@ -6,19 +6,20 @@
 ## Overview
 
 This feature adds two capabilities to the search page:
+
 1. **URL state sync** — The search term is stored as `?q=` in the URL, enabling page refresh, sharing, and browser history navigation.
 2. **Section headers** — Search results are grouped under category headers (e.g., "Tros- en pruimtomaten", "Cherrytomaten") extracted from the Fusion API's PML response.
 
 ## Files to Modify (6 files)
 
-| File | Change Type | Purpose |
-|------|------------|---------|
-| `src/lib/types.ts` | Add type | Add `SearchSection` type; update `SearchApiResponse` |
-| `src/lib/parse-fusion-search.ts` | Rewrite core function | Replace `parseFusionSearchPage` with `parseFusionSearchSections` that returns sections |
-| `src/app/api/search/route.ts` | Update response | Return `{ products, sections, query }` instead of `{ products, query }` |
-| `src/app/page.tsx` | Major update | Add `useSearchParams`, `Suspense`, URL sync, section-aware rendering |
-| `src/components/search-bar.tsx` | Add prop | Accept `initialQuery` to pre-populate input from URL |
-| `src/components/product-grid.tsx` | Update rendering | Accept `SearchSection[]` and render section headers |
+| File                              | Change Type           | Purpose                                                                                |
+| --------------------------------- | --------------------- | -------------------------------------------------------------------------------------- |
+| `src/lib/types.ts`                | Add type              | Add `SearchSection` type; update `SearchApiResponse`                                   |
+| `src/lib/parse-fusion-search.ts`  | Rewrite core function | Replace `parseFusionSearchPage` with `parseFusionSearchSections` that returns sections |
+| `src/app/api/search/route.ts`     | Update response       | Return `{ products, sections, query }` instead of `{ products, query }`                |
+| `src/app/page.tsx`                | Major update          | Add `useSearchParams`, `Suspense`, URL sync, section-aware rendering                   |
+| `src/components/search-bar.tsx`   | Add prop              | Accept `initialQuery` to pre-populate input from URL                                   |
+| `src/components/product-grid.tsx` | Update rendering      | Accept `SearchSection[]` and render section headers                                    |
 
 ## Implementation Order
 
@@ -53,6 +54,7 @@ Replace `parseFusionSearchPage` with `parseFusionSearchSections`:
 8. Return `{ sections, products }` where `products` is the flat deduplicated union
 
 **Key PML traversal**:
+
 - `body.child.children[0]` → search result container with `state` object
 - `.children` → interleaved header-wrapper and product-wrapper BLOCK nodes
 - Header ID pattern: `client-side-filtering-section-header-wrapper-{Name}`
@@ -71,6 +73,7 @@ return NextResponse.json({ products, sections, query });
 ### Step 4: SearchBar (`src/components/search-bar.tsx`)
 
 Add `initialQuery` prop:
+
 - Add `initialQuery?: string` to `SearchBarProps`
 - Initialize `inputValue` state with `initialQuery ?? ""`
 - Update `inputValue` when `initialQuery` changes (for browser navigation)
@@ -78,6 +81,7 @@ Add `initialQuery` prop:
 ### Step 5: ProductGrid (`src/components/product-grid.tsx`)
 
 Update to render sections:
+
 - Change props from `{ products: Product[] }` to `{ sections: SearchSection[] }`
 - Render each section: `<h2>` header + product grid
 - Section header styling: match Picnic app's section header appearance
@@ -85,6 +89,7 @@ Update to render sections:
 ### Step 6: Page (`src/app/page.tsx`)
 
 Major update for URL state:
+
 1. Wrap page content in `<Suspense fallback={<LoadingView />}>`
 2. Inner component uses `useSearchParams()` to read `?q=`
 3. On mount, if `q` is non-empty, trigger search

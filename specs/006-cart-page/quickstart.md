@@ -18,43 +18,43 @@ Then navigate to `http://localhost:3000/cart`.
 
 ## Key Files to Create
 
-| File | Purpose |
-|------|---------|
-| `src/app/cart/page.tsx` | Cart page client component |
-| `src/app/api/cart/route.ts` | API route proxying Picnic cart endpoint via `sendRequest` |
-| `src/lib/parse-cart.ts` | Cart response → display types transformer (runtime validation of `unknown` response) |
-| `src/lib/api-error.ts` | Shared `isApiAuthError` utility (extracted from existing routes) |
-| `src/components/cart-item.tsx` | Single cart line item component |
-| `src/components/order-summary.tsx` | Order totals summary component |
-| `src/components/minimum-order-indicator.tsx` | Min order value progress indicator |
-| `src/components/unavailable-product.tsx` | Unavailable product with replacements |
-| `src/components/checkout-cta.tsx` | "Complete in Picnic app" message |
-| `src/components/shared-header.tsx` | Shared header with cart icon + price badge (used on all auth pages) |
+| File                                         | Purpose                                                                              |
+| -------------------------------------------- | ------------------------------------------------------------------------------------ |
+| `src/app/cart/page.tsx`                      | Cart page client component                                                           |
+| `src/app/api/cart/route.ts`                  | API route proxying Picnic cart endpoint via `sendRequest`                            |
+| `src/lib/parse-cart.ts`                      | Cart response → display types transformer (runtime validation of `unknown` response) |
+| `src/lib/api-error.ts`                       | Shared `isApiAuthError` utility (extracted from existing routes)                     |
+| `src/components/cart-item.tsx`               | Single cart line item component                                                      |
+| `src/components/order-summary.tsx`           | Order totals summary component                                                       |
+| `src/components/minimum-order-indicator.tsx` | Min order value progress indicator                                                   |
+| `src/components/unavailable-product.tsx`     | Unavailable product with replacements                                                |
+| `src/components/checkout-cta.tsx`            | "Complete in Picnic app" message                                                     |
+| `src/components/shared-header.tsx`           | Shared header with cart icon + price badge (used on all auth pages)                  |
 
 ## Key Files to Modify
 
-| File | Change |
-|------|--------|
-| `src/lib/types.ts` | Add `CartData`, `CartItem`, `DepositEntry`, `CartApiResponse` types |
-| `src/app/search/page.tsx` | Replace inline header with `SharedHeader` component |
-| `src/app/product/[id]/page.tsx` | Replace inline header with `SharedHeader` component |
-| `src/app/api/search/route.ts` | Replace local `isApiAuthError` with shared import from `src/lib/api-error.ts` |
+| File                                | Change                                                                        |
+| ----------------------------------- | ----------------------------------------------------------------------------- |
+| `src/lib/types.ts`                  | Add `CartData`, `CartItem`, `DepositEntry`, `CartApiResponse` types           |
+| `src/app/search/page.tsx`           | Replace inline header with `SharedHeader` component                           |
+| `src/app/product/[id]/page.tsx`     | Replace inline header with `SharedHeader` component                           |
+| `src/app/api/search/route.ts`       | Replace local `isApiAuthError` with shared import from `src/lib/api-error.ts` |
 | `src/app/api/product/[id]/route.ts` | Replace local `isApiAuthError` with shared import from `src/lib/api-error.ts` |
 
 ## Existing Files to Reference (Do Not Modify)
 
-| File | Why |
-|------|-----|
-| `src/app/product/[id]/page.tsx` | Reference pattern for page structure, state machine, error handling |
-| `src/app/api/product/[id]/route.ts` | Reference pattern for API route with `sendRequest` cast, auth check, error handling |
-| `src/app/api/search/route.ts` | Reference pattern for `sendRequest` cast (same pattern to follow for cart) |
-| `src/components/price-display.tsx` | Reuse directly for price rendering |
-| `src/components/badge.tsx` | Reuse directly for decorator-derived badges |
-| `src/components/product-slider.tsx` | Reuse directly for "Niets vergeten?" section |
-| `src/components/product-slider-card.tsx` | Reuse directly for suggestion/replacement cards |
-| `src/lib/picnic-client.ts` | Use `buildPicnicClient(token)` in API route |
-| `src/lib/auth.ts` | Use `readAuthToken(request)` in API route |
-| `src/lib/image-url.ts` | Use `buildImageUrl(imageId)` for product images |
+| File                                     | Why                                                                                 |
+| ---------------------------------------- | ----------------------------------------------------------------------------------- |
+| `src/app/product/[id]/page.tsx`          | Reference pattern for page structure, state machine, error handling                 |
+| `src/app/api/product/[id]/route.ts`      | Reference pattern for API route with `sendRequest` cast, auth check, error handling |
+| `src/app/api/search/route.ts`            | Reference pattern for `sendRequest` cast (same pattern to follow for cart)          |
+| `src/components/price-display.tsx`       | Reuse directly for price rendering                                                  |
+| `src/components/badge.tsx`               | Reuse directly for decorator-derived badges                                         |
+| `src/components/product-slider.tsx`      | Reuse directly for "Niets vergeten?" section                                        |
+| `src/components/product-slider-card.tsx` | Reuse directly for suggestion/replacement cards                                     |
+| `src/lib/picnic-client.ts`               | Use `buildPicnicClient(token)` in API route                                         |
+| `src/lib/auth.ts`                        | Use `readAuthToken(request)` in API route                                           |
+| `src/lib/image-url.ts`                   | Use `buildImageUrl(imageId)` for product images                                     |
 
 ## Lint Check
 

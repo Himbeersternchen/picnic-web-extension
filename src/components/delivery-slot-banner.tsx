@@ -12,11 +12,7 @@ type DeliverySlotBannerProps = {
   onTap: () => void;
 };
 
-export function DeliverySlotBanner({
-  bannerText,
-  isExplicit,
-  onTap,
-}: DeliverySlotBannerProps) {
+export function DeliverySlotBanner({ bannerText, isExplicit, onTap }: DeliverySlotBannerProps) {
   return (
     <button
       type="button"
@@ -26,7 +22,7 @@ export function DeliverySlotBanner({
       {/* Truck icon with clock overlay */}
       <div className="relative flex-shrink-0 rounded-xl bg-white p-2 shadow-sm">
         <TruckIcon />
-        <div className="absolute -bottom-0.5 -right-0.5">
+        <div className="absolute -right-0.5 -bottom-0.5">
           <ClockIcon />
         </div>
       </div>
@@ -35,16 +31,12 @@ export function DeliverySlotBanner({
       <div className="flex flex-1 flex-col">
         <span
           className={`text-sm ${
-            isExplicit
-              ? "font-semibold text-foreground"
-              : "font-medium text-gray-500"
+            isExplicit ? "text-foreground font-semibold" : "font-medium text-gray-500"
           }`}
         >
           {bannerText}
         </span>
-        {!isExplicit && (
-          <span className="text-xs text-gray-400">Tik om te kiezen</span>
-        )}
+        {!isExplicit && <span className="text-xs text-gray-400">Tik om te kiezen</span>}
       </div>
 
       {/* Chevron hint */}

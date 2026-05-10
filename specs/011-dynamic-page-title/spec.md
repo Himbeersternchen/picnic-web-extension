@@ -12,7 +12,7 @@
 - Q: Implementation mechanism — all pages are `"use client"` components, so standard Next.js `metadata`/`generateMetadata` cannot be used at page level. Which approach? → A: Client-side `document.title` via `useEffect` in each page (no architectural refactoring needed).
 - Q: Root layout currently exports static metadata title "Picnic Web — Product Search". Update it to "Picnic Web" or leave as-is? → A: Update root layout metadata to "Picnic Web" (consistent default, no title flash).
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Product Page Shows Product Name in Browser Tab (Priority: P1)
 
@@ -69,7 +69,7 @@ When a user performs a product search, the browser tab title updates to reflect 
 - What happens when a user navigates between pages rapidly? The title should always reflect the currently displayed page, not a previously loaded one.
 - What happens on the error page (e.g., after a server error)? The title should display a reasonable fallback such as "Picnic Web".
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -83,7 +83,7 @@ When a user performs a product search, the browser tab title updates to reflect 
 - **FR-008**: The application MUST use a consistent title separator and format across all pages: "[Context] - Picnic Web" for pages with context, or just "Picnic Web" for the default.
 - **FR-009**: Excessively long page contexts (over 60 characters) MUST be truncated with an ellipsis to keep the title practical.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

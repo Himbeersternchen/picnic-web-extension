@@ -8,22 +8,23 @@
 
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import type { CartData, ApiErrorResponse } from "@/lib/types";
-import type { DeliverySlotPickerData } from "@/lib/delivery-slot-types";
+import { useCallback, useEffect, useState } from "react";
+
 import {
+  CLOSE_ARIA_LABEL,
   CloseIcon,
   DayTabs,
-  SelectedDayView,
   DefaultDayView,
-  findSlotInDay,
-  getAllSlots,
-  PICKER_TITLE,
   FREE_DELIVERY_LABEL,
   NO_SLOTS_LABEL,
-  CLOSE_ARIA_LABEL,
+  PICKER_TITLE,
   RETRY_LABEL,
+  SelectedDayView,
+  findSlotInDay,
+  getAllSlots,
 } from "@/components/slot-picker-parts";
+import type { DeliverySlotPickerData } from "@/lib/delivery-slot-types";
+import type { ApiErrorResponse, CartData } from "@/lib/types";
 
 // ─── Props & state ───────────────────────────────────────────────────────────
 
@@ -60,10 +61,7 @@ async function selectSlot(slotId: string): Promise<CartData> {
 
 // ─── Main component ──────────────────────────────────────────────────────────
 
-export function DeliverySlotPicker({
-  onClose,
-  onSlotSelected,
-}: DeliverySlotPickerProps) {
+export function DeliverySlotPicker({ onClose, onSlotSelected }: DeliverySlotPickerProps) {
   const [state, setState] = useState<PickerState>({ status: "loading" });
 
   // Fetch fresh slot data on mount (component is only mounted when picker is open)
@@ -79,7 +77,9 @@ export function DeliverySlotPicker({
         setState({ status: "error", message: err.message });
       });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const handleSelectSlot = useCallback(
@@ -106,7 +106,7 @@ export function DeliverySlotPicker({
           });
         });
     },
-    [onSlotSelected],
+    [onSlotSelected]
   );
 
   const handleDayChange = useCallback((index: number) => {
@@ -131,9 +131,7 @@ export function DeliverySlotPicker({
         <PickerHeader onClose={onClose} />
 
         {state.status === "loading" && <LoadingBody />}
-        {state.status === "error" && (
-          <ErrorBody message={state.message} onRetry={handleRetry} />
-        )}
+        {state.status === "error" && <ErrorBody message={state.message} onRetry={handleRetry} />}
         {(state.status === "ready" || state.status === "selecting") && (
           <SlotListBody
             data={state.data}
@@ -153,10 +151,10 @@ export function DeliverySlotPicker({
 
 function PickerHeader({ onClose }: { onClose: () => void }) {
   return (
-    <div className="border-b border-gray-200 px-4 pb-3 pt-4">
+    <div className="border-b border-gray-200 px-4 pt-4 pb-3">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-lg font-bold text-foreground">{PICKER_TITLE}</h2>
+          <h2 className="text-foreground text-lg font-bold">{PICKER_TITLE}</h2>
           <p className="text-sm text-green-700">{FREE_DELIVERY_LABEL}</p>
         </div>
         <button
@@ -175,7 +173,7 @@ function PickerHeader({ onClose }: { onClose: () => void }) {
 function LoadingBody() {
   return (
     <div className="flex min-h-[200px] flex-1 items-center justify-center">
-      <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-picnic-red" />
+      <div className="border-t-picnic-red h-8 w-8 animate-spin rounded-full border-4 border-gray-200" />
     </div>
   );
 }
@@ -187,7 +185,7 @@ function ErrorBody({ message, onRetry }: { message: string; onRetry: () => void 
       <button
         type="button"
         onClick={onRetry}
-        className="rounded-lg bg-picnic-red px-4 py-2 text-sm font-medium text-white"
+        className="bg-picnic-red rounded-lg px-4 py-2 text-sm font-medium text-white"
       >
         {RETRY_LABEL}
       </button>
@@ -235,7 +233,9 @@ function SlotListBody({
         {selectedOnThisDay ? (
           <SelectedDayView
             selectedSlot={selectedOnThisDay}
-            otherSlots={getAllSlots(currentDay).filter((s) => s.slotId !== selectedOnThisDay.slotId)}
+            otherSlots={getAllSlots(currentDay).filter(
+              (s) => s.slotId !== selectedOnThisDay.slotId
+            )}
             selectingSlotId={selectingSlotId}
             onSelectSlot={onSelectSlot}
           />

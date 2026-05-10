@@ -24,32 +24,32 @@ npm run build
 
 ## Key Files (New)
 
-| File | Purpose |
-|------|---------|
-| `src/app/product/[id]/page.tsx` | Product detail page (client component) |
-| `src/app/product/[id]/loading.tsx` | Loading state for product page |
-| `src/app/product/[id]/error.tsx` | Error boundary for product page |
-| `src/app/api/product/[id]/route.ts` | API route: fetches and parses product data |
-| `src/lib/parse-fusion-product.ts` | Fusion page parser for product details |
-| `src/lib/types.ts` | Extended with `ProductDetail` and related types |
-| `src/lib/pml-helpers.ts` | Extended with `findNodeById`, `findNodeByIdPrefix`, `collectPropertyValues` |
-| `src/components/product-gallery.tsx` | Image gallery with thumbnail strip |
-| `src/components/product-info-header.tsx` | Title, brand, weight, unit price |
-| `src/components/product-price-section.tsx` | Price, promotion label, bundle options |
-| `src/components/product-highlights.tsx` | Highlights list |
-| `src/components/product-description.tsx` | Description block |
-| `src/components/allergen-badges.tsx` | Allergen badges with "bevat mogelijk" section |
-| `src/components/accordion-section.tsx` | Collapsible info section |
-| `src/components/nutrition-table.tsx` | Voedingswaarde table renderer |
-| `src/components/product-slider.tsx` | Horizontal scrollable product slider |
-| `src/components/product-slider-card.tsx` | Compact card for slider items |
+| File                                       | Purpose                                                                     |
+| ------------------------------------------ | --------------------------------------------------------------------------- |
+| `src/app/product/[id]/page.tsx`            | Product detail page (client component)                                      |
+| `src/app/product/[id]/loading.tsx`         | Loading state for product page                                              |
+| `src/app/product/[id]/error.tsx`           | Error boundary for product page                                             |
+| `src/app/api/product/[id]/route.ts`        | API route: fetches and parses product data                                  |
+| `src/lib/parse-fusion-product.ts`          | Fusion page parser for product details                                      |
+| `src/lib/types.ts`                         | Extended with `ProductDetail` and related types                             |
+| `src/lib/pml-helpers.ts`                   | Extended with `findNodeById`, `findNodeByIdPrefix`, `collectPropertyValues` |
+| `src/components/product-gallery.tsx`       | Image gallery with thumbnail strip                                          |
+| `src/components/product-info-header.tsx`   | Title, brand, weight, unit price                                            |
+| `src/components/product-price-section.tsx` | Price, promotion label, bundle options                                      |
+| `src/components/product-highlights.tsx`    | Highlights list                                                             |
+| `src/components/product-description.tsx`   | Description block                                                           |
+| `src/components/allergen-badges.tsx`       | Allergen badges with "bevat mogelijk" section                               |
+| `src/components/accordion-section.tsx`     | Collapsible info section                                                    |
+| `src/components/nutrition-table.tsx`       | Voedingswaarde table renderer                                               |
+| `src/components/product-slider.tsx`        | Horizontal scrollable product slider                                        |
+| `src/components/product-slider-card.tsx`   | Compact card for slider items                                               |
 
 ## Key Files (Modified)
 
-| File | Change |
-|------|--------|
+| File                              | Change                                                         |
+| --------------------------------- | -------------------------------------------------------------- |
 | `src/components/product-card.tsx` | Add optional `href` prop; wrap content in `Link` when provided |
-| `src/components/product-grid.tsx` | Pass `href` to `ProductCard` for product detail navigation |
+| `src/components/product-grid.tsx` | Pass `href` to `ProductCard` for product detail navigation     |
 
 ## Testing a Product Detail Page
 

@@ -21,15 +21,15 @@ Enable drill-down navigation from top-level categories to their sub-categories. 
 
 ## Constitution Check
 
-*GATE: All principles verified.*
+_GATE: All principles verified._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP/DRY/DI | PASS | Parser logic shared via extracted helper; new route has single responsibility; client injected via `buildPicnicClient` |
-| II. Naming | PASS | `parseSubcategoryPage`, `extractPageTitle`, `SubcategoriesApiResponse`, `CategoryNavState` — all follow conventions |
-| III. Forbidden Anti-Patterns | PASS | No file exceeds 300 lines; no deep nesting; constants extracted (`L1_PAGE_PREFIX`, `CATEGORY_ITEM_PREFIX`); no empty catches |
-| IV. Self-Refactor | PASS | Will enforce at implementation time |
-| V. Readability | PASS | Linear control flow with early returns; explicit types; no clever constructs |
+| Principle                    | Status | Notes                                                                                                                        |
+| ---------------------------- | ------ | ---------------------------------------------------------------------------------------------------------------------------- |
+| I. SRP/DRY/DI                | PASS   | Parser logic shared via extracted helper; new route has single responsibility; client injected via `buildPicnicClient`       |
+| II. Naming                   | PASS   | `parseSubcategoryPage`, `extractPageTitle`, `SubcategoriesApiResponse`, `CategoryNavState` — all follow conventions          |
+| III. Forbidden Anti-Patterns | PASS   | No file exceeds 300 lines; no deep nesting; constants extracted (`L1_PAGE_PREFIX`, `CATEGORY_ITEM_PREFIX`); no empty catches |
+| IV. Self-Refactor            | PASS   | Will enforce at implementation time                                                                                          |
+| V. Readability               | PASS   | Linear control flow with early returns; explicit types; no clever constructs                                                 |
 
 ## Project Structure
 

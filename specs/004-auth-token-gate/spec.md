@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Let's add authentication. We will stop using the .env file. This means that the PICNIC_AUTH_TOKEN will not be used anymore and has to be entered by the user themselves before they can do anything on the website. Not a single page nor future pages should be accessible without having entered a picnic auth token first."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 — Enter Auth Token to Access the Application (Priority: P1) 🎯 MVP
 
@@ -61,7 +61,7 @@ A user who is currently authenticated wants to sign out or switch to a different
 - What happens if the user clears their browser storage manually? The application treats this the same as having no token — the token entry screen is shown on next visit.
 - What happens if the Picnic API is unreachable during token validation? The user should see an appropriate error message distinguishing between "invalid token" and "unable to verify token at this time."
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -82,7 +82,7 @@ A user who is currently authenticated wants to sign out or switch to a different
 - **Auth Token**: A Picnic API authentication token (JWT) provided by the user. Key attributes: the token string itself, its storage location (browser-side), and its validity state (valid, invalid, expired, unknown).
 - **Auth State**: The current authentication state of the user session. Possible values: unauthenticated (no token stored), validating (token submitted, verification in progress), authenticated (valid token confirmed), error (validation failed).
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

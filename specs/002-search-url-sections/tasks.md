@@ -19,7 +19,7 @@
 
 **Purpose**: No new project initialization needed — this feature modifies an existing codebase. This phase is intentionally empty.
 
-*(No setup tasks — the project already has all dependencies installed and configured.)*
+_(No setup tasks — the project already has all dependencies installed and configured.)_
 
 ---
 

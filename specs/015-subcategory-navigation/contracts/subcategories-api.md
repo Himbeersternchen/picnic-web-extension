@@ -19,8 +19,8 @@ Fetches the list of sub-categories for a given parent category ID.
 
 ### Path Parameters
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
+| Parameter    | Type     | Description                                                     |
+| ------------ | -------- | --------------------------------------------------------------- |
 | `categoryId` | `string` | Parent category ID (e.g., `"21724"`, `"CustomCatGlutenvrijL1"`) |
 
 ### Success Response (200)
@@ -69,14 +69,14 @@ type CategoryItem = {
 }
 ```
 
-*Full response contains ~8 sub-categories for "Fruit". Count varies by parent category.*
+_Full response contains ~8 sub-categories for "Fruit". Count varies by parent category._
 
 ### Error Responses
 
-| Status | Body | When |
-|--------|------|------|
-| 401 | `{ "error": "Authentication required", "code": "TOKEN_EXPIRED" }` | Missing/expired auth token |
-| 502 | `{ "error": "Kan subcategorieën niet laden. Probeer het later opnieuw." }` | Upstream API failure |
+| Status | Body                                                                       | When                       |
+| ------ | -------------------------------------------------------------------------- | -------------------------- |
+| 401    | `{ "error": "Authentication required", "code": "TOKEN_EXPIRED" }`          | Missing/expired auth token |
+| 502    | `{ "error": "Kan subcategorieën niet laden. Probeer het later opnieuw." }` | Upstream API failure       |
 
 ---
 

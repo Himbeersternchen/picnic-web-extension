@@ -40,22 +40,18 @@ export function OrderSummary({
   if (totalCount === 0) return null;
 
   return (
-    <div className="rounded-xl border border-card-border bg-card-bg p-4">
-      <h2 className="mb-3 text-base font-semibold text-foreground">
-        Besteloverzicht
-      </h2>
+    <div className="border-card-border bg-card-bg rounded-xl border p-4">
+      <h2 className="text-foreground mb-3 text-base font-semibold">Besteloverzicht</h2>
 
       <div className="space-y-2 text-sm">
         {/* Item count row */}
         <div className="flex justify-between text-gray-700">
-          <span>
-            Artikelen ({totalCount})
-          </span>
+          <span>Artikelen ({totalCount})</span>
         </div>
 
         {/* Discount row */}
         {totalDiscount > 0 && (
-          <div className="flex justify-between text-picnic-green">
+          <div className="text-picnic-green flex justify-between">
             <span>Korting</span>
             <span>−{formatPrice(totalDiscount)}</span>
           </div>
@@ -73,7 +69,7 @@ export function OrderSummary({
 
         {/* Membership savings row */}
         {membershipSavings > 0 && (
-          <div className="flex justify-between text-picnic-green">
+          <div className="text-picnic-green flex justify-between">
             <span>Picnic-lidmaatschapsbesparing</span>
             <span>−{formatPrice(membershipSavings)}</span>
           </div>
@@ -96,21 +92,15 @@ export function OrderSummary({
         {minimumOrderValue !== null && minimumOrderValue > 0 && (
           <div className="flex justify-between text-gray-700">
             <span>Minimale bestelwaarde</span>
-            <span
-              className={
-                totalPrice >= minimumOrderValue ? "text-picnic-green" : ""
-              }
-            >
-              {totalPrice >= minimumOrderValue && (
-                <span className="mr-1">&#10003;</span>
-              )}
+            <span className={totalPrice >= minimumOrderValue ? "text-picnic-green" : ""}>
+              {totalPrice >= minimumOrderValue && <span className="mr-1">&#10003;</span>}
               {formatPrice(minimumOrderValue)}
             </span>
           </div>
         )}
 
         {/* Total row */}
-        <div className="flex justify-between border-t border-card-border pt-2 font-bold text-foreground">
+        <div className="border-card-border text-foreground flex justify-between border-t pt-2 font-bold">
           <span>Totaal</span>
           <span>{formatPrice(totalPrice)}</span>
         </div>

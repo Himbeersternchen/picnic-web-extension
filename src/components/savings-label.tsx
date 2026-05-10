@@ -4,7 +4,6 @@
  * Displays "€X.XX bespaard" as a green badge when a bundle
  * threshold is met. Only renders when savingsInCents > 0.
  */
-
 import { formatPrice } from "@/lib/format-price";
 
 type SavingsLabelProps = {
@@ -18,7 +17,7 @@ export function SavingsLabel({ savingsInCents }: SavingsLabelProps) {
   const formatted = formatPrice(savingsInCents);
 
   return (
-    <span className="rounded-full bg-picnic-green px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
+    <span className="bg-picnic-green rounded-full px-2 py-0.5 text-xs font-semibold text-white shadow-sm">
       {formatted} bespaard
     </span>
   );

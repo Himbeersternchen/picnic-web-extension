@@ -23,15 +23,15 @@ The "Deze week" promotional section from the spec was dropped — it is not avai
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| **I. SRP / DRY / DI** | PASS | Each new file has a single responsibility: types (`category-types.ts`), parsing (`parse-categories.ts`), API route (`categories/route.ts`), UI (`category-grid.tsx`). Parsing follows the same DI-friendly pattern as `parse-fusion-search.ts`. `buildPicnicClient` is injected via token. |
-| **II. Naming Conventions** | PASS | Functions use verb-first camelCase (`parseCategoryPage`, `extractCategoryFromPmlItem`, `buildImageUrl`). Types use PascalCase (`CategoryItem`, `CategoriesApiResponse`). Files use kebab-case (`category-types.ts`, `parse-categories.ts`). Constants use UPPER_SNAKE_CASE (`CATEGORY_LIST_BLOCK_ID`, `CATEGORY_ITEM_PREFIX`). |
-| **III. Forbidden Anti-Patterns** | PASS | No file exceeds 300 lines. No deep nesting (max 3 levels). Magic strings extracted to named constants (`CATEGORY_LIST_BLOCK_ID`, `CATEGORY_ITEM_PREFIX`). Error handling is explicit (auth errors handled, upstream failures surfaced with message). No global mutable state. |
-| **IV. Self-Refactor Protocol** | PASS | Will be enforced during implementation. |
-| **V. Readability Over Cleverness** | PASS | Explicit extraction logic with named steps. No chained method calls beyond 3 levels. Guard clauses used for early returns. |
+| Principle                          | Status | Notes                                                                                                                                                                                                                                                                                                                          |
+| ---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **I. SRP / DRY / DI**              | PASS   | Each new file has a single responsibility: types (`category-types.ts`), parsing (`parse-categories.ts`), API route (`categories/route.ts`), UI (`category-grid.tsx`). Parsing follows the same DI-friendly pattern as `parse-fusion-search.ts`. `buildPicnicClient` is injected via token.                                     |
+| **II. Naming Conventions**         | PASS   | Functions use verb-first camelCase (`parseCategoryPage`, `extractCategoryFromPmlItem`, `buildImageUrl`). Types use PascalCase (`CategoryItem`, `CategoriesApiResponse`). Files use kebab-case (`category-types.ts`, `parse-categories.ts`). Constants use UPPER_SNAKE_CASE (`CATEGORY_LIST_BLOCK_ID`, `CATEGORY_ITEM_PREFIX`). |
+| **III. Forbidden Anti-Patterns**   | PASS   | No file exceeds 300 lines. No deep nesting (max 3 levels). Magic strings extracted to named constants (`CATEGORY_LIST_BLOCK_ID`, `CATEGORY_ITEM_PREFIX`). Error handling is explicit (auth errors handled, upstream failures surfaced with message). No global mutable state.                                                  |
+| **IV. Self-Refactor Protocol**     | PASS   | Will be enforced during implementation.                                                                                                                                                                                                                                                                                        |
+| **V. Readability Over Cleverness** | PASS   | Explicit extraction logic with named steps. No chained method calls beyond 3 levels. Guard clauses used for early returns.                                                                                                                                                                                                     |
 
 **Gate result**: PASS — no violations. Complexity Tracking table is empty (no justified violations needed).
 
@@ -75,5 +75,5 @@ src/
 > No violations to justify — all constitution checks pass.
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| *(none)* | — | — |
+| --------- | ---------- | ------------------------------------ |
+| _(none)_  | —          | —                                    |

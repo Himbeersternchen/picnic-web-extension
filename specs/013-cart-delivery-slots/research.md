@@ -14,6 +14,7 @@
 **Rationale**: The picnic-api types define `SelectedSlot.state` as `string` with the comment `E.g. "IMPLICIT" | "ACTIVE" | "EXPLICIT"`. The native Picnic app shows "Kies je bezorgmoment" when no explicit selection has been made, even though the API always returns a `selected_slot` with a valid `slot_id`. This means `IMPLICIT` maps to the system-default assignment (user hasn't chosen), while `ACTIVE`/`EXPLICIT` map to user-initiated selection. This will be confirmed at runtime during implementation — if the API returns a different state after `setDeliverySlot`, the heuristic is validated.
 
 **Alternatives considered**:
+
 - Always show the time window if `slot_id` is non-empty: Would never show "Kies je bezorgmoment", breaking US1 acceptance scenario 1.
 - Only check the `selected` boolean on the matched `DeliverySlot`: The `selected` field may be `true` even for implicit selections. The `state` field on `SelectedSlot` is more semantically meaningful.
 
@@ -22,6 +23,7 @@
 **Question**: Should we use the dedicated `getDeliverySlots()` endpoint or rely on the slot data already present in the cart response?
 
 **Decision**: Use both:
+
 - **Banner display**: Extract `selected_slot` and `delivery_slots` from the existing cart response (already fetched on page load). Parse the selected slot's time window for the banner. This avoids an extra API call.
 - **Slot picker modal**: When the modal opens, call `GET /api/cart/delivery-slots` (which calls `client.cart.getDeliverySlots()`) to get the freshest slot availability. The dedicated endpoint returns `GetDeliverySlotsResult` with `delivery_slots[]`, `selected_slot`, and `slot_selector_message`.
 - **Slot selection**: `POST /api/cart/delivery-slots` calls `client.cart.setDeliverySlot(slotId)`, which returns a full `Cart` object. Parse the returned cart to update the entire cart state (including the banner).
@@ -29,6 +31,7 @@
 **Rationale**: The cart response already contains `delivery_slots` and `selected_slot` — we already fetch this data. For the banner, re-fetching is wasteful. However, slot availability changes over time (cut-off times pass), so the picker should fetch fresh data when opened. The `setDeliverySlot` response is a full `Cart`, so after slot selection we can reconcile the entire cart state — banner, items, totals — in one shot.
 
 **Alternatives considered**:
+
 - Always use `getDeliverySlots()` for everything: Adds an unnecessary API call on page load just to display the banner. The cart response already has the data.
 - Never call `getDeliverySlots()`, always use cart data: Stale slot availability in the picker if the user has been on the page for a while. Cut-off times may have passed.
 
@@ -41,6 +44,7 @@
 **Rationale**: Confirmed in the spec clarification session. The Picnic app pairs a narrow delivery window (e.g., 1 hour) with a wider eco-friendly window (e.g., 3 hours) starting at the same time. The wider window allows more route optimization. The `slot_characteristics` array is currently empty in observed data but may contain `"PREFERRED"` in the future — we should check for it as a secondary signal but not rely on it.
 
 **Implementation**:
+
 ```typescript
 function identifyGreenSlots(slots: DeliverySlotData[]): Set<string> {
   const greenSlotIds = new Set<string>();
@@ -67,6 +71,7 @@ function identifyGreenSlots(slots: DeliverySlotData[]): Set<string> {
 ```
 
 **Alternatives considered**:
+
 - Use `slot_characteristics` exclusively: Currently empty; would result in no green choices being identified.
 - Mark all wide-window slots as green (even without pairs): Would incorrectly mark slots that don't have a narrow counterpart, confusing the grouping UI.
 
@@ -75,31 +80,50 @@ function identifyGreenSlots(slots: DeliverySlotData[]): Set<string> {
 **Question**: How should delivery time windows be formatted for the banner and picker?
 
 **Decision**: Create a `format-delivery-window.ts` utility with two functions:
+
 1. `formatBannerText(windowStart, windowEnd)` → e.g., "Morgen 14:40 - 15:40", "Vandaag 08:00 - 09:00", "Donderdag 14:40 - 15:40"
 2. `formatDayTab(windowStart)` → e.g., "Vandaag", "Morgen", "Donderdag 16 apr"
 
 **Rules**:
+
 - **Today**: "Vandaag" (if `windowStart` is today's date)
 - **Tomorrow**: "Morgen" (if `windowStart` is tomorrow's date)
 - **Other days**: Dutch day name (e.g., "Maandag", "Dinsdag", ..., "Zondag")
 - **Time format**: HH:MM in 24-hour format (e.g., "14:40"), extracted from the ISO 8601 `window_start`/`window_end` strings
 
 **Dutch day names map**:
+
 ```typescript
 const DUTCH_DAY_NAMES = [
-  "Zondag", "Maandag", "Dinsdag", "Woensdag",
-  "Donderdag", "Vrijdag", "Zaterdag",
+  "Zondag",
+  "Maandag",
+  "Dinsdag",
+  "Woensdag",
+  "Donderdag",
+  "Vrijdag",
+  "Zaterdag",
 ] as const;
 
 const DUTCH_MONTH_ABBREVIATIONS = [
-  "jan", "feb", "mrt", "apr", "mei", "jun",
-  "jul", "aug", "sep", "okt", "nov", "dec",
+  "jan",
+  "feb",
+  "mrt",
+  "apr",
+  "mei",
+  "jun",
+  "jul",
+  "aug",
+  "sep",
+  "okt",
+  "nov",
+  "dec",
 ] as const;
 ```
 
 **Rationale**: No existing date formatting utility exists in the project. The `Intl.DateTimeFormat` API could be used with `locale: "nl-NL"`, but explicit maps give full control over abbreviation style and avoid locale-dependent behavior differences across environments (server vs client). The `format-price.ts` utility follows the same "explicit formatting" pattern.
 
 **Alternatives considered**:
+
 - Use `Intl.DateTimeFormat("nl-NL")`: Works but abbreviation style varies across Node.js versions and browsers. "Donderdag" vs "do" vs "Do" is not guaranteed. Explicit map is more predictable.
 - Use a date library (date-fns, dayjs): Adds a dependency for a simple formatting task. Over-engineered.
 
@@ -118,6 +142,7 @@ States:
 ```
 
 **State transitions**:
+
 1. Modal opens → `LOADING` → fetch `GET /api/cart/delivery-slots` → `READY`
 2. User taps slot → `SELECTING` (disable all slots, show spinner on tapped slot) → `POST /api/cart/delivery-slots` → success → close modal, update cart state
 3. Fetch fails → `ERROR` with retry button
@@ -126,6 +151,7 @@ States:
 **Rationale**: Slot selection is blocking per the spec clarification. The modal must show a loading state and wait for API confirmation. The picker fetches fresh data on every open (not cached) to ensure cut-off times are current.
 
 **Alternatives considered**:
+
 - Optimistic selection: Close modal immediately, update banner, roll back on failure. Rejected per spec clarification — user expects confirmation.
 - Cache slots between opens: Stale data risk. Slots become unavailable as cut-off times pass. Fresh fetch on every open is safer.
 
@@ -140,6 +166,7 @@ States:
 **Implementation**: Add `selectedSlot` and `deliverySlots` (or a computed `deliveryBanner` summary) to `CartData`. When `setDeliverySlot` returns a new cart, parse it, and reconcile — the banner auto-updates because it reads from `cart.selectedSlot` (or similar).
 
 **Alternatives considered**:
+
 - Separate state for delivery slots (not part of CartData): Would require a separate fetch and reconciliation path. Adds complexity. The cart response already contains slot data.
 - Only update the banner, not the full cart: Misses potential cart changes (e.g., minimum order value changes per slot). Full reconciliation is safer.
 
@@ -152,6 +179,7 @@ States:
 **Rationale**: The constitution's 300-line limit is already violated. Adding ~40 lines of new type definitions would push `types.ts` to ~440 lines. A dedicated file keeps the new types isolated and under the limit. The re-export from `types.ts` maintains the existing import pattern (`import type { ... } from "@/lib/types"`).
 
 **Alternatives considered**:
+
 - Add everything to `types.ts` and accept the violation: Explicitly prohibited by the constitution. The plan's Constitution Check already flagged this.
 - Create a `types/` directory and split all types: Too invasive — would require updating imports in 10+ files. Out of scope for this feature.
 
@@ -159,12 +187,12 @@ States:
 
 All research questions resolved. Key decisions:
 
-| Topic | Decision |
-|-------|----------|
-| Implicit vs explicit slot | `state === "IMPLICIT"` → show prompt; `"ACTIVE"/"EXPLICIT"` → show time window |
-| API strategy | Banner from cart response; picker fetches fresh via dedicated endpoint; selection returns full cart |
-| Green choice | Paired `window_start`, longer duration = green |
-| Date formatting | Explicit Dutch day name map, no Intl or libraries |
-| Picker state | Local component state: LOADING → READY → SELECTING → close/ERROR |
-| Cart reconciliation | Parse `setDeliverySlot` response with `parseCartResponse`, use existing `reconcileFromServer` |
-| File organization | New `delivery-slot-types.ts` + `parse-delivery-slots.ts` files; minimal additions to existing files |
+| Topic                     | Decision                                                                                            |
+| ------------------------- | --------------------------------------------------------------------------------------------------- |
+| Implicit vs explicit slot | `state === "IMPLICIT"` → show prompt; `"ACTIVE"/"EXPLICIT"` → show time window                      |
+| API strategy              | Banner from cart response; picker fetches fresh via dedicated endpoint; selection returns full cart |
+| Green choice              | Paired `window_start`, longer duration = green                                                      |
+| Date formatting           | Explicit Dutch day name map, no Intl or libraries                                                   |
+| Picker state              | Local component state: LOADING → READY → SELECTING → close/ERROR                                    |
+| Cart reconciliation       | Parse `setDeliverySlot` response with `parseCartResponse`, use existing `reconcileFromServer`       |
+| File organization         | New `delivery-slot-types.ts` + `parse-delivery-slots.ts` files; minimal additions to existing files |

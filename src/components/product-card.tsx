@@ -1,15 +1,18 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+
 import Image from "next/image";
 import Link from "next/link";
-import type { Product, BundleProgress } from "@/lib/types";
-import { buildImageUrl } from "@/lib/image-url";
-import { PriceDisplay } from "./price-display";
-import { Badge } from "./badge";
-import { QuantityStepper } from "./quantity-stepper";
+
 import { useCart } from "@/contexts/cart-context";
 import { useCountryCode } from "@/contexts/country-context";
+import { buildImageUrl } from "@/lib/image-url";
+import type { BundleProgress, Product } from "@/lib/types";
+
+import { Badge } from "./badge";
+import { PriceDisplay } from "./price-display";
+import { QuantityStepper } from "./quantity-stepper";
 
 const PLACEHOLDER_IMAGE = "/placeholder-product.svg";
 const FLAG_SIZE = 14;

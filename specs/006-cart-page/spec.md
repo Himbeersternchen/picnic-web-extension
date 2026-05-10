@@ -29,7 +29,7 @@
 
 - Q: How should the raw cart response be typed when using `sendRequest` instead of the typed `getCart()` method? → A: Keep the response as `unknown` and validate/extract fields at runtime in `parseCartResponse`.
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - View Cart Contents (Priority: P1)
 
@@ -161,7 +161,7 @@ A logged-in user sees a cart icon in the header on every page. The icon has a re
 - What happens when the minimum order value API call fails (but a delivery slot is selected)? The minimum order indicator is hidden silently, same as when no slot is selected.
 - What happens when the cart data fetch fails on a non-cart page (e.g., search page)? The cart icon in the header is shown without the price badge (silent degradation); the icon remains clickable and navigates to `/cart`.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -206,7 +206,7 @@ A logged-in user sees a cart icon in the header on every page. The icon has a re
 - **Minimum Order Value**: The minimum cart total required for the user's selected delivery slot — used to calculate remaining amount needed.
 - **Suggestion Product**: A product recommended in the "Niets vergeten?" section — minimal data: image, name, price.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

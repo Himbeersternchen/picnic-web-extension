@@ -22,6 +22,7 @@
 **Rationale**: Debugging the actual response is the only reliable way to identify the issue. The parser logic is structurally correct for the pattern it expects — the question is whether the API response matches that pattern.
 
 **Alternatives considered**:
+
 - Rewrite the parser from scratch using `state.analyticsRfySize` as a signal: rejected because it would discard working logic and the analytics field only provides a count, not product data.
 - Add extensive logging to the parser and run the app: rejected because it's slower than inspecting the raw response once.
 
@@ -32,6 +33,7 @@
 **Rationale**: The simplest approach is to add a temporary `console.log(JSON.stringify(rawPage))` in the API route, search for "Roomboter", and capture the output from the server logs. This can be done as the first implementation task and removed afterward.
 
 **Alternatives considered**:
+
 - Creating a test fixture file with a sample response: useful for long-term testing but requires the response to be captured first anyway.
 - Using picnic-api directly in a script: requires separate auth token management.
 
@@ -68,13 +70,13 @@ If the fix requires substantial new logic (e.g., a completely different extracti
 
 ## Summary of Findings
 
-| Question | Finding | Action |
-|----------|---------|--------|
+| Question                       | Finding                                                                                   | Action               |
+| ------------------------------ | ----------------------------------------------------------------------------------------- | -------------------- |
 | RQ-1: Why no re-order results? | **Parser already works correctly** — all three hypothesized failure points were disproven | No parser fix needed |
-| RQ-2: How to capture response? | Used existing `/tmp/picnic-test3.json` (Tomaten search, 3.2MB) | Done |
-| RQ-3: Rendering changes? | None needed — rendering is section-agnostic | No action |
-| RQ-4: Deduplication? | Already handled by `seenIds` + API trust | No action |
-| RQ-5: File size? | 275/300 lines, no changes needed | No action |
+| RQ-2: How to capture response? | Used existing `/tmp/picnic-test3.json` (Tomaten search, 3.2MB)                            | Done                 |
+| RQ-3: Rendering changes?       | None needed — rendering is section-agnostic                                               | No action            |
+| RQ-4: Deduplication?           | Already handled by `seenIds` + API trust                                                  | No action            |
+| RQ-5: File size?               | 275/300 lines, no changes needed                                                          | No action            |
 
 ## Root Cause Analysis (T007)
 
@@ -110,12 +112,14 @@ The wrapper is **nested inside** an intermediate `vertical-rfy` container. The o
 ### Fix Applied
 
 Updated the wrapper collection loop in `parseFusionSearchSections` (`src/lib/parse-fusion-search.ts:176-192`) to handle both layouts:
+
 1. First checks if the sibling directly matches `WRAPPER_PREFIX + sectionKey` (Layout 1)
 2. If not, and the sibling isn't another header or visual-sections, searches recursively inside it for a nested wrapper (Layout 2)
 
 ### Verification
 
 Parser correctly extracts "Opnieuw bestellen" for both:
+
 - Tomaten: 5 re-order products (horizontal layout)
 - Roomboter: 1 re-order product (vertical layout)
 

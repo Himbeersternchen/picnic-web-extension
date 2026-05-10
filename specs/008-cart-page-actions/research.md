@@ -9,6 +9,7 @@
 The cart page uses a discriminated union `CartPageState` with four states: `loading`, `success`, `empty`, `error`. Cart data is fetched once on mount via `GET /api/cart` and stored as full `CartData`. There is no shared state management — the page owns all state.
 
 Sub-components are **props-based** (no context consumption):
+
 - `CartItemCard` — receives a single `CartItem` prop
 - `OrderSummary` — receives 6 individual fields (totalPrice, totalCount, totalDiscount, depositTotal, depositBreakdown, membershipSavings)
 - `MinimumOrderIndicator` — receives `currentTotal` and `minimumOrderValue`
@@ -18,6 +19,7 @@ Sub-components are **props-based** (no context consumption):
 ### Why CartProvider Is Not Suitable
 
 The existing `CartProvider` (from feature 007) stores only `Map<string, number>` quantities + `totalPrice` + `totalCount`. It does **not** expose:
+
 - Full `CartData` (items array with names, images, badges, etc.)
 - Deposit breakdown and total
 - Minimum order value
@@ -29,6 +31,7 @@ The cart page needs all of this data to render its sub-components. Extending Car
 ### Chosen Approach: Cart-Page-Level State
 
 The cart page will manage its own `CartData` state, reusing the **patterns** from CartProvider:
+
 1. Optimistic quantity updates in local state
 2. Per-product mutation queue via `createMutationQueue`
 3. Server reconciliation from POST response
@@ -61,6 +64,7 @@ The fallback of 99 matches the convention used in `mapRawToSliderProduct`.
 `CartItemCard` (`src/components/cart-item.tsx:31-76`) wraps the **entire row content** in a `<Link>` to `/product/{productId}`. The static quantity text at line 69 (`<span>{item.quantity}×</span>`) is inside this Link.
 
 Replacing that text with a `QuantityStepper` (which contains `<button>` elements) creates **nested interactive elements** — buttons inside an anchor. This is:
+
 - Invalid HTML (accessibility violation)
 - Causes unpredictable click behavior (click on button also navigates)
 
@@ -87,6 +91,7 @@ When a mutation succeeds, the POST `/api/cart` route returns the full updated `C
 ### Optimistic Updates
 
 For immediate feedback before the server responds:
+
 - **Quantity**: Update the specific item's `quantity` field in the local `CartData` state
 - **Totals**: Increment/decrement `totalCount` by 1 (price reconciled on server response)
 - **Item removal**: When quantity hits 0, filter the item from the local items array
@@ -97,29 +102,29 @@ The cart page currently uses `SharedHeader` without `CartProvider`. The header's
 
 ## 5. Reusable Infrastructure (from Feature 007)
 
-| Component | File | Reuse Strategy |
-|-----------|------|----------------|
-| `QuantityStepper` | `src/components/quantity-stepper.tsx` | Direct reuse — pass quantity, maxCount, onIncrement, onDecrement. Bundle props not needed (out of scope). |
-| `CartToast` | `src/components/cart-toast.tsx` | Direct reuse — render at cart page level, pass show/hide callback to mutation error handler. |
-| `createMutationQueue` | `src/lib/mutation-queue.ts` | Direct reuse — instantiate in cart page with onSettled callback for reconciliation/rollback. |
-| `postCartMutation` pattern | `src/contexts/cart-context.tsx` | Extract or replicate the 15-line function. It's a simple `fetch("/api/cart", { method: "POST", ... })` call. |
-| `POST /api/cart` route | `src/app/api/cart/route.ts` | No changes — already handles add/remove and returns full CartData. |
-| `parseCartResponse` | `src/lib/parse-cart.ts` | Already used by the API route — just needs maxCount extraction added. |
+| Component                  | File                                  | Reuse Strategy                                                                                               |
+| -------------------------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `QuantityStepper`          | `src/components/quantity-stepper.tsx` | Direct reuse — pass quantity, maxCount, onIncrement, onDecrement. Bundle props not needed (out of scope).    |
+| `CartToast`                | `src/components/cart-toast.tsx`       | Direct reuse — render at cart page level, pass show/hide callback to mutation error handler.                 |
+| `createMutationQueue`      | `src/lib/mutation-queue.ts`           | Direct reuse — instantiate in cart page with onSettled callback for reconciliation/rollback.                 |
+| `postCartMutation` pattern | `src/contexts/cart-context.tsx`       | Extract or replicate the 15-line function. It's a simple `fetch("/api/cart", { method: "POST", ... })` call. |
+| `POST /api/cart` route     | `src/app/api/cart/route.ts`           | No changes — already handles add/remove and returns full CartData.                                           |
+| `parseCartResponse`        | `src/lib/parse-cart.ts`               | Already used by the API route — just needs maxCount extraction added.                                        |
 
 ## 6. Files to Modify
 
-| File | Change | Lines Affected |
-|------|--------|---------------|
-| `src/lib/types.ts` | Add `maxCount: number` to `CartItem` type | ~1 line addition at line 300 |
-| `src/lib/parse-cart.ts` | Extract `max_count` from `firstArticle` in `mapOrderLineToCartItem` | ~1 line addition at line 370 |
+| File                           | Change                                                                             | Lines Affected                     |
+| ------------------------------ | ---------------------------------------------------------------------------------- | ---------------------------------- |
+| `src/lib/types.ts`             | Add `maxCount: number` to `CartItem` type                                          | ~1 line addition at line 300       |
+| `src/lib/parse-cart.ts`        | Extract `max_count` from `firstArticle` in `mapOrderLineToCartItem`                | ~1 line addition at line 370       |
 | `src/components/cart-item.tsx` | Restructure Link, replace static quantity with QuantityStepper, add callback props | Major refactor (~40 lines changed) |
-| `src/app/cart/page.tsx` | Add mutation state management, CartToast, pass callbacks to CartItemCard | ~60 lines added to CartPageContent |
+| `src/app/cart/page.tsx`        | Add mutation state management, CartToast, pass callbacks to CartItemCard           | ~60 lines added to CartPageContent |
 
 ## 7. Risk Assessment
 
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Nested interactive elements in CartItemCard | High (a11y, broken clicks) | Restructure Link to exclude stepper area |
-| Cart page exceeding 300-line limit | Medium (constitution violation) | Extract mutation logic into a custom hook if needed |
-| Stale state after rapid mutations | Low (already solved) | Mutation queue ensures sequential processing per product |
-| PLP regression from CartItem type change | Low | Adding a field is non-breaking; PLP doesn't use maxCount on CartItem |
+| Risk                                        | Impact                          | Mitigation                                                           |
+| ------------------------------------------- | ------------------------------- | -------------------------------------------------------------------- |
+| Nested interactive elements in CartItemCard | High (a11y, broken clicks)      | Restructure Link to exclude stepper area                             |
+| Cart page exceeding 300-line limit          | Medium (constitution violation) | Extract mutation logic into a custom hook if needed                  |
+| Stale state after rapid mutations           | Low (already solved)            | Mutation queue ensures sequential processing per product             |
+| PLP regression from CartItem type change    | Low                             | Adding a field is non-breaking; PLP doesn't use maxCount on CartItem |

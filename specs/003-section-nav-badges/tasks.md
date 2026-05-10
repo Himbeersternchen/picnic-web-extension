@@ -21,8 +21,8 @@
 
 **Why foundational**: The section `id` attributes on `<section>` elements are required by US1 (scroll targets), US2 (sticky positioning context), and US3 (IntersectionObserver targets). Without these IDs, no story can function.
 
-- [X] T001 Add `SECTION_ID_PREFIX` constant and `buildSectionId` helper function to `src/lib/types.ts`
-- [X] T002 Add `id` attributes to `<section>` elements in `src/components/product-grid.tsx` using `buildSectionId(index)` for each section, and add `scroll-margin-top` CSS class to account for sticky header + badge bar height (FR-010)
+- [x] T001 Add `SECTION_ID_PREFIX` constant and `buildSectionId` helper function to `src/lib/types.ts`
+- [x] T002 Add `id` attributes to `<section>` elements in `src/components/product-grid.tsx` using `buildSectionId(index)` for each section, and add `scroll-margin-top` CSS class to account for sticky header + badge bar height (FR-010)
 
 **Checkpoint**: Section elements now have stable DOM IDs. All user stories can proceed.
 
@@ -38,9 +38,9 @@
 
 ### Implementation for User Story 1
 
-- [X] T003 [US1] Create `SectionNavBar` component in `src/components/section-nav-bar.tsx` — accepts `sections: SearchSection[]` prop, renders horizontal badge bar with one pill-shaped badge per section (active: `bg-picnic-red text-white`, inactive: `bg-gray-100 text-gray-700`), handles click events that call `scrollIntoView({ behavior: 'smooth', block: 'start' })` on the target section element via `buildSectionId`, uses `overflow-x: auto` for horizontal scrolling, returns `null` when sections array is empty
-- [X] T004 [US1] Integrate `SectionNavBar` into `src/app/page.tsx` — import and render inside the sticky `<header>` element (after the existing header content div), pass `sections` from search state, only render when `searchState.status === "success"` and `sections.length > 0`
-- [X] T005 [US1] Run validation: `npm run lint && npx tsc --noEmit && npm run build`
+- [x] T003 [US1] Create `SectionNavBar` component in `src/components/section-nav-bar.tsx` — accepts `sections: SearchSection[]` prop, renders horizontal badge bar with one pill-shaped badge per section (active: `bg-picnic-red text-white`, inactive: `bg-gray-100 text-gray-700`), handles click events that call `scrollIntoView({ behavior: 'smooth', block: 'start' })` on the target section element via `buildSectionId`, uses `overflow-x: auto` for horizontal scrolling, returns `null` when sections array is empty
+- [x] T004 [US1] Integrate `SectionNavBar` into `src/app/page.tsx` — import and render inside the sticky `<header>` element (after the existing header content div), pass `sections` from search state, only render when `searchState.status === "success"` and `sections.length > 0`
+- [x] T005 [US1] Run validation: `npm run lint && npx tsc --noEmit && npm run build`
 
 **Checkpoint**: Badge bar renders, badges are clickable, smooth-scroll works with correct offset. First badge is visually highlighted (static — not yet scroll-aware). MVP complete.
 
@@ -56,8 +56,8 @@
 
 ### Implementation for User Story 2
 
-- [X] T006 [US2] Verify sticky behavior of badge bar in `src/components/section-nav-bar.tsx` — since the badge bar is rendered inside the sticky `<header>` container (per R-003), it inherits sticky positioning automatically. Ensure the badge bar has appropriate border/background styling (`border-t border-card-border bg-white/95 backdrop-blur-sm`) to visually separate it from the header content and provide the same frosted glass effect. Adjust padding to match the header's horizontal rhythm (`px-6`).
-- [X] T007 [US2] Run validation: `npm run lint && npx tsc --noEmit && npm run build`
+- [x] T006 [US2] Verify sticky behavior of badge bar in `src/components/section-nav-bar.tsx` — since the badge bar is rendered inside the sticky `<header>` container (per R-003), it inherits sticky positioning automatically. Ensure the badge bar has appropriate border/background styling (`border-t border-card-border bg-white/95 backdrop-blur-sm`) to visually separate it from the header content and provide the same frosted glass effect. Adjust padding to match the header's horizontal rhythm (`px-6`).
+- [x] T007 [US2] Run validation: `npm run lint && npx tsc --noEmit && npm run build`
 
 **Checkpoint**: Badge bar sticks with the header during scroll. US1 + US2 together provide a fully functional navigation bar.
 
@@ -73,9 +73,9 @@
 
 ### Implementation for User Story 3
 
-- [X] T008 [P] [US3] Create `useScrollSpy` hook in `src/hooks/use-scroll-spy.ts` — accepts `sectionCount: number`, uses `IntersectionObserver` to observe all section elements (found via `buildSectionId`), determines which section is nearest the top of the viewport, returns `activeSectionIndex: number` (defaults to `0`). Observer should use a `rootMargin` that accounts for the sticky header+badge bar height. Clean up observer on unmount and when `sectionCount` changes.
-- [X] T009 [US3] Integrate `useScrollSpy` into `SectionNavBar` in `src/components/section-nav-bar.tsx` — call `useScrollSpy(sections.length)` to get `activeSectionIndex`, use it to conditionally apply active/inactive badge styles, add `ref` callback on each badge element, and when `activeSectionIndex` changes use `scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })` on the active badge element to auto-scroll the badge bar horizontally (FR-008)
-- [X] T010 [US3] Run validation: `npm run lint && npx tsc --noEmit && npm run build`
+- [x] T008 [P] [US3] Create `useScrollSpy` hook in `src/hooks/use-scroll-spy.ts` — accepts `sectionCount: number`, uses `IntersectionObserver` to observe all section elements (found via `buildSectionId`), determines which section is nearest the top of the viewport, returns `activeSectionIndex: number` (defaults to `0`). Observer should use a `rootMargin` that accounts for the sticky header+badge bar height. Clean up observer on unmount and when `sectionCount` changes.
+- [x] T009 [US3] Integrate `useScrollSpy` into `SectionNavBar` in `src/components/section-nav-bar.tsx` — call `useScrollSpy(sections.length)` to get `activeSectionIndex`, use it to conditionally apply active/inactive badge styles, add `ref` callback on each badge element, and when `activeSectionIndex` changes use `scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' })` on the active badge element to auto-scroll the badge bar horizontally (FR-008)
+- [x] T010 [US3] Run validation: `npm run lint && npx tsc --noEmit && npm run build`
 
 **Checkpoint**: Full scroll-spy working. Active badge updates on scroll and on click-to-navigate. Badge bar auto-scrolls to keep active badge visible. All 3 user stories complete.
 
@@ -85,9 +85,9 @@
 
 **Purpose**: Final validation, edge case verification, code quality review.
 
-- [X] T011 Verify edge cases in `src/components/section-nav-bar.tsx` — confirm badge bar is not rendered when sections is empty (FR-009), works correctly with exactly one section, handles long section titles without layout breakage, and horizontal scroll works with 10+ sections
-- [X] T012 Run constitution compliance check — verify all new/modified files are under 300 lines, no deep nesting, no magic strings, all names follow conventions (verb-first camelCase functions, descriptive variables, kebab-case files, UPPER_SNAKE_CASE constants)
-- [X] T013 Run full validation and manual test per `quickstart.md`: `npm run lint && npx tsc --noEmit && npm run build`, then start dev server and execute all 6 test scenarios from quickstart.md
+- [x] T011 Verify edge cases in `src/components/section-nav-bar.tsx` — confirm badge bar is not rendered when sections is empty (FR-009), works correctly with exactly one section, handles long section titles without layout breakage, and horizontal scroll works with 10+ sections
+- [x] T012 Run constitution compliance check — verify all new/modified files are under 300 lines, no deep nesting, no magic strings, all names follow conventions (verb-first camelCase functions, descriptive variables, kebab-case files, UPPER_SNAKE_CASE constants)
+- [x] T013 Run full validation and manual test per `quickstart.md`: `npm run lint && npx tsc --noEmit && npm run build`, then start dev server and execute all 6 test scenarios from quickstart.md
 
 ---
 

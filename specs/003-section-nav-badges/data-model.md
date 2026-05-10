@@ -9,17 +9,17 @@
 
 Represents one navigable section in the badge bar. Derived from the existing `SearchSection` type — no new API data needed.
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field   | Type     | Description                                                                                                                                                             |
+| ------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `index` | `number` | Zero-based position of the section in the results list. Used as unique identifier for DOM `id` attributes (`section-0`, `section-1`, etc.) and for scroll-spy matching. |
-| `title` | `string` | Display text for the badge, taken directly from `SearchSection.title`. |
+| `title` | `string` | Display text for the badge, taken directly from `SearchSection.title`.                                                                                                  |
 
 ### ScrollSpyState
 
 Represents the current scroll-spy observation state. Managed by the `useScrollSpy` hook.
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field                | Type     | Description                                                                                                                                                 |
+| -------------------- | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `activeSectionIndex` | `number` | Index of the section whose header is currently nearest the top of the viewport. Defaults to `0` (first section). Updated by IntersectionObserver callbacks. |
 
 ## Relationships

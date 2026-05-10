@@ -12,9 +12,9 @@ GET /api/search?q={searchTerm}
 
 ## Request
 
-| Parameter | Location | Type | Required | Description |
-|-----------|----------|------|----------|-------------|
-| `q` | Query string | `string` | Yes | Search term. Empty or missing returns empty results. |
+| Parameter | Location     | Type     | Required | Description                                          |
+| --------- | ------------ | -------- | -------- | ---------------------------------------------------- |
+| `q`       | Query string | `string` | Yes      | Search term. Empty or missing returns empty results. |
 
 ## Response — Success (200)
 
@@ -28,26 +28,25 @@ GET /api/search?q={searchTerm}
     {
       "id": "s1016590",
       "name": "Trostomaten",
-      "namePrefix": "Bio",           // or null
-      "subtitle": "D.O.P. Sarnese",  // or null
-      "brand": "Mutti",              // or null
-      "highlight": {                 // or null
+      "namePrefix": "Bio", // or null
+      "subtitle": "D.O.P. Sarnese", // or null
+      "brand": "Mutti", // or null
+      "highlight": {
+        // or null
         "text": "Prijskampioen",
-        "color": "#B40117"
+        "color": "#B40117",
       },
-      "flagIconKey": "flagNetherlands",  // or null
-      "flagFallbackImageId": "abc123",   // or null
+      "flagIconKey": "flagNetherlands", // or null
+      "flagFallbackImageId": "abc123", // or null
       "imageId": "image-id",
       "displayPrice": 169,
-      "originalPrice": 199,          // or null
+      "originalPrice": 199, // or null
       "unitQuantity": "500 g",
       "maxCount": 15,
-      "badges": [
-        { "text": "2 voor €3", "variant": "promo" }
-      ],
+      "badges": [{ "text": "2 voor €3", "variant": "promo" }],
       "isUnavailable": false,
-      "unavailableReason": null
-    }
+      "unavailableReason": null,
+    },
     // ... more products
   ],
   "sections": [
@@ -56,29 +55,36 @@ GET /api/search?q={searchTerm}
       "products": [
         // Subset of products belonging to this section.
         // Same Product shape as above.
-      ]
+      ],
     },
     {
       "title": "Tros- en pruimtomaten",
-      "products": [/* ... */]
+      "products": [
+        /* ... */
+      ],
     },
     {
       "title": "Cherrytomaten",
-      "products": [/* ... */]
+      "products": [
+        /* ... */
+      ],
     },
     {
       "title": "In blik / Heinz",
-      "products": [/* ... */]
-    }
+      "products": [
+        /* ... */
+      ],
+    },
     // ... more sections, ordered as returned by the Fusion API
   ],
-  "query": "tomaten"
+  "query": "tomaten",
 }
 ```
 
 ### Section Ordering
 
 Sections appear in the order returned by the Fusion API:
+
 1. "Opnieuw bestellen" (re-order section, if present)
 2. Category sections (e.g., "Tros- en pruimtomaten", "Cherrytomaten", etc.)
 3. "Bekijk ook" (catch-all section, last)
@@ -113,24 +119,24 @@ When the query produces no results or `q` is empty/missing:
 
 ## Changes from Current Contract
 
-| Aspect | Before (001) | After (002) |
-|--------|-------------|-------------|
-| Response fields | `{ products, query }` | `{ products, sections, query }` |
-| `sections` field | Not present | `SearchSection[]` — ordered section groups |
-| `products` field | Flat deduplicated list | **Unchanged** — same flat deduplicated list |
-| Deduplication | Later occurrence wins | First occurrence wins (re-order section takes priority) |
+| Aspect           | Before (001)           | After (002)                                             |
+| ---------------- | ---------------------- | ------------------------------------------------------- |
+| Response fields  | `{ products, query }`  | `{ products, sections, query }`                         |
+| `sections` field | Not present            | `SearchSection[]` — ordered section groups              |
+| `products` field | Flat deduplicated list | **Unchanged** — same flat deduplicated list             |
+| Deduplication    | Later occurrence wins  | First occurrence wins (re-order section takes priority) |
 
 ## Parser Function Signature Change
 
 ```typescript
 // Before (001):
-export function parseFusionSearchPage(rawPage: unknown): Product[]
+export function parseFusionSearchPage(rawPage: unknown): Product[];
 
 // After (002):
 export function parseFusionSearchSections(rawPage: unknown): {
   sections: SearchSection[];
   products: Product[];
-}
+};
 ```
 
 The old `parseFusionSearchPage` function is replaced by `parseFusionSearchSections` which returns both the sectioned and flat product data in a single pass.

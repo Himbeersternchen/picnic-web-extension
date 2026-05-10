@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { buildImageUrl } from "@/lib/image-url";
-import type { ShortcutItem } from "@/lib/category-types";
+
 import { useCountryCode } from "@/contexts/country-context";
+import type { ShortcutItem } from "@/lib/category-types";
+import { buildImageUrl } from "@/lib/image-url";
 
 const SHORTCUT_SECTION_TITLE = "Snel naar";
 

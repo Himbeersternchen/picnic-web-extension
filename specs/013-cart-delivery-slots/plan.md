@@ -21,15 +21,15 @@ Add delivery slot viewing and selection to the cart page. A banner at the top of
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| **I. SRP / DRY / DI** | PASS | New responsibilities are isolated into dedicated files: banner component (display), picker component (interaction), date formatter (utility), slot parser (extraction), API route (server). The cart page only adds a banner slot and state wiring. |
-| **II. Naming Conventions** | PASS | New files: `delivery-slot-banner.tsx`, `delivery-slot-picker.tsx`, `format-delivery-window.ts`, `parse-delivery-slots.ts`. New types: `DeliverySlotData`, `SelectedSlotData`, `SlotGroup`. Functions: `parseDeliverySlots`, `formatDeliveryWindow`, `identifyGreenSlots`. All verb-first camelCase or descriptive noun-based. |
-| **III. Forbidden Anti-Patterns** | WARNING | Three existing files already exceed 300 lines. New delivery slot parsing MUST go into a new `parse-delivery-slots.ts` file, NOT into `parse-cart.ts` (460 lines). New types MUST go into a new section or dedicated file. Cart page changes must be minimal — the `CartPageContent` component just adds one `<DeliverySlotBanner>` element. |
-| **IV. Self-Refactor Protocol** | PASS | Will be enforced during implementation. |
-| **V. Readability Over Cleverness** | PASS | Green-choice heuristic (paired window_start, longer duration) will use explicit comparisons, not bitwise or chained tricks. Date formatting uses a simple map of Dutch day names. |
+| Principle                          | Status  | Notes                                                                                                                                                                                                                                                                                                                                       |
+| ---------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **I. SRP / DRY / DI**              | PASS    | New responsibilities are isolated into dedicated files: banner component (display), picker component (interaction), date formatter (utility), slot parser (extraction), API route (server). The cart page only adds a banner slot and state wiring.                                                                                         |
+| **II. Naming Conventions**         | PASS    | New files: `delivery-slot-banner.tsx`, `delivery-slot-picker.tsx`, `format-delivery-window.ts`, `parse-delivery-slots.ts`. New types: `DeliverySlotData`, `SelectedSlotData`, `SlotGroup`. Functions: `parseDeliverySlots`, `formatDeliveryWindow`, `identifyGreenSlots`. All verb-first camelCase or descriptive noun-based.               |
+| **III. Forbidden Anti-Patterns**   | WARNING | Three existing files already exceed 300 lines. New delivery slot parsing MUST go into a new `parse-delivery-slots.ts` file, NOT into `parse-cart.ts` (460 lines). New types MUST go into a new section or dedicated file. Cart page changes must be minimal — the `CartPageContent` component just adds one `<DeliverySlotBanner>` element. |
+| **IV. Self-Refactor Protocol**     | PASS    | Will be enforced during implementation.                                                                                                                                                                                                                                                                                                     |
+| **V. Readability Over Cleverness** | PASS    | Green-choice heuristic (paired window_start, longer duration) will use explicit comparisons, not bitwise or chained tricks. Date formatting uses a simple map of Dutch day names.                                                                                                                                                           |
 
 **Gate result: CONDITIONAL PASS** — existing file size violations require that ALL new logic goes into new files. No new code may be added to `parse-cart.ts`, `types.ts`, or `page.tsx` beyond the minimum wiring (type imports, a few lines of state, one component reference).
 
@@ -73,7 +73,7 @@ src/
 
 ## Complexity Tracking
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| `types.ts` (398 lines) gets delivery slot type imports | Only imports/re-exports are added (~3 lines). New types live in `delivery-slot-types.ts`. | Putting all types in a separate file would break the existing import pattern used by 10+ files. |
-| `page.tsx` (320 lines) gets banner + state | Only ~10 lines of wiring: one import, one state variable, one `<DeliverySlotBanner>` JSX element, and a callback for slot selection. The banner/picker logic lives in their own components. | Extracting the entire `CartPage` into sub-components would be a large refactor beyond this feature's scope. |
+| Violation                                              | Why Needed                                                                                                                                                                                  | Simpler Alternative Rejected Because                                                                        |
+| ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `types.ts` (398 lines) gets delivery slot type imports | Only imports/re-exports are added (~3 lines). New types live in `delivery-slot-types.ts`.                                                                                                   | Putting all types in a separate file would break the existing import pattern used by 10+ files.             |
+| `page.tsx` (320 lines) gets banner + state             | Only ~10 lines of wiring: one import, one state variable, one `<DeliverySlotBanner>` JSX element, and a callback for slot selection. The banner/picker logic lives in their own components. | Extracting the entire `CartPage` into sub-components would be a large refactor beyond this feature's scope. |

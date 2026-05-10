@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "I want to have product detail pages now. This page should show an image gallery (main image and additional images), the product title, the producer (/brand), additional subtitles such as the weight and price per kg, description, recipes that this is used with or in, a 'combine with' slider, allergen info in the form of badges and a 'bevat mogelijk', bereiding, ingrediënten, a table for the voedingswaarde, extra info section, and a similar products slider. All of this info should come from the API. After this, the search results should of course become clickable and lead to the product detail page. Important note: the data should be parsed from the `product-details-page-root` page. This means that the `getProductDetailsPage` and `getProductDetails` functions from the picnic-api should NOT be used."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - View Product Detail Page (Priority: P1)
 
@@ -90,7 +90,7 @@ A user navigates to a product detail page where some data sections are not avail
 - What happens when a "similar product" or "combine with" product shown in a slider no longer exists? Clicking it leads to the error state described in User Story 4, scenario 5.
 - What happens when the product has bundle options (buy-more-pay-less)? The bundle options are displayed so the user can see the price per unit for different quantities.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -126,7 +126,7 @@ A user navigates to a product detail page where some data sections are not avail
 - **Similar Product**: A condensed product reference (ID, name, image, price, unit quantity) shown in the similar products slider.
 - **Bundle Option**: A quantity-based pricing option for the product (e.g. buy 2 for a lower per-unit price), with its own selling unit ID, quantity, price per unit, and image.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

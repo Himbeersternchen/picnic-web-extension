@@ -67,15 +67,15 @@ Remove the debug logging from `route.ts`.
 
 ## Key Files
 
-| File | Role |
-|------|------|
-| `src/lib/parse-fusion-search.ts` | **Primary fix target** — re-order section extraction (lines 166-187) |
-| `src/lib/pml-helpers.ts` | May need fix — `findSellingUnitContainers` tile ID matching |
-| `src/lib/extract-tile-data.ts` | May need fix — if re-order tile PML structure differs |
-| `src/app/api/search/route.ts` | Temporary debug logging, then clean up |
-| `src/app/page.tsx` | No changes — renders sections generically |
-| `src/components/section-nav-bar.tsx` | No changes — renders pills from sections array |
-| `src/components/product-grid.tsx` | No changes — renders section titles and product cards |
+| File                                 | Role                                                                 |
+| ------------------------------------ | -------------------------------------------------------------------- |
+| `src/lib/parse-fusion-search.ts`     | **Primary fix target** — re-order section extraction (lines 166-187) |
+| `src/lib/pml-helpers.ts`             | May need fix — `findSellingUnitContainers` tile ID matching          |
+| `src/lib/extract-tile-data.ts`       | May need fix — if re-order tile PML structure differs                |
+| `src/app/api/search/route.ts`        | Temporary debug logging, then clean up                               |
+| `src/app/page.tsx`                   | No changes — renders sections generically                            |
+| `src/components/section-nav-bar.tsx` | No changes — renders pills from sections array                       |
+| `src/components/product-grid.tsx`    | No changes — renders section titles and product cards                |
 
 ## Validation Commands
 

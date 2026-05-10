@@ -12,6 +12,7 @@
 **Finding**: The L1 page returns a FusionPage with the **same PML item structure** as the top-level category list. Sub-categories use `core-list-item-category-{id}` nodes with `accessibilityLabel`, `onPress.target`, and IMAGE sources — identical to top-level categories.
 
 **Tree structure** (confirmed via live API call for category 21724 = "Fruit"):
+
 ```
 FusionPage
   id: "L1-category-tree-generic-root-js"
@@ -26,12 +27,14 @@ FusionPage
 ```
 
 **Key observations**:
+
 1. The page `header.title` contains the parent category name (e.g., "Fruit").
 2. There is a **promotions item** (`core-category-promotions-item`) at the top with label "Acties" that links to `L2-promotion-category-page-root,l1CategoryId=21724`. We will skip this for now (out of scope).
 3. Sub-category items are in `core-L1-category-page-list` block, using the same `core-list-item-category-{id}` prefix.
 4. The list block ID is `core-L1-category-page-list` (vs `core-category-tree-wrapper-list` for top-level). Our parser needs to handle both.
 
 **Sub-categories observed for "Fruit" (21724)**:
+
 1. Fruit van Hollandse bodem (CustomCatNLFruitLvl2Pos1)
 2. Sinaasappel & citrus (21746)
 3. Banaan, appel & peer (21745)
@@ -48,6 +51,7 @@ FusionPage
 **Finding**: L2 pages contain **products (articles), not sub-categories**. The L2 page is the leaf level of the category tree.
 
 **Tree structure** (confirmed for category 21746 = "Sinaasappel & citrus"):
+
 ```
 FusionPage
   id: "L2-category-page-root"
@@ -63,6 +67,7 @@ FusionPage
 ```
 
 **Key observations**:
+
 1. L2 uses **filter chips** (horizontal list) for product sub-filtering — these use JavaScript expressions for state management, not deep links. They are **not navigable sub-categories**.
 2. L2 contains **product article tiles** grouped by section. This is the product listing level.
 3. **L2 is out of scope** for this feature (spec says "tapping a leaf sub-category will be a no-op for now").
@@ -73,11 +78,11 @@ FusionPage
 
 **Finding**: The deep link format reliably distinguishes levels:
 
-| Level | Deep link pattern | Page ID for `getPage()` |
-|-------|-------------------|------------------------|
-| Top → L1 | `app.picnic://store/page;id=L1-category-page-root,category_id={id}` | `L1-category-page-root?category_id={id}` |
-| L1 → L2 | `app.picnic://store/page;id=L2-category-page-root,category_id={id}` | `L2-category-page-root?category_id={id}` |
-| L1 → L2 promo | `app.picnic://store/page;id=L2-promotion-category-page-root,l1CategoryId={id}` | (out of scope) |
+| Level         | Deep link pattern                                                              | Page ID for `getPage()`                  |
+| ------------- | ------------------------------------------------------------------------------ | ---------------------------------------- |
+| Top → L1      | `app.picnic://store/page;id=L1-category-page-root,category_id={id}`            | `L1-category-page-root?category_id={id}` |
+| L1 → L2       | `app.picnic://store/page;id=L2-category-page-root,category_id={id}`            | `L2-category-page-root?category_id={id}` |
+| L1 → L2 promo | `app.picnic://store/page;id=L2-promotion-category-page-root,l1CategoryId={id}` | (out of scope)                           |
 
 **Decision**: When a sub-category's `onPress.target` contains `L2-category-page-root`, it's a leaf — we show it but make the tap a no-op. When it contains `L1-category-page-root`, we can drill down further (though in practice, the hierarchy is Top → L1 → L2, and L1 items always link to L2).
 
@@ -86,12 +91,14 @@ FusionPage
 **Question**: Can we reuse the existing `parseCategoryPage()` from feature 014?
 
 **Finding**: **Almost entirely.** The L1 sub-category PML items have the same structure as top-level categories:
+
 - Same `core-list-item-category-{id}` ID prefix
 - Same `accessibilityLabel` for name
 - Same `onPress.target` for deep link
 - Same IMAGE `source.id` for thumbnail
 
 **The only difference** is the container block ID:
+
 - Top-level: `core-category-tree-wrapper-list`
 - L1 page: `core-L1-category-page-list`
 
@@ -110,6 +117,7 @@ FusionPage
 **Question**: How should we manage navigation state (top-level → L1 → back)?
 
 **Finding**: Per spec assumption, navigation state is client-side only (no URL changes). The simplest model:
+
 - `page.tsx` maintains a `categoryNav` state: `{ level: "top" } | { level: "l1", categoryId: string, categoryName: string }`
 - When user taps a top-level category → set state to `{ level: "l1", ... }` → fetch sub-categories from new API endpoint
 - Back button → set state to `{ level: "top" }`
@@ -117,13 +125,13 @@ FusionPage
 
 ## Summary
 
-| Topic | Decision |
-|-------|----------|
-| L1 API endpoint | `client.app.getPage("L1-category-page-root?category_id={id}")` |
-| L1 tree structure | Same PML structure as top-level; sub-categories in `core-L1-category-page-list` |
-| L2 API endpoint | `client.app.getPage("L2-category-page-root?category_id={id}")` — returns products, not sub-categories |
-| L2 scope | Out of scope (leaf node, tap is no-op) |
-| Parser reuse | Generalize existing parser to handle different container block IDs |
-| Category title | Use `header.title` from FusionPage response |
-| Navigation model | Client-side state in `page.tsx`, no URL changes |
-| Promotions item | "Acties" link at top of L1 page — skip for now |
+| Topic             | Decision                                                                                              |
+| ----------------- | ----------------------------------------------------------------------------------------------------- |
+| L1 API endpoint   | `client.app.getPage("L1-category-page-root?category_id={id}")`                                        |
+| L1 tree structure | Same PML structure as top-level; sub-categories in `core-L1-category-page-list`                       |
+| L2 API endpoint   | `client.app.getPage("L2-category-page-root?category_id={id}")` — returns products, not sub-categories |
+| L2 scope          | Out of scope (leaf node, tap is no-op)                                                                |
+| Parser reuse      | Generalize existing parser to handle different container block IDs                                    |
+| Category title    | Use `header.title` from FusionPage response                                                           |
+| Navigation model  | Client-side state in `page.tsx`, no URL changes                                                       |
+| Promotions item   | "Acties" link at top of L1 page — skip for now                                                        |
