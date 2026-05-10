@@ -23,6 +23,7 @@ Fix the product card layout so prices are always bottom-anchored (aligned across
 The current card layout is a flex column where the price sits in normal flow and only badges have `mt-auto`. Wrap the price and badges in a single `<div>` with `mt-auto` to push them to the card bottom.
 
 **Before** (simplified):
+
 ```tsx
 {/* Unit quantity */}
 <p className="mb-2 text-xs ...">{product.unitQuantity}</p>
@@ -41,6 +42,7 @@ The current card layout is a flex column where the price sits in normal flow and
 ```
 
 **After** (simplified):
+
 ```tsx
 {/* Unit quantity */}
 <p className="text-xs ...">{product.unitQuantity}</p>
@@ -60,6 +62,7 @@ The current card layout is a flex column where the price sits in normal flow and
 ```
 
 Key changes:
+
 1. New `<div className="mt-auto">` wrapping price + badges
 2. Remove `mt-auto` from badges container (the wrapper has it now)
 3. Adjust `mb-*` spacing classes to balance the new structure
@@ -67,6 +70,7 @@ Key changes:
 ### Step 2: Polish spacing
 
 Review and adjust margin/padding for visual balance:
+
 - Text elements should have consistent, tight spacing
 - The `mt-auto` wrapper creates natural separation from text above
 - Price and badges should have appropriate gap between them
@@ -89,6 +93,6 @@ npm run build
 
 ## Files Changed
 
-| File | Change |
-|------|--------|
+| File                              | Change                                                                                       |
+| --------------------------------- | -------------------------------------------------------------------------------------------- |
 | `src/components/product-card.tsx` | Restructure flex layout: add `mt-auto` wrapper around price + badges, adjust spacing classes |

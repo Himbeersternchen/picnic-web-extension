@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "I want to enhance the search results page a bit. For one, it should show the dynamic section headers from the api response, and I want the search term (state) to be saved in the URL, so that when I reload the page I still have the results and so that I can share the link."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Shareable Search URL (Priority: P1)
 
@@ -49,7 +49,7 @@ A user searches for "tomaten" and sees results organized under descriptive secti
 - What happens when the API returns sections with zero products (e.g., hidden filter sections)? Empty sections should not be displayed.
 - What happens when the user navigates back/forward in browser history after multiple searches? The URL and displayed results should stay in sync with browser history.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -68,7 +68,7 @@ A user searches for "tomaten" and sees results organized under descriptive secti
 - **Search Section**: A named group of products returned by the API. Has a display title (e.g., "Cherrytomaten") and an ordered list of products. Sections are ordered by the API and that order is preserved in the display.
 - **Search Query State**: The active search term, synchronized between the search input, the URL query parameter, and the API request.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "In the app, the default search screen shows a list of categories. I want these in the website as well. So the current home page (which is actually the search page) should get these. I'm not sure what the endpoint of this data is. You need to find this yourself in the picnic-api or otherwise the bootstrap response. See attached screenshot and replicate that design but in a website format."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Browse All Product Categories (Priority: P1)
 
@@ -48,7 +48,7 @@ When a user taps a category tile, they are navigated to a view showing the produ
 - What happens when the user clears their search query after viewing results? The categories should reappear as the page returns to idle state.
 - What happens when the user is not logged in? The existing auth gate redirects to the login page — categories are only shown to authenticated users.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -68,7 +68,7 @@ When a user taps a category tile, they are navigated to a view showing the produ
 - **Category**: Represents a browseable product grouping — has an ID, name (Dutch), image, and a navigation target (link to its product listing). Categories are divided into promotional ("Deze week") and standard ("Alle categorieën") groups.
 - **Category Section**: A labeled group of categories — either "Deze week" (highlighted/promotional entries) or "Alle categorieën" (standard grocery categories).
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

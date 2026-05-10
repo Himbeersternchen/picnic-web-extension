@@ -34,22 +34,22 @@ Read these files in order before implementing:
 
 These files are reused directly — understand their APIs:
 
-| File | What It Does | Key Exports |
-|------|-------------|-------------|
-| `src/components/quantity-stepper.tsx` | Minus/count/plus UI with bundle support | `QuantityStepper` component |
-| `src/components/cart-toast.tsx` | Auto-dismissing toast notification | `CartToast` component |
-| `src/lib/mutation-queue.ts` | Per-product sequential queue | `createMutationQueue<T>(onSettled)` |
-| `src/contexts/cart-context.tsx` | PLP cart state (pattern reference) | `CartProvider`, `useCart`, `useCartOptional` |
-| `src/app/api/cart/route.ts` | GET (fetch cart) + POST (add/remove) | API route handlers |
+| File                                  | What It Does                            | Key Exports                                  |
+| ------------------------------------- | --------------------------------------- | -------------------------------------------- |
+| `src/components/quantity-stepper.tsx` | Minus/count/plus UI with bundle support | `QuantityStepper` component                  |
+| `src/components/cart-toast.tsx`       | Auto-dismissing toast notification      | `CartToast` component                        |
+| `src/lib/mutation-queue.ts`           | Per-product sequential queue            | `createMutationQueue<T>(onSettled)`          |
+| `src/contexts/cart-context.tsx`       | PLP cart state (pattern reference)      | `CartProvider`, `useCart`, `useCartOptional` |
+| `src/app/api/cart/route.ts`           | GET (fetch cart) + POST (add/remove)    | API route handlers                           |
 
 ## Files to Modify
 
-| File | What Changes |
-|------|-------------|
-| `src/lib/types.ts` | Add `maxCount: number` to `CartItem` |
-| `src/lib/parse-cart.ts` | Extract `max_count` in `mapOrderLineToCartItem` |
-| `src/components/cart-item.tsx` | Restructure Link, add QuantityStepper, accept callbacks |
-| `src/app/cart/page.tsx` | Add mutation state management, CartToast, pass callbacks |
+| File                           | What Changes                                             |
+| ------------------------------ | -------------------------------------------------------- |
+| `src/lib/types.ts`             | Add `maxCount: number` to `CartItem`                     |
+| `src/lib/parse-cart.ts`        | Extract `max_count` in `mapOrderLineToCartItem`          |
+| `src/components/cart-item.tsx` | Restructure Link, add QuantityStepper, accept callbacks  |
+| `src/app/cart/page.tsx`        | Add mutation state management, CartToast, pass callbacks |
 
 ## Validation
 

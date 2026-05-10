@@ -15,8 +15,8 @@
 
 **Purpose**: Export shared parser function and add response type needed by all stories
 
-- [X] T001 Export `containerToProduct` function from `src/lib/parse-fusion-search.ts` (add `export` keyword; no logic changes)
-- [X] T002 [P] Add `CategoryProductsApiResponse` type to `src/lib/types.ts` per data-model.md (`{ title: string | null; products: Product[] }`)
+- [x] T001 Export `containerToProduct` function from `src/lib/parse-fusion-search.ts` (add `export` keyword; no logic changes)
+- [x] T002 [P] Add `CategoryProductsApiResponse` type to `src/lib/types.ts` per data-model.md (`{ title: string | null; products: Product[] }`)
 
 **Checkpoint**: Existing functionality unchanged, lint+build passes
 
@@ -26,8 +26,8 @@
 
 **Purpose**: Create the L2 product parser and API route — blocking prerequisites for all UI work
 
-- [X] T003 [P] Create `src/lib/parse-category-products.ts` — implement `parseCategoryProductPage(rawPage: unknown): Product[]` that calls `findSellingUnitContainers(rawPage)` from `pml-helpers.ts` and maps each container through `containerToProduct()` from `parse-fusion-search.ts`. Deduplicate by product ID. Reuse `extractPageTitle()` from `parse-subcategories.ts` for the title
-- [X] T004 [P] Create `src/app/api/categories/[categoryId]/products/route.ts` — implement `GET` handler per contracts/products-api.md: read auth token, call `client.app.getPage("L2-category-page-root?category_id={categoryId}")`, parse with `parseCategoryProductPage`, extract title with `extractPageTitle`, return `{ title, products }`. Handle 401 (TOKEN_EXPIRED) and 502 (upstream failure)
+- [x] T003 [P] Create `src/lib/parse-category-products.ts` — implement `parseCategoryProductPage(rawPage: unknown): Product[]` that calls `findSellingUnitContainers(rawPage)` from `pml-helpers.ts` and maps each container through `containerToProduct()` from `parse-fusion-search.ts`. Deduplicate by product ID. Reuse `extractPageTitle()` from `parse-subcategories.ts` for the title
+- [x] T004 [P] Create `src/app/api/categories/[categoryId]/products/route.ts` — implement `GET` handler per contracts/products-api.md: read auth token, call `client.app.getPage("L2-category-page-root?category_id={categoryId}")`, parse with `parseCategoryProductPage`, extract title with `extractPageTitle`, return `{ title, products }`. Handle 401 (TOKEN_EXPIRED) and 502 (upstream failure)
 
 **Checkpoint**: `GET /api/categories/{id}/products` returns valid JSON, lint+build passes
 
@@ -41,11 +41,11 @@
 
 ### Implementation for User Story 1
 
-- [X] T005 [US1] Modify `src/components/subcategory-view.tsx` — add optional `onSubcategoryTap?: (category: CategoryItem) => void` prop to `SubcategoryView`. When provided, make `SubcategoryRow` a tappable button that calls the callback
-- [X] T006 [US1] Create `src/components/category-products-view.tsx` — implement `CategoryProductsView` component with props `{ categoryName: string; state: CategoryProductsState; onBack: () => void; onRetry: () => void }`. Renders: back button ("Terug"), category name heading, loading spinner, error view with retry, empty message, or `ProductGrid` (flat mode with `products` prop) for the product listing
-- [X] T007 [US1] Modify `src/app/page.tsx` — extend `CategoryNavState` to include `{ level: "l2"; categoryId: string; categoryName: string; parentCategoryId: string; parentCategoryName: string }`. Add `categoryProductsState` discriminated union state (idle | loading | success | error)
-- [X] T008 [US1] Modify `src/app/page.tsx` — add `useEffect` that fetches `/api/categories/${categoryNav.categoryId}/products` when `categoryNav.level === "l2"`, handles success/error/TOKEN_EXPIRED, includes AbortController cleanup
-- [X] T009 [US1] Modify `src/app/page.tsx` — update idle-state JSX: when `categoryNav.level === "l1"`, pass `onSubcategoryTap` to `SubcategoryView` that sets nav to L2 (storing parent context). When `categoryNav.level === "l2"`, render `CategoryProductsView`. Back from L2 restores L1 nav with cached subcategories (no re-fetch)
+- [x] T005 [US1] Modify `src/components/subcategory-view.tsx` — add optional `onSubcategoryTap?: (category: CategoryItem) => void` prop to `SubcategoryView`. When provided, make `SubcategoryRow` a tappable button that calls the callback
+- [x] T006 [US1] Create `src/components/category-products-view.tsx` — implement `CategoryProductsView` component with props `{ categoryName: string; state: CategoryProductsState; onBack: () => void; onRetry: () => void }`. Renders: back button ("Terug"), category name heading, loading spinner, error view with retry, empty message, or `ProductGrid` (flat mode with `products` prop) for the product listing
+- [x] T007 [US1] Modify `src/app/page.tsx` — extend `CategoryNavState` to include `{ level: "l2"; categoryId: string; categoryName: string; parentCategoryId: string; parentCategoryName: string }`. Add `categoryProductsState` discriminated union state (idle | loading | success | error)
+- [x] T008 [US1] Modify `src/app/page.tsx` — add `useEffect` that fetches `/api/categories/${categoryNav.categoryId}/products` when `categoryNav.level === "l2"`, handles success/error/TOKEN_EXPIRED, includes AbortController cleanup
+- [x] T009 [US1] Modify `src/app/page.tsx` — update idle-state JSX: when `categoryNav.level === "l1"`, pass `onSubcategoryTap` to `SubcategoryView` that sets nav to L2 (storing parent context). When `categoryNav.level === "l2"`, render `CategoryProductsView`. Back from L2 restores L1 nav with cached subcategories (no re-fetch)
 
 **Checkpoint**: Full drill-down works: categories → sub-categories → products → back → back. Lint+build passes
 
@@ -59,7 +59,7 @@
 
 ### Implementation for User Story 2
 
-- [X] T010 [US2] Verify cart actions work in `src/components/category-products-view.tsx` — `ProductGrid` → `ProductCard` already includes cart overlay via `CartProvider`. Ensure the `CategoryProductsView` is rendered inside `CartProvider` scope in `src/app/page.tsx` (it should already be, since `CartProvider` wraps the entire page). This is a verification task; no code changes expected unless cart actions don't work
+- [x] T010 [US2] Verify cart actions work in `src/components/category-products-view.tsx` — `ProductGrid` → `ProductCard` already includes cart overlay via `CartProvider`. Ensure the `CategoryProductsView` is rendered inside `CartProvider` scope in `src/app/page.tsx` (it should already be, since `CartProvider` wraps the entire page). This is a verification task; no code changes expected unless cart actions don't work
 
 **Checkpoint**: Cart add/increment/decrement works on sub-category products identical to search results
 
@@ -73,7 +73,7 @@
 
 ### Implementation for User Story 3
 
-- [X] T011 [US3] Verify error and empty states in `src/components/category-products-view.tsx` — confirm error view shows retry + back button, empty state shows friendly message, TOKEN_EXPIRED triggers redirect. These should already be implemented in T006; this is a verification/polish task
+- [x] T011 [US3] Verify error and empty states in `src/components/category-products-view.tsx` — confirm error view shows retry + back button, empty state shows friendly message, TOKEN_EXPIRED triggers redirect. These should already be implemented in T006; this is a verification/polish task
 
 **Checkpoint**: All error/empty/auth-expiry scenarios handled
 
@@ -83,8 +83,8 @@
 
 **Purpose**: Cleanup, validation, and constitution compliance
 
-- [X] T012 Run `npm run lint && npm run build` — verify zero errors
-- [X] T013 Self-refactor review: all changed files < 300 lines, no unused imports, no magic strings, no duplicated logic, max 3 nesting levels
+- [x] T012 Run `npm run lint && npm run build` — verify zero errors
+- [x] T013 Self-refactor review: all changed files < 300 lines, no unused imports, no magic strings, no duplicated logic, max 3 nesting levels
 
 ---
 

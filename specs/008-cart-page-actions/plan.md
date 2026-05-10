@@ -21,20 +21,20 @@ Add interactive quantity steppers to cart page items, replacing the static "3×"
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP | PASS | Cart page manages page-level state; CartItemCard is display-only with callbacks; QuantityStepper is reused as-is; mutation queue is a separate utility |
-| I. DRY | PASS | Reuses QuantityStepper, mutation-queue, postCartMutation pattern, CartToast, parseCartResponse — no duplication of PLP infrastructure |
-| I. Dependency Injection | PASS | CartItemCard receives callbacks via props; mutation queue is injected via ref; toast function passed as callback |
-| II. Naming Conventions | PASS | `handleIncrement`, `handleDecrement` callbacks; `cartData` state; `maxCount` field name matches existing Product type |
-| III. No God Objects | PASS | Cart page is currently 204 lines; additions stay well under 300 lines. CartItemCard stays under 100 lines |
-| III. No Deep Nesting | PASS | Guard clauses for unavailable items; early returns for empty/error states already exist |
-| III. No Magic Numbers | PASS | maxCount from API data; prices in cents; no hardcoded thresholds |
-| III. No Catch-All Error Swallowing | PASS | Mutation errors trigger rollback + toast notification (same pattern as PLP) |
-| IV. Self-Refactor | PASS | Applied during implementation |
-| V. Readability | PASS | Explicit state transitions; props-based data flow; no clever constructs |
+| Principle                          | Status | Notes                                                                                                                                                  |
+| ---------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| I. SRP                             | PASS   | Cart page manages page-level state; CartItemCard is display-only with callbacks; QuantityStepper is reused as-is; mutation queue is a separate utility |
+| I. DRY                             | PASS   | Reuses QuantityStepper, mutation-queue, postCartMutation pattern, CartToast, parseCartResponse — no duplication of PLP infrastructure                  |
+| I. Dependency Injection            | PASS   | CartItemCard receives callbacks via props; mutation queue is injected via ref; toast function passed as callback                                       |
+| II. Naming Conventions             | PASS   | `handleIncrement`, `handleDecrement` callbacks; `cartData` state; `maxCount` field name matches existing Product type                                  |
+| III. No God Objects                | PASS   | Cart page is currently 204 lines; additions stay well under 300 lines. CartItemCard stays under 100 lines                                              |
+| III. No Deep Nesting               | PASS   | Guard clauses for unavailable items; early returns for empty/error states already exist                                                                |
+| III. No Magic Numbers              | PASS   | maxCount from API data; prices in cents; no hardcoded thresholds                                                                                       |
+| III. No Catch-All Error Swallowing | PASS   | Mutation errors trigger rollback + toast notification (same pattern as PLP)                                                                            |
+| IV. Self-Refactor                  | PASS   | Applied during implementation                                                                                                                          |
+| V. Readability                     | PASS   | Explicit state transitions; props-based data flow; no clever constructs                                                                                |
 
 ## Project Structure
 

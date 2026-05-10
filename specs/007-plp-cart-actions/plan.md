@@ -21,20 +21,20 @@ Add cart action controls (add button, quantity stepper with +/−) to product ca
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP | PASS | Each new file has one responsibility: cart context (state), mutation queue (sequencing), stepper (UI), bundle dots (UI), API route (network), cart parser (already exists) |
-| I. DRY | PASS | Reuses existing `parseCartResponse`, `ProductCard`, `SharedHeader`; cart mutation logic centralized in context |
-| I. Dependency Injection | PASS | Cart context receives fetch functions; stepper receives quantity + callbacks via props; mutation queue is a pure utility |
-| II. Naming Conventions | PASS | `useCart` hook, `CartProvider` context, `QuantityStepper` component, `BundleDots` component, `createMutationQueue` utility |
-| III. No God Objects | PASS | Cart context holds state + actions (under 300 lines); stepper is display-only; mutation queue is a pure utility |
-| III. No Deep Nesting | PASS | Guard clauses for empty cart; early returns for unavailable products |
-| III. No Magic Numbers | PASS | Bundle thresholds come from API data; prices in cents (integer arithmetic) |
-| III. No Catch-All Error Swallowing | PASS | Mutation errors trigger rollback + toast notification |
-| IV. Self-Refactor | PASS | Applied during implementation |
-| V. Readability | PASS | Explicit state transitions; no clever constructs |
+| Principle                          | Status | Notes                                                                                                                                                                      |
+| ---------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. SRP                             | PASS   | Each new file has one responsibility: cart context (state), mutation queue (sequencing), stepper (UI), bundle dots (UI), API route (network), cart parser (already exists) |
+| I. DRY                             | PASS   | Reuses existing `parseCartResponse`, `ProductCard`, `SharedHeader`; cart mutation logic centralized in context                                                             |
+| I. Dependency Injection            | PASS   | Cart context receives fetch functions; stepper receives quantity + callbacks via props; mutation queue is a pure utility                                                   |
+| II. Naming Conventions             | PASS   | `useCart` hook, `CartProvider` context, `QuantityStepper` component, `BundleDots` component, `createMutationQueue` utility                                                 |
+| III. No God Objects                | PASS   | Cart context holds state + actions (under 300 lines); stepper is display-only; mutation queue is a pure utility                                                            |
+| III. No Deep Nesting               | PASS   | Guard clauses for empty cart; early returns for unavailable products                                                                                                       |
+| III. No Magic Numbers              | PASS   | Bundle thresholds come from API data; prices in cents (integer arithmetic)                                                                                                 |
+| III. No Catch-All Error Swallowing | PASS   | Mutation errors trigger rollback + toast notification                                                                                                                      |
+| IV. Self-Refactor                  | PASS   | Applied during implementation                                                                                                                                              |
+| V. Readability                     | PASS   | Explicit state transitions; no clever constructs                                                                                                                           |
 
 ## Project Structure
 

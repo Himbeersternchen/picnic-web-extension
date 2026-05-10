@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Let's work on the product cart actions on the PLP (search results). The cart page and PDP are out of scope for now."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Add a product to the cart from search results (Priority: P1)
 
@@ -81,7 +81,7 @@ When a user performs a new search or navigates back to previous search results, 
 - What happens when the maximum count for a product is 1? The plus button should be disabled after adding 1, and only minus is available.
 - What happens when bundle discount data cannot be loaded for a product in the cart? Keep the plain quantity stepper without bundle indicators and continue allowing normal quantity changes.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -111,7 +111,7 @@ When a user performs a new search or navigates back to previous search results, 
 - **Bundle Option**: A discount tier for a product, defining a quantity threshold and a discounted per-unit price. A product may have zero or more bundle options.
 - **Cart Action State**: The visual state of a product card's cart control — either "add" (product not in cart) or "stepper" (product in cart, showing quantity with +/- controls and optional bundle indicators).
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Implement delivery slots on the cart. Same as in the app, the user should be able to view the current slot and change to a different slot."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - View Current Delivery Slot on Cart Page (Priority: P1)
 
@@ -63,7 +63,7 @@ When the user taps a time slot, it becomes the selected slot. The view closes an
 - What happens when a day has no "green choice" (wider window) slots? The "Groenste keuze voor jouw buurt" section should be hidden for that day, showing only "Of kies een ander moment".
 - What happens when the slot selection API call fails? The view should show an error state and allow the user to retry or dismiss.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -85,7 +85,7 @@ When the user taps a time slot, it becomes the selected slot. The view closes an
 - **Delivery Slot**: A time window for delivery, with a start time, end time, cut-off time, availability status, and whether it is the "green choice" (wider window). Grouped by day.
 - **Selected Slot**: The user's currently chosen delivery slot, identified by slot ID and selection state (implicit or explicit).
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

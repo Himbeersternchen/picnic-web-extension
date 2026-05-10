@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Now lets do the final category level, this page shows all the products of that subcategory. The styling and everything should be the same as the search results page. See if you can reuse components. You might have to refactor here and there."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - View Products in a Sub-category (Priority: P1)
 
@@ -61,7 +61,7 @@ When a sub-category has no products or the fetch fails, the user sees appropriat
 - What happens when the sub-category page contains filter chips or promotional banners alongside products? Only product items are extracted; other elements are ignored.
 - What happens when the sub-category name from the API differs from the name shown in the sub-category list? The API page title is preferred, with the list name as fallback.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -82,7 +82,7 @@ When a sub-category has no products or the fetch fails, the user sees appropriat
 - **Sub-category Product List**: A collection of products belonging to a specific L2 sub-category, fetched from the category page API. Contains the same product data (name, image, price, unit info, quantity) as search results.
 - **L2 Category Page**: The API response for a leaf-level category, containing product article tiles rather than further sub-categories.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

@@ -21,15 +21,15 @@ Set dynamic, page-specific browser tab titles across all routes in the Picnic We
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| **I. SRP / DRY / DI** | PASS | Title logic will be extracted into a single shared `usePageTitle` hook (DRY). Each page calls the hook with its own context string (SRP). No dependency instantiation needed. |
-| **II. Naming Conventions** | PASS | Hook named `usePageTitle` (verb-first camelCase). Constants like `APP_NAME`, `TITLE_SEPARATOR`, `MAX_TITLE_CONTEXT_LENGTH` will use UPPER_SNAKE_CASE. |
-| **III. Forbidden Anti-Patterns** | PASS | No god objects (hook is <30 lines). No deep nesting. Magic strings ("Picnic Web", " - ") extracted to named constants. No error swallowing. |
-| **IV. Self-Refactor Protocol** | PASS | Will be enforced during implementation. |
-| **V. Readability Over Cleverness** | PASS | Simple `useEffect` + `document.title` assignment. No clever constructs needed. |
+| Principle                          | Status | Notes                                                                                                                                                                         |
+| ---------------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **I. SRP / DRY / DI**              | PASS   | Title logic will be extracted into a single shared `usePageTitle` hook (DRY). Each page calls the hook with its own context string (SRP). No dependency instantiation needed. |
+| **II. Naming Conventions**         | PASS   | Hook named `usePageTitle` (verb-first camelCase). Constants like `APP_NAME`, `TITLE_SEPARATOR`, `MAX_TITLE_CONTEXT_LENGTH` will use UPPER_SNAKE_CASE.                         |
+| **III. Forbidden Anti-Patterns**   | PASS   | No god objects (hook is <30 lines). No deep nesting. Magic strings ("Picnic Web", " - ") extracted to named constants. No error swallowing.                                   |
+| **IV. Self-Refactor Protocol**     | PASS   | Will be enforced during implementation.                                                                                                                                       |
+| **V. Readability Over Cleverness** | PASS   | Simple `useEffect` + `document.title` assignment. No clever constructs needed.                                                                                                |
 
 **Gate result: PASS** — no violations. Proceeding to Phase 0.
 

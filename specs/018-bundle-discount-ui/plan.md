@@ -21,15 +21,15 @@ Update picnic-api to ^4.3.0 to unlock bundle discount data, remove the "Bundelko
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP/DRY/DI | PASS | Each component has single responsibility; bundle logic is shared via cart context; new components (tier grid, bundle badge) follow same pattern |
-| II. Naming | PASS | All new functions/components will use verb-first camelCase; existing patterns followed |
-| III. Forbidden Anti-Patterns | PASS | No files exceed 300 lines; no deep nesting; no magic numbers (price constants from API) |
-| IV. Self-Refactor | PASS | Will be applied during implementation |
-| V. Readability | PASS | Explicit over implicit; early returns; Tailwind for styling consistency |
+| Principle                    | Status | Notes                                                                                                                                           |
+| ---------------------------- | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. SRP/DRY/DI                | PASS   | Each component has single responsibility; bundle logic is shared via cart context; new components (tier grid, bundle badge) follow same pattern |
+| II. Naming                   | PASS   | All new functions/components will use verb-first camelCase; existing patterns followed                                                          |
+| III. Forbidden Anti-Patterns | PASS   | No files exceed 300 lines; no deep nesting; no magic numbers (price constants from API)                                                         |
+| IV. Self-Refactor            | PASS   | Will be applied during implementation                                                                                                           |
+| V. Readability               | PASS   | Explicit over implicit; early returns; Tailwind for styling consistency                                                                         |
 
 No violations. No complexity tracking needed.
 

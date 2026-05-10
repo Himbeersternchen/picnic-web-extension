@@ -24,11 +24,11 @@ Cookie: picnic_auth_token=<token>
 }
 ```
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `productId` | `string` | Yes | Selling unit ID |
-| `action` | `"add" \| "remove"` | Yes | Mutation type |
-| `count` | `number` | Yes | Number of units (typically 1) |
+| Field       | Type                | Required | Description                   |
+| ----------- | ------------------- | -------- | ----------------------------- |
+| `productId` | `string`            | Yes      | Selling unit ID               |
+| `action`    | `"add" \| "remove"` | Yes      | Mutation type                 |
+| `count`     | `number`            | Yes      | Number of units (typically 1) |
 
 ### Response — Success (200)
 

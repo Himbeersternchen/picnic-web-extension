@@ -28,18 +28,18 @@ type DeliverySlotPickerData = {
 };
 
 type SlotDayGroup = {
-  date: string;           // "2026-04-16"
-  dayLabel: string;       // "Morgen" | "Donderdag" | "Vandaag"
-  dateLabel: string;      // "16 apr"
+  date: string; // "2026-04-16"
+  dayLabel: string; // "Morgen" | "Donderdag" | "Vandaag"
+  dateLabel: string; // "16 apr"
   greenSlots: DeliverySlotData[];
   regularSlots: DeliverySlotData[];
 };
 
 type DeliverySlotData = {
   slotId: string;
-  windowStart: string;    // ISO 8601
-  windowEnd: string;      // ISO 8601
-  cutOffTime: string;     // ISO 8601
+  windowStart: string; // ISO 8601
+  windowEnd: string; // ISO 8601
+  cutOffTime: string; // ISO 8601
   isAvailable: boolean;
   isSelected: boolean;
   isGreenChoice: boolean;
@@ -48,7 +48,7 @@ type DeliverySlotData = {
 
 type SelectedSlotData = {
   slotId: string;
-  state: string;          // "IMPLICIT" | "ACTIVE" | "EXPLICIT"
+  state: string; // "IMPLICIT" | "ACTIVE" | "EXPLICIT"
   windowStart: string | null;
   windowEnd: string | null;
   isExplicitSelection: boolean;
@@ -102,10 +102,10 @@ type SelectedSlotData = {
 
 ### Error Responses
 
-| Status | Body | When |
-|--------|------|------|
-| 401 | `{ "error": "Your token has expired", "code": "TOKEN_EXPIRED" }` | Missing/expired auth token |
-| 502 | `{ "error": "Kan bezorgmomenten niet ophalen. Probeer het later opnieuw." }` | Upstream API failure |
+| Status | Body                                                                         | When                       |
+| ------ | ---------------------------------------------------------------------------- | -------------------------- |
+| 401    | `{ "error": "Your token has expired", "code": "TOKEN_EXPIRED" }`             | Missing/expired auth token |
+| 502    | `{ "error": "Kan bezorgmomenten niet ophalen. Probeer het later opnieuw." }` | Upstream API failure       |
 
 ---
 
@@ -139,11 +139,11 @@ Returns a full `CartData` object (same shape as `GET /api/cart` response, includ
 
 ### Error Responses
 
-| Status | Body | When |
-|--------|------|------|
-| 400 | `{ "error": "Missing required field: slotId" }` | Missing `slotId` in request body |
-| 401 | `{ "error": "Your token has expired", "code": "TOKEN_EXPIRED" }` | Missing/expired auth token |
-| 502 | `{ "error": "Kan bezorgmoment niet instellen. Probeer het opnieuw." }` | Upstream API failure |
+| Status | Body                                                                   | When                             |
+| ------ | ---------------------------------------------------------------------- | -------------------------------- |
+| 400    | `{ "error": "Missing required field: slotId" }`                        | Missing `slotId` in request body |
+| 401    | `{ "error": "Your token has expired", "code": "TOKEN_EXPIRED" }`       | Missing/expired auth token       |
+| 502    | `{ "error": "Kan bezorgmoment niet instellen. Probeer het opnieuw." }` | Upstream API failure             |
 
 ---
 
@@ -151,10 +151,10 @@ Returns a full `CartData` object (same shape as `GET /api/cart` response, includ
 
 Two new fields added to the existing `CartData` response:
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `selectedSlot` | `SelectedSlotData \| null` | `null` | Summary of selected delivery slot |
-| `deliveryBannerText` | `string` | `"Kies je bezorgmoment"` | Pre-formatted banner display text |
+| Field                | Type                       | Default                  | Description                       |
+| -------------------- | -------------------------- | ------------------------ | --------------------------------- |
+| `selectedSlot`       | `SelectedSlotData \| null` | `null`                   | Summary of selected delivery slot |
+| `deliveryBannerText` | `string`                   | `"Kies je bezorgmoment"` | Pre-formatted banner display text |
 
 **Example** (with explicit selection):
 

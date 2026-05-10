@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Let's add cart product actions to the cart page. Try to reuse functionality from the cart actions of the PLP as much as possible."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Adjust Product Quantity on Cart Page (Priority: P1)
 
@@ -79,7 +79,7 @@ When a cart mutation fails (network error, server error), the user sees a toast 
 - What happens when the user navigates from PLP (with cart state) to the cart page? The cart page must fetch its own fresh state; it should not rely on PLP state surviving navigation.
 - What happens if the cart response returns a quantity different from what was expected (e.g., server capped the quantity)? The reconciliation from the server response should override the optimistic local state.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -106,7 +106,7 @@ When a cart mutation fails (network error, server error), the user sees a toast 
 - **QuantityStepper**: Reusable UI control with minus/count/plus, already built for the PLP.
 - **MutationQueue**: Per-product sequential queue ensuring rapid taps are processed in order, with rollback on failure.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

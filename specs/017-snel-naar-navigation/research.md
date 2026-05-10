@@ -10,6 +10,7 @@
 **Rationale**: The `deepLinkTarget` field on `ShortcutItem` contains a raw deep-link URI from the Picnic API (e.g., `picnic://categories/<id>` or similar). The existing `CategoryItem` navigation uses `category.id` which is derived by stripping the `core-list-item-category-` prefix from PML item IDs. We need a bridge function to extract the routable category ID from the shortcut's deep link string. This keeps parsing logic isolated and testable per constitution Principle I (SRP).
 
 **Alternatives considered**:
+
 - Storing a pre-parsed `categoryId` on `ShortcutItem` during PML parsing — rejected because it couples the parser to routing assumptions and the deep link target may be useful for other purposes later.
 - Using the shortcut's `id` field directly — rejected because `ShortcutItem.id` is set to `imageId`, not a category ID.
 
@@ -20,6 +21,7 @@
 **Rationale**: This is the established pattern in the codebase (`CategoryGrid` → `onCategoryTap` → `handleCategoryTap` → `router.push`). Reusing it maintains consistency and avoids introducing new navigation paradigms. Constitution Principle I (DRY) supports reusing the existing pattern.
 
 **Alternatives considered**:
+
 - Using Next.js `<Link>` components directly in `ShortcutRow` — rejected because the other tile components use `onClick` + `router.push` and we'd introduce inconsistency.
 - Navigating directly inside `ShortcutList` using `useRouter` — rejected because it couples the presentational component to routing, violating the established separation where the page component owns navigation logic.
 
@@ -30,4 +32,5 @@
 **Rationale**: Two failure modes exist: (1) unparseable deep link target — handled by the parser returning null, (2) valid category ID that no longer exists — handled by existing category page error states. No new error UI needed.
 
 **Alternatives considered**:
+
 - Showing a toast or error message on unparseable deep links — rejected as over-engineering; this would indicate an API data issue that should be fixed upstream.

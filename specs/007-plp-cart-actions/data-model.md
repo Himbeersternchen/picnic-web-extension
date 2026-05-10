@@ -10,61 +10,61 @@ These types are added to `src/lib/types.ts` and represent the cart action state 
 
 The request body for adding or removing products from the cart.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `productId` | `string` | Selling unit ID (e.g., "s1013635") |
-| `action` | `"add" \| "remove"` | Whether to add or remove units |
-| `count` | `number` | Number of units to add or remove (always 1 for stepper taps) |
+| Field       | Type                | Description                                                  |
+| ----------- | ------------------- | ------------------------------------------------------------ |
+| `productId` | `string`            | Selling unit ID (e.g., "s1013635")                           |
+| `action`    | `"add" \| "remove"` | Whether to add or remove units                               |
+| `count`     | `number`            | Number of units to add or remove (always 1 for stepper taps) |
 
 ### CartMutationResponse
 
 The response from `POST /api/cart`, which returns the full updated cart state.
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field              | Type       | Description                                    |
+| ------------------ | ---------- | ---------------------------------------------- |
 | Same as `CartData` | `CartData` | The full updated cart state after the mutation |
 
 ### BundleProgress
 
 Bundle discount progress for a single product, derived from PDP bundle data or cart promo data.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `productId` | `string` | The product this bundle applies to |
-| `thresholds` | `BundleThreshold[]` | Ordered list of bundle tiers (ascending by quantity) |
-| `currentQuantity` | `number` | Current quantity in cart |
+| Field             | Type                | Description                                          |
+| ----------------- | ------------------- | ---------------------------------------------------- |
+| `productId`       | `string`            | The product this bundle applies to                   |
+| `thresholds`      | `BundleThreshold[]` | Ordered list of bundle tiers (ascending by quantity) |
+| `currentQuantity` | `number`            | Current quantity in cart                             |
 
 ### BundleThreshold
 
 A single tier in a bundle pricing scheme.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `quantity` | `number` | Number of units needed to unlock this tier |
-| `pricePerUnit` | `number` | Price per unit in cents at this tier |
+| Field          | Type     | Description                                |
+| -------------- | -------- | ------------------------------------------ |
+| `quantity`     | `number` | Number of units needed to unlock this tier |
+| `pricePerUnit` | `number` | Price per unit in cents at this tier       |
 
 ### CartContextState
 
 The state held by the `CartContext` provider.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `quantities` | `Map<string, number>` | Product ID → current quantity in cart |
-| `totalPrice` | `number` | Total cart price in cents (for header badge) |
-| `totalCount` | `number` | Total item count in cart |
+| Field        | Type                          | Description                                                  |
+| ------------ | ----------------------------- | ------------------------------------------------------------ |
+| `quantities` | `Map<string, number>`         | Product ID → current quantity in cart                        |
+| `totalPrice` | `number`                      | Total cart price in cents (for header badge)                 |
+| `totalCount` | `number`                      | Total item count in cart                                     |
 | `bundleData` | `Map<string, BundleProgress>` | Product ID → bundle progress (empty until bundle data loads) |
-| `isLoading` | `boolean` | Whether initial cart fetch is in progress |
+| `isLoading`  | `boolean`                     | Whether initial cart fetch is in progress                    |
 
 ### CartContextActions
 
 Actions exposed by the `CartContext` via the `useCart` hook.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `addProduct` | `(productId: string) => void` | Add 1 unit of a product (optimistic) |
-| `removeProduct` | `(productId: string) => void` | Remove 1 unit of a product (optimistic) |
-| `getQuantity` | `(productId: string) => number` | Get current quantity for a product (0 if not in cart) |
-| `getBundleProgress` | `(productId: string) => BundleProgress \| null` | Get bundle progress for a product |
+| Field               | Type                                            | Description                                           |
+| ------------------- | ----------------------------------------------- | ----------------------------------------------------- |
+| `addProduct`        | `(productId: string) => void`                   | Add 1 unit of a product (optimistic)                  |
+| `removeProduct`     | `(productId: string) => void`                   | Remove 1 unit of a product (optimistic)               |
+| `getQuantity`       | `(productId: string) => number`                 | Get current quantity for a product (0 if not in cart) |
+| `getBundleProgress` | `(productId: string) => BundleProgress \| null` | Get bundle progress for a product                     |
 
 ## Existing Types Reused (No Modification)
 
@@ -158,11 +158,11 @@ ON SERVER RESPONSE (failure):
 
 ## Validation Rules
 
-| Rule | Description | Source |
-|------|-------------|--------|
-| Quantity capped at `product.maxCount` | Plus button disabled at max | FR-008 |
-| Quantity minimum is 0 | Minus at qty 1 removes product | FR-007 |
-| Unavailable products skip cart controls | No add button shown | FR-001, Edge case |
-| Bundle thresholds must be sorted ascending | UI assumes ordered tiers | Implementation |
-| All prices in cents (integers) | No floating-point arithmetic | Constitution III |
-| Empty bundle data shows plain stepper | Graceful degradation | FR-017 |
+| Rule                                       | Description                    | Source            |
+| ------------------------------------------ | ------------------------------ | ----------------- |
+| Quantity capped at `product.maxCount`      | Plus button disabled at max    | FR-008            |
+| Quantity minimum is 0                      | Minus at qty 1 removes product | FR-007            |
+| Unavailable products skip cart controls    | No add button shown            | FR-001, Edge case |
+| Bundle thresholds must be sorted ascending | UI assumes ordered tiers       | Implementation    |
+| All prices in cents (integers)             | No floating-point arithmetic   | Constitution III  |
+| Empty bundle data shows plain stepper      | Graceful degradation           | FR-017            |

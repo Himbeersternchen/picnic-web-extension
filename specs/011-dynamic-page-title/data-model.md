@@ -11,21 +11,22 @@ This feature introduces no persistent entities or data storage. The "data model"
 
 Defined in `src/lib/constants.ts`:
 
-| Constant | Type | Value | Purpose |
-|----------|------|-------|---------|
-| `APP_NAME` | `string` | `"Picnic Web"` | Base application name used in all titles |
-| `TITLE_SEPARATOR` | `string` | `" - "` | Separator between page context and app name |
-| `MAX_TITLE_CONTEXT_LENGTH` | `number` | `60` | Maximum characters for page context before truncation |
+| Constant                   | Type     | Value          | Purpose                                               |
+| -------------------------- | -------- | -------------- | ----------------------------------------------------- |
+| `APP_NAME`                 | `string` | `"Picnic Web"` | Base application name used in all titles              |
+| `TITLE_SEPARATOR`          | `string` | `" - "`        | Separator between page context and app name           |
+| `MAX_TITLE_CONTEXT_LENGTH` | `number` | `60`           | Maximum characters for page context before truncation |
 
 ## Hook Interface
 
 `usePageTitle(pageContext?: string): void`
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `pageContext` | `string \| undefined` | No | Page-specific prefix (e.g., product name, "Inloggen", search query) |
+| Parameter     | Type                  | Required | Description                                                         |
+| ------------- | --------------------- | -------- | ------------------------------------------------------------------- |
+| `pageContext` | `string \| undefined` | No       | Page-specific prefix (e.g., product name, "Inloggen", search query) |
 
 **Behavior**:
+
 - When `pageContext` is a non-empty string: sets `document.title` to `"${truncate(pageContext)} - Picnic Web"`
 - When `pageContext` is `undefined`, `null`, or empty string: sets `document.title` to `"Picnic Web"`
 - Truncation: if `pageContext.length > 60`, truncate to 60 characters and append `"…"` (U+2026)
@@ -35,15 +36,15 @@ Defined in `src/lib/constants.ts`:
 
 Maps existing data sources in each page to `usePageTitle` arguments:
 
-| Route | Page Context Source | Example Title |
-|-------|-------------------|---------------|
-| `/` (no search) | `undefined` | `Picnic Web` |
-| `/?q=melk` | `urlQuery` from `useSearchParams().get("q")` | `melk - Picnic Web` |
-| `/login` | Static `"Inloggen"` | `Inloggen - Picnic Web` |
-| `/cart` | Static `"Winkelwagen"` | `Winkelwagen - Picnic Web` |
-| `/product/[id]` | `product.name` from `ProductDetail` (after fetch) | `Halfvolle melk - Picnic Web` |
-| `/product/[id]` (loading) | `undefined` (data not yet available) | `Picnic Web` |
-| Error boundary | `undefined` (fallback) | `Picnic Web` |
+| Route                     | Page Context Source                               | Example Title                 |
+| ------------------------- | ------------------------------------------------- | ----------------------------- |
+| `/` (no search)           | `undefined`                                       | `Picnic Web`                  |
+| `/?q=melk`                | `urlQuery` from `useSearchParams().get("q")`      | `melk - Picnic Web`           |
+| `/login`                  | Static `"Inloggen"`                               | `Inloggen - Picnic Web`       |
+| `/cart`                   | Static `"Winkelwagen"`                            | `Winkelwagen - Picnic Web`    |
+| `/product/[id]`           | `product.name` from `ProductDetail` (after fetch) | `Halfvolle melk - Picnic Web` |
+| `/product/[id]` (loading) | `undefined` (data not yet available)              | `Picnic Web`                  |
+| Error boundary            | `undefined` (fallback)                            | `Picnic Web`                  |
 
 ## Existing Types Referenced
 

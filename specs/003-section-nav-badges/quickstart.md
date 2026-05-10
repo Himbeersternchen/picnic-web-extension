@@ -21,6 +21,7 @@ npm run lint && npx tsc --noEmit && npm run build
 ## What This Feature Adds
 
 A horizontal badge bar above search results that:
+
 1. Shows one badge per search result section
 2. Sticks below the site header while scrolling
 3. Highlights the current section in Picnic red as you scroll
@@ -28,17 +29,17 @@ A horizontal badge bar above search results that:
 
 ## New Files
 
-| File | Purpose |
-|------|---------|
-| `src/components/section-nav-bar.tsx` | Badge bar component — renders badges, handles click-to-scroll, manages active state styling |
-| `src/hooks/use-scroll-spy.ts` | Custom hook — observes section elements with IntersectionObserver, returns active section index |
+| File                                 | Purpose                                                                                         |
+| ------------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `src/components/section-nav-bar.tsx` | Badge bar component — renders badges, handles click-to-scroll, manages active state styling     |
+| `src/hooks/use-scroll-spy.ts`        | Custom hook — observes section elements with IntersectionObserver, returns active section index |
 
 ## Modified Files
 
-| File | Change |
-|------|--------|
-| `src/components/product-grid.tsx` | Add `id="section-{index}"` and `scroll-margin-top` to `<section>` elements |
-| `src/app/page.tsx` | Import and render `SectionNavBar` inside the sticky header, pass sections data |
+| File                              | Change                                                                         |
+| --------------------------------- | ------------------------------------------------------------------------------ |
+| `src/components/product-grid.tsx` | Add `id="section-{index}"` and `scroll-margin-top` to `<section>` elements     |
+| `src/app/page.tsx`                | Import and render `SectionNavBar` inside the sticky header, pass sections data |
 
 ## Testing
 

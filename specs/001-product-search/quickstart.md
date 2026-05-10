@@ -59,12 +59,12 @@
 
 ## Commands
 
-| Command | Purpose |
-|---------|---------|
-| `npm run dev` | Start development server with Turbopack |
-| `npm run build` | Create production build |
-| `npm run start` | Start production server |
-| `npm run lint` | Run ESLint |
+| Command         | Purpose                                 |
+| --------------- | --------------------------------------- |
+| `npm run dev`   | Start development server with Turbopack |
+| `npm run build` | Create production build                 |
+| `npm run start` | Start production server                 |
+| `npm run lint`  | Run ESLint                              |
 
 ## Project Structure
 

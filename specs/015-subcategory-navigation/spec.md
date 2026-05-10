@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "Now implement the next category level. Because most categories have a sub categories list. This will mostly be the same rendering, a list again but a layer down."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Browse Sub-categories (Priority: P1)
 
@@ -46,7 +46,7 @@ Some sub-categories themselves have further nested sub-categories (L2 level). Wh
 - What happens when the sub-category API call returns an empty list? An appropriate empty state message should be shown.
 - What happens if the user navigates back from a sub-category view while data is still loading? The loading should be cancelled and the previous view restored cleanly.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -66,7 +66,7 @@ Some sub-categories themselves have further nested sub-categories (L2 level). Wh
 - **Sub-category (L1)**: A child of a top-level category. Same attributes as a category. May itself contain L2 sub-categories.
 - **Sub-category (L2)**: A child of an L1 sub-category. Same attributes. Represents the deepest browsable level before products.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

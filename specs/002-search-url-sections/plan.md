@@ -21,15 +21,15 @@ Enhance the search results page with two capabilities: (1) sync the search query
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Architectural Integrity (SRP, DRY, DI) | PASS | Each change touches a single responsibility: parser extracts sections, API returns sections, page syncs URL, components render sections. No duplication introduced. |
-| II. Naming Conventions | PASS | New types (`SearchSection`), functions (`parseFusionSearchSections`), and components will follow existing verb-first camelCase and kebab-case file conventions. |
-| III. Forbidden Anti-Patterns | PASS | No files will exceed 300 lines. No deep nesting. No magic strings (section header extraction uses structured PML traversal, not string matching). |
-| IV. Self-Refactor Protocol | PASS | Will be applied during implementation. |
-| V. Readability Over Cleverness | PASS | URL state uses standard Next.js `useSearchParams` pattern. Section parsing is explicit PML traversal. No clever tricks. |
+| Principle                                 | Status | Notes                                                                                                                                                               |
+| ----------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. Architectural Integrity (SRP, DRY, DI) | PASS   | Each change touches a single responsibility: parser extracts sections, API returns sections, page syncs URL, components render sections. No duplication introduced. |
+| II. Naming Conventions                    | PASS   | New types (`SearchSection`), functions (`parseFusionSearchSections`), and components will follow existing verb-first camelCase and kebab-case file conventions.     |
+| III. Forbidden Anti-Patterns              | PASS   | No files will exceed 300 lines. No deep nesting. No magic strings (section header extraction uses structured PML traversal, not string matching).                   |
+| IV. Self-Refactor Protocol                | PASS   | Will be applied during implementation.                                                                                                                              |
+| V. Readability Over Cleverness            | PASS   | URL state uses standard Next.js `useSearchParams` pattern. Section parsing is explicit PML traversal. No clever tricks.                                             |
 
 **Gate result**: PASS — no violations. Proceeding to Phase 0.
 
@@ -74,22 +74,22 @@ src/
 
 ## Constitution Check — Post-Design Re-evaluation
 
-*Re-evaluated after Phase 1 design (data-model.md, contracts/, quickstart.md).*
+_Re-evaluated after Phase 1 design (data-model.md, contracts/, quickstart.md)._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Architectural Integrity (SRP, DRY, DI) | PASS | Parser has one job (PML → sections + products). API route has one job (fetch + serialize). Page has one job (URL state + render orchestration). ProductGrid has one job (render sections). No duplication between contracts. |
-| II. Naming Conventions | PASS | `SearchSection` (noun type), `parseFusionSearchSections` (verb-first function), `initialQuery` (descriptive prop). All follow conventions. |
-| III. Forbidden Anti-Patterns | **NEEDS REMEDIATION** | `parse-fusion-search.ts` is already 559 lines (pre-existing violation of 300-line limit). Adding section extraction would increase it further. **Remediation**: split the file during implementation — extract PML helper functions (`pml-helpers.ts`) and tile extraction (`extract-tile-data.ts`) to bring each file under 300 lines. |
-| IV. Self-Refactor Protocol | PASS | The file split in Principle III is the self-refactor action. Will be applied during implementation. |
-| V. Readability Over Cleverness | PASS | All patterns are standard: `useSearchParams`, `router.push`, PML tree walking with explicit ID matching. No cleverness. |
+| Principle                                 | Status                | Notes                                                                                                                                                                                                                                                                                                                                   |
+| ----------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. Architectural Integrity (SRP, DRY, DI) | PASS                  | Parser has one job (PML → sections + products). API route has one job (fetch + serialize). Page has one job (URL state + render orchestration). ProductGrid has one job (render sections). No duplication between contracts.                                                                                                            |
+| II. Naming Conventions                    | PASS                  | `SearchSection` (noun type), `parseFusionSearchSections` (verb-first function), `initialQuery` (descriptive prop). All follow conventions.                                                                                                                                                                                              |
+| III. Forbidden Anti-Patterns              | **NEEDS REMEDIATION** | `parse-fusion-search.ts` is already 559 lines (pre-existing violation of 300-line limit). Adding section extraction would increase it further. **Remediation**: split the file during implementation — extract PML helper functions (`pml-helpers.ts`) and tile extraction (`extract-tile-data.ts`) to bring each file under 300 lines. |
+| IV. Self-Refactor Protocol                | PASS                  | The file split in Principle III is the self-refactor action. Will be applied during implementation.                                                                                                                                                                                                                                     |
+| V. Readability Over Cleverness            | PASS                  | All patterns are standard: `useSearchParams`, `router.push`, PML tree walking with explicit ID matching. No cleverness.                                                                                                                                                                                                                 |
 
 **Post-design gate result**: PASS with remediation — the 300-line violation on `parse-fusion-search.ts` is pre-existing and will be resolved by splitting the file during implementation.
 
 ## Complexity Tracking
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
+| Violation                                                 | Why Needed                                            | Simpler Alternative Rejected Because                                                                                                                           |
+| --------------------------------------------------------- | ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `parse-fusion-search.ts` exceeds 300 lines (pre-existing) | Contains all PML parsing logic for product extraction | Splitting is the remediation — extract `pml-helpers.ts` (markdown/icon/tree helpers) and `extract-tile-data.ts` (per-tile extraction) from the monolithic file |
 
 ## Phase 1 Deliverables

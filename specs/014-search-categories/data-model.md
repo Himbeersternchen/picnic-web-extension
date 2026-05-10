@@ -13,11 +13,11 @@ This feature introduces category types and a parser that extracts categories fro
 
 Our application-level representation of a single browsable category, extracted defensively from the raw PML tree.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | `string` | Category identifier extracted from the PML item ID or deep link target (e.g., `"21724"`, `"CustomCatGlutenvrijL1"`) |
-| `name` | `string` | Dutch display name (e.g., `"Fruit"`, `"Aardappelen & groente"`) |
-| `imageId` | `string` | Image hash for `buildImageUrl()` (e.g., `"396767b8acb6..."`) |
+| Field            | Type     | Description                                                                                                                |
+| ---------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `id`             | `string` | Category identifier extracted from the PML item ID or deep link target (e.g., `"21724"`, `"CustomCatGlutenvrijL1"`)        |
+| `name`           | `string` | Dutch display name (e.g., `"Fruit"`, `"Aardappelen & groente"`)                                                            |
+| `imageId`        | `string` | Image hash for `buildImageUrl()` (e.g., `"396767b8acb6..."`)                                                               |
 | `deepLinkTarget` | `string` | Full deep link target from `onPress.target` (e.g., `"app.picnic://store/page;id=L1-category-page-root,category_id=21724"`) |
 
 ```typescript
@@ -33,8 +33,8 @@ export type CategoryItem = {
 
 Response shape for `GET /api/categories`.
 
-| Field | Type | Description |
-|-------|------|-------------|
+| Field        | Type             | Description                    |
+| ------------ | ---------------- | ------------------------------ |
 | `categories` | `CategoryItem[]` | Ordered list of all categories |
 
 ```typescript
@@ -53,12 +53,12 @@ This feature does not modify `CartData`, `Product`, or any other existing type i
 
 The `empty-search-page-root` returns a FusionPage with PML items nested under `core-category-tree-wrapper-list`. Each `PMLItem` maps to one `CategoryItem`:
 
-| Raw PML field path | CategoryItem field | Extraction |
-|---|---|---|
-| `PMLItem.id` | `id` | Strip prefix `"core-list-item-category-"` from the PML item ID |
-| `PMLItem.pml.component.accessibilityLabel` | `name` | Direct string read (cleanest source, avoids markdown parsing) |
-| `PMLItem.pml.component.child.children[0].children[0].child.source.id` | `imageId` | Navigate STACK → inner STACK → CONTAINER → IMAGE → source.id |
-| `PMLItem.pml.component.onPress.target` | `deepLinkTarget` | Direct string read from TOUCHABLE's onPress action |
+| Raw PML field path                                                    | CategoryItem field | Extraction                                                     |
+| --------------------------------------------------------------------- | ------------------ | -------------------------------------------------------------- |
+| `PMLItem.id`                                                          | `id`               | Strip prefix `"core-list-item-category-"` from the PML item ID |
+| `PMLItem.pml.component.accessibilityLabel`                            | `name`             | Direct string read (cleanest source, avoids markdown parsing)  |
+| `PMLItem.pml.component.child.children[0].children[0].child.source.id` | `imageId`          | Navigate STACK → inner STACK → CONTAINER → IMAGE → source.id   |
+| `PMLItem.pml.component.onPress.target`                                | `deepLinkTarget`   | Direct string read from TOUCHABLE's onPress action             |
 
 **Fallback extraction for `name`**: If `accessibilityLabel` is missing, fall back to the RICH_TEXT markdown at `pml.component.child.children[0].children[1].markdown`.
 
@@ -88,6 +88,7 @@ FusionPage (id: "empty-search-page-root-js")
 ```
 
 Each PML item:
+
 ```
 PMLItem (type: "PML", id: "core-list-item-category-{id}")
   pml.component: TOUCHABLE
@@ -105,24 +106,25 @@ PMLItem (type: "PML", id: "core-list-item-category-{id}")
 
 ### Home Page (idle state)
 
-| Condition | Display |
-|-----------|---------|
-| Categories loading | `<LoadingSpinner />` (existing component) |
-| Categories loaded, count > 0 | Category grid with all tiles |
-| Categories loaded, count === 0 | Empty state message |
-| Categories fetch failed | `<ErrorView />` with retry button |
-| Search query active | Categories hidden, search results shown (existing behavior) |
+| Condition                      | Display                                                     |
+| ------------------------------ | ----------------------------------------------------------- |
+| Categories loading             | `<LoadingSpinner />` (existing component)                   |
+| Categories loaded, count > 0   | Category grid with all tiles                                |
+| Categories loaded, count === 0 | Empty state message                                         |
+| Categories fetch failed        | `<ErrorView />` with retry button                           |
+| Search query active            | Categories hidden, search results shown (existing behavior) |
 
 ### Category Tile
 
-| Element | Value |
-|---------|-------|
-| Image | `buildImageUrl(item.imageId)` inside a rounded container |
-| Text | `item.name` — 1-2 lines, medium weight, truncated with ellipsis |
-| Click action | Navigate to category (US2 — placeholder/no-op initially) |
+| Element      | Value                                                           |
+| ------------ | --------------------------------------------------------------- |
+| Image        | `buildImageUrl(item.imageId)` inside a rounded container        |
+| Text         | `item.name` — 1-2 lines, medium weight, truncated with ellipsis |
+| Click action | Navigate to category (US2 — placeholder/no-op initially)        |
 
 ## Existing Types Referenced
 
 From `src/lib/types.ts` (unchanged):
+
 - `ApiErrorResponse` — reused for categories error response
 - `IMAGE_CDN_BASE`, `DEFAULT_IMAGE_SIZE` — used by `buildImageUrl()` for category images

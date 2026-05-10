@@ -15,7 +15,8 @@ New custom hook. Single responsibility: set `document.title` reactively based on
 
 ```ts
 import { useEffect } from "react";
-import { APP_NAME, TITLE_SEPARATOR, MAX_TITLE_CONTEXT_LENGTH } from "@/lib/constants";
+
+import { APP_NAME, MAX_TITLE_CONTEXT_LENGTH, TITLE_SEPARATOR } from "@/lib/constants";
 
 /**
  * Sets the browser tab title. Pass a page-specific context string
@@ -72,6 +73,7 @@ In `CartPage` component, add: `usePageTitle("Winkelwagen")`
 ### `src/app/product/[id]/page.tsx`
 
 In `ProductPage` component, add:
+
 ```ts
 const pageContext = pageState.status === "success" ? pageState.product.name : undefined;
 usePageTitle(pageContext);

@@ -19,8 +19,8 @@ Adds drill-down navigation to the category browsing experience. When a user taps
 Reuses the same extraction logic as `parse-categories.ts` but targets the L1 page structure.
 
 ```ts
-import { findNodeByIdSubstring, collectPropertyValues } from "@/lib/pml-helpers";
 import type { CategoryItem } from "@/lib/category-types";
+import { collectPropertyValues, findNodeByIdSubstring } from "@/lib/pml-helpers";
 
 const L1_CATEGORY_LIST_BLOCK_ID = "L1-category-page-list";
 const CATEGORY_ITEM_PREFIX = "core-list-item-category-";
@@ -44,25 +44,26 @@ export function parseSubcategoryPage(rawPage: unknown): CategoryItem[] {
 
 ```ts
 import { NextRequest, NextResponse } from "next/server";
-import { readAuthToken } from "@/lib/auth";
-import { buildPicnicClient } from "@/lib/picnic-client";
-import { parseSubcategoryPage } from "@/lib/parse-subcategories";
+
 import { isApiAuthError } from "@/lib/api-error";
+import { readAuthToken } from "@/lib/auth";
 import type { SubcategoriesApiResponse } from "@/lib/category-types";
+import { parseSubcategoryPage } from "@/lib/parse-subcategories";
+import { buildPicnicClient } from "@/lib/picnic-client";
 import type { ApiErrorResponse } from "@/lib/types";
 
 const L1_PAGE_PREFIX = "L1-category-page-root?category_id=";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: Promise<{ categoryId: string }> },
+  { params }: { params: Promise<{ categoryId: string }> }
 ): Promise<NextResponse<SubcategoriesApiResponse | ApiErrorResponse>> {
   const { categoryId } = await params;
   const token = readAuthToken(request);
   if (!token) {
     return NextResponse.json(
       { error: "Authentication required", code: "TOKEN_EXPIRED" as const },
-      { status: 401 },
+      { status: 401 }
     );
   }
 
@@ -76,14 +77,14 @@ export async function GET(
     if (isApiAuthError(error)) {
       return NextResponse.json(
         { error: "Your token has expired", code: "TOKEN_EXPIRED" as const },
-        { status: 401 },
+        { status: 401 }
       );
     }
     const message = error instanceof Error ? error.message : "Unknown error";
     console.error(`[/api/categories/${categoryId}/subcategories] Failed:`, message);
     return NextResponse.json(
       { error: "Kan subcategorieën niet laden. Probeer het later opnieuw." },
-      { status: 502 },
+      { status: 502 }
     );
   }
 }
@@ -116,7 +117,7 @@ The category grid needs to accept a callback for when a category is tapped, inst
 ```tsx
 type CategoryGridProps = {
   categories: CategoryItem[];
-  onCategoryTap?: (category: CategoryItem) => void;  // NEW
+  onCategoryTap?: (category: CategoryItem) => void; // NEW
 };
 ```
 
@@ -125,6 +126,7 @@ type CategoryGridProps = {
 Key changes:
 
 1. **Add navigation state**:
+
 ```ts
 type CategoryNavState =
   | { level: "top" }
@@ -134,29 +136,39 @@ const [categoryNav, setCategoryNav] = useState<CategoryNavState>({ level: "top" 
 ```
 
 2. **Add sub-categories fetch** (when `categoryNav.level === "l1"`):
+
 ```ts
-const [subcategoriesState, setSubcategoriesState] = useState<SubcategoriesState>({ status: "idle" });
+const [subcategoriesState, setSubcategoriesState] = useState<SubcategoriesState>({
+  status: "idle",
+});
 
 useEffect(() => {
   if (categoryNav.level !== "l1") return;
   setSubcategoriesState({ status: "loading" });
   fetch(`/api/categories/${categoryNav.categoryId}/subcategories`)
-    .then(res => res.json())
-    .then(data => { /* handle success/error */ })
-    .catch(() => { /* handle network error */ });
+    .then((res) => res.json())
+    .then((data) => {
+      /* handle success/error */
+    })
+    .catch(() => {
+      /* handle network error */
+    });
 }, [categoryNav]);
 ```
 
 3. **Render sub-category view** when navigating:
+
 ```tsx
-{categoryNav.level === "l1" && (
-  <div>
-    <button onClick={() => setCategoryNav({ level: "top" })}>← Terug</button>
-    <h2>{categoryNav.categoryName}</h2>
-    {/* Same CategoryGrid component, but with subcategories data */}
-    <CategoryGrid categories={subcategories} />
-  </div>
-)}
+{
+  categoryNav.level === "l1" && (
+    <div>
+      <button onClick={() => setCategoryNav({ level: "top" })}>← Terug</button>
+      <h2>{categoryNav.categoryName}</h2>
+      {/* Same CategoryGrid component, but with subcategories data */}
+      <CategoryGrid categories={subcategories} />
+    </div>
+  );
+}
 ```
 
 ## Files to Delete

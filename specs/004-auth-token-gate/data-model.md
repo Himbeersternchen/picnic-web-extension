@@ -9,39 +9,39 @@
 
 The Picnic API authentication token provided by the user. Stored as an HTTP-only cookie and used server-side for all Picnic API requests.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `value` | `string` | The raw JWT string. Opaque to this application — only the Picnic API can interpret and validate it. |
+| Field     | Type               | Description                                                                                                                              |
+| --------- | ------------------ | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `value`   | `string`           | The raw JWT string. Opaque to this application — only the Picnic API can interpret and validate it.                                      |
 | `storage` | `HTTP-only cookie` | Browser-managed cookie named `picnic_auth_token`. Auto-sent with every request to the server. Not accessible via client-side JavaScript. |
-| `maxAge` | `number` | Cookie expiry: 30 days (2,592,000 seconds). After expiry, the browser deletes the cookie and the user must re-enter their token. |
+| `maxAge`  | `number`           | Cookie expiry: 30 days (2,592,000 seconds). After expiry, the browser deletes the cookie and the user must re-enter their token.         |
 
 ### AuthState (client-side)
 
 The current authentication state of the user, as understood by the login page UI. This is ephemeral — exists only as React component state on the login page.
 
-| Field | Type | Values | Description |
-|-------|------|--------|-------------|
-| `status` | `string` | `idle`, `validating`, `error` | Current state of the token submission flow. |
-| `errorMessage` | `string \| null` | — | Human-readable error text shown to the user when `status === "error"`. Null otherwise. |
+| Field          | Type             | Values                        | Description                                                                            |
+| -------------- | ---------------- | ----------------------------- | -------------------------------------------------------------------------------------- |
+| `status`       | `string`         | `idle`, `validating`, `error` | Current state of the token submission flow.                                            |
+| `errorMessage` | `string \| null` | —                             | Human-readable error text shown to the user when `status === "error"`. Null otherwise. |
 
 ### AuthApiResponse
 
 Response shape from the `/api/auth/login` route.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `success` | `boolean` | Whether the token was accepted and the cookie was set. |
-| `error` | `string \| undefined` | Error message if validation failed. Present only when `success === false`. |
+| Field     | Type                  | Description                                                                |
+| --------- | --------------------- | -------------------------------------------------------------------------- |
+| `success` | `boolean`             | Whether the token was accepted and the cookie was set.                     |
+| `error`   | `string \| undefined` | Error message if validation failed. Present only when `success === false`. |
 
 ### AuthErrorCode
 
 Distinguishable error codes returned by API routes when a Picnic API call fails due to authentication.
 
-| Code | Meaning | Trigger |
-|------|---------|---------|
-| `TOKEN_EXPIRED` | The stored token is no longer valid | Picnic API returns 401/403 during a search or suggestions request |
-| `TOKEN_INVALID` | The submitted token failed validation | Picnic API returns 401/403 during login validation |
-| `API_UNREACHABLE` | Cannot connect to Picnic API | Network error or timeout during token validation |
+| Code              | Meaning                               | Trigger                                                           |
+| ----------------- | ------------------------------------- | ----------------------------------------------------------------- |
+| `TOKEN_EXPIRED`   | The stored token is no longer valid   | Picnic API returns 401/403 during a search or suggestions request |
+| `TOKEN_INVALID`   | The submitted token failed validation | Picnic API returns 401/403 during login validation                |
+| `API_UNREACHABLE` | Cannot connect to Picnic API          | Network error or timeout during token validation                  |
 
 ## Relationships
 

@@ -14,12 +14,14 @@
 **Rationale**: This is what the native Picnic app uses when displaying the search screen before any query is entered. The response returns a `FusionPage` with a well-structured PML tree containing exactly the categories shown to the user. Using the same endpoint as the native app ensures data parity (same categories, same ordering, same images).
 
 The call is:
+
 ```typescript
-client.app.getPage("empty-search-page-root")
+client.app.getPage("empty-search-page-root");
 // Internally: GET /pages/empty-search-page-root (with x-picnic-agent headers)
 ```
 
 **Alternatives considered**:
+
 - `category-tree-root`: May return a different layout optimized for the category tree page, not the search landing. Not tested.
 - Legacy `GET /my_store?depth=0`: Returns structured `MyStore` data but may be deprecated and has different category ordering/grouping. Over-fetches (includes user data, content, etc.).
 
@@ -30,6 +32,7 @@ client.app.getPage("empty-search-page-root")
 **Finding**: The response is a single flat list of 26 grocery categories. **There is no "Deze week" promotional section** in this endpoint.
 
 **Tree structure** (confirmed via live API call):
+
 ```
 FusionPage
   id: "empty-search-page-root-js"
@@ -43,6 +46,7 @@ FusionPage
 ```
 
 Each category tile is a `PMLItem` with this structure:
+
 ```
 PMLItem
   type: "PML"
@@ -65,6 +69,7 @@ PMLItem
 ```
 
 **Key extraction points per tile**:
+
 1. **Category ID**: Extract from `PMLItem.id` — strip prefix `"core-list-item-category-"` → `"21724"`
 2. **Name**: `pml.component.accessibilityLabel` (cleanest) or `pml.component.child.children[0].children[1].markdown` (the RICH_TEXT)
 3. **Image ID**: `pml.component.child.children[0].children[0].child.source.id` (the IMAGE source)
@@ -72,6 +77,7 @@ PMLItem
 5. **Category ID from deep link**: Parse `category_id=<value>` from the target string
 
 **All 26 categories observed** (in order):
+
 1. Fruit (21724)
 2. Aardappelen & groente (21725)
 3. Maaltijden & gemak (21727)
@@ -108,6 +114,7 @@ PMLItem
 **Decision**: Drop the "Deze week" section from the implementation. The API doesn't provide it through this endpoint. The native app may compose the "Deze week" section from a different data source (possibly the home page or a promotional feed). We will implement what the API gives us: a single "Alle categorieën" section with all 26 categories.
 
 **Impact on spec**:
+
 - FR-001 (Deze week section): **Cannot be implemented** with this endpoint. Downgrade to "nice to have" / future enhancement if a promotional endpoint is found.
 - FR-002 (Alle categorieën section): **Fully supported.** This is what we'll build.
 - FR-010 (Section headers): Only one header needed: "Alle categorieën" (or no section header at all, since there's only one section).
@@ -121,6 +128,7 @@ PMLItem
 **Deep link format**: `app.picnic://store/page;id=L1-category-page-root,category_id={id}`
 
 **Parsing approach**:
+
 ```typescript
 function extractCategoryId(target: string): string | null {
   const match = target.match(/category_id=([^,&]+)/);
@@ -137,8 +145,9 @@ function extractCategoryId(target: string): string | null {
 **Decision**: Use the existing `buildImageUrl(imageId)` function from `src/lib/image-url.ts`. The image `source.id` from the PML tree is the same kind of hash used for product images.
 
 **Example**:
+
 ```typescript
-buildImageUrl("396767b8acb6f8f3aa60953c7f62b8d51a2c7c6391bf6580ac0b4240f4b9dc71")
+buildImageUrl("396767b8acb6f8f3aa60953c7f62b8d51a2c7c6391bf6580ac0b4240f4b9dc71");
 // → "https://storefront-prod.nl.picnicinternational.com/static/images/396767b8.../medium.png"
 ```
 
@@ -151,6 +160,7 @@ The native app renders these at 64x64px. For our web grid, we may want to use a 
 **Decision**: Navigate to a new URL like `/?category={categoryId}` which triggers a fetch to `L1-category-page-root?category_id={id}`. This returns a FusionPage with sub-categories or products.
 
 **However**, implementing the category product listing is a separate concern (US2, P2). For the initial implementation, we have two options:
+
 1. Navigate to a search query that filters by category (if such API exists)
 2. Build a category detail page
 
@@ -165,6 +175,7 @@ The native app renders these at 64x64px. For our web grid, we may want to use a 
 **Decision**: Use a hybrid approach — walk to the known container block by ID, then extract category tiles by their `PMLItem.id` prefix pattern.
 
 **Algorithm**:
+
 1. Navigate to `body.child` (root BlockComponent)
 2. Find the block with ID containing `"category-tree-wrapper-list"` (recursive search using existing `findNodeByIdSubstring`)
 3. Extract all `children` of that block where `type === "PML"` and `id` starts with `"core-list-item-category-"`
@@ -179,6 +190,7 @@ The native app renders these at 64x64px. For our web grid, we may want to use a 
 **Question**: Where should new files go? How many new files are needed?
 
 **Decision**:
+
 - `src/lib/category-types.ts` — types: `CategoryItem`, `CategoriesApiResponse`
 - `src/lib/parse-categories.ts` — parser: `parseCategoryPage(rawPage: unknown): CategoryItem[]`
 - `src/app/api/categories/route.ts` — API route: `GET /api/categories`
@@ -189,13 +201,13 @@ This adds 4 new files and modifies 1 existing file. All new files will be well u
 
 ## Summary
 
-| Topic | Decision |
-|-------|----------|
-| API endpoint | `client.app.getPage("empty-search-page-root")` |
-| Tree structure | Single flat list of 26 categories under `core-category-tree-wrapper-list` |
-| "Deze week" section | Not available from this endpoint — dropped from scope |
-| Data extraction | Item ID prefix + `accessibilityLabel` + IMAGE source + onPress target |
-| Image loading | Existing `buildImageUrl()` with image hash from `source.id` |
-| Category navigation | Store deep link target; implement drill-down as US2 |
-| Parser strategy | Known-ID navigation with generic fallback |
-| File count | 4 new files + 1 modified |
+| Topic               | Decision                                                                  |
+| ------------------- | ------------------------------------------------------------------------- |
+| API endpoint        | `client.app.getPage("empty-search-page-root")`                            |
+| Tree structure      | Single flat list of 26 categories under `core-category-tree-wrapper-list` |
+| "Deze week" section | Not available from this endpoint — dropped from scope                     |
+| Data extraction     | Item ID prefix + `accessibilityLabel` + IMAGE source + onPress target     |
+| Image loading       | Existing `buildImageUrl()` with image hash from `source.id`               |
+| Category navigation | Store deep link target; implement drill-down as US2                       |
+| Parser strategy     | Known-ID navigation with generic fallback                                 |
+| File count          | 4 new files + 1 modified                                                  |

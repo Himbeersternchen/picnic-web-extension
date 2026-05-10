@@ -23,9 +23,9 @@
 
 ### Implementation for User Story 1
 
-- [X] T001 [US1] Add `mt-auto` bottom-anchor wrapper `<div>` around the price display and badges sections in `src/components/product-card.tsx` — this wrapper pushes price + badges to the card bottom
-- [X] T002 [US1] Remove `mt-auto` from the badges container (currently on the `flex flex-wrap gap-1` div) in `src/components/product-card.tsx` — the new wrapper now handles bottom-anchoring
-- [X] T003 [US1] Adjust `mb-*` margin classes on the unit quantity `<p>`, price `<div>`, and badges `<div>` in `src/components/product-card.tsx` to balance spacing within the new structure
+- [x] T001 [US1] Add `mt-auto` bottom-anchor wrapper `<div>` around the price display and badges sections in `src/components/product-card.tsx` — this wrapper pushes price + badges to the card bottom
+- [x] T002 [US1] Remove `mt-auto` from the badges container (currently on the `flex flex-wrap gap-1` div) in `src/components/product-card.tsx` — the new wrapper now handles bottom-anchoring
+- [x] T003 [US1] Adjust `mb-*` margin classes on the unit quantity `<p>`, price `<div>`, and badges `<div>` in `src/components/product-card.tsx` to balance spacing within the new structure
 - [ ] T004 [US1] Manual validation: search "tomaten" — verify prices in each row are vertically aligned across cards with varying text content (some have subtitles, brands, highlights; some do not)
 - [ ] T005 [US1] Manual validation: search "roomboter" — verify the "Opnieuw bestellen" re-order section cards also have consistent price alignment
 - [ ] T006 [US1] Manual validation: resize browser across breakpoints (2-col mobile → 5-col desktop) — verify price alignment holds at all grid widths
@@ -42,8 +42,8 @@
 
 ### Implementation for User Story 2
 
-- [X] T007 [US2] Review and standardize spacing rhythm in the text content area (subtitle, name, brand row, unit quantity) in `src/components/product-card.tsx` — already consistent (`mb-0.5` throughout text elements)
-- [X] T008 [US2] Ensure adequate spacing between the price display and badges within the bottom-anchor wrapper in `src/components/product-card.tsx` — `mt-2` for price, `mt-1.5` for badges
+- [x] T007 [US2] Review and standardize spacing rhythm in the text content area (subtitle, name, brand row, unit quantity) in `src/components/product-card.tsx` — already consistent (`mb-0.5` throughout text elements)
+- [x] T008 [US2] Ensure adequate spacing between the price display and badges within the bottom-anchor wrapper in `src/components/product-card.tsx` — `mt-2` for price, `mt-1.5` for badges
 - [ ] T009 [US2] Manual validation: search "tomaten" — verify overall card appearance is clean, with balanced spacing between image area, text content, price, and badges
 - [ ] T010 [US2] Manual validation: check edge cases — cards with no badges/subtitle/brand (minimal content), cards with bundle pricing (strikethrough), and cards with unavailability overlays all look correct
 
@@ -55,10 +55,10 @@
 
 **Purpose**: Verify no regressions, pass lint/build, confirm file size.
 
-- [X] T011 Verify `src/components/product-card.tsx` remains under 300 lines (constitution Principle III) — 251 lines ✓
+- [x] T011 Verify `src/components/product-card.tsx` remains under 300 lines (constitution Principle III) — 251 lines ✓
 - [ ] T012 Verify cart action overlay (add button / quantity stepper) remains functional and correctly positioned in `src/components/product-card.tsx`
-- [X] T013 Run `npm run lint` and fix any linting violations — PASS ✓
-- [X] T014 Run `npm run build` and fix any build errors — PASS ✓
+- [x] T013 Run `npm run lint` and fix any linting violations — PASS ✓
+- [x] T014 Run `npm run build` and fix any build errors — PASS ✓
 
 ---
 

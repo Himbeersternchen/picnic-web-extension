@@ -23,33 +23,33 @@ Replace the server-side `PICNIC_AUTH_TOKEN` environment variable with a per-user
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
 ### Pre-Phase 0 Gate Evaluation
 
-| Principle | Status | Assessment |
-|-----------|--------|------------|
-| **I. SRP** | PASS | Each new file has a single responsibility: middleware (route gating), login page (token entry UI), auth API routes (cookie CRUD), picnic-client factory (client instantiation). No existing file gains compound responsibilities. |
-| **I. DRY** | PASS | Token-from-cookie extraction is a single utility function shared by all API routes. PicnicClient creation logic remains in one factory function. |
-| **I. Dependency Injection** | PASS | `getPicnicClient()` is refactored to accept `authToken` as a parameter instead of reading from `process.env` internally. API routes inject the token they read from cookies. |
-| **II. Naming** | PASS | `buildPicnicClient(authToken)` — verb-first camelCase. `isAuthenticated` — boolean prefix. `AUTH_COOKIE_NAME` — UPPER_SNAKE_CASE constant. Files: `middleware.ts`, `login/page.tsx`, `auth/login/route.ts` — kebab-case or Next.js convention. |
-| **III. No God Files** | PASS | Login page estimated ~80 lines. Middleware ~40 lines. Auth routes ~40 lines each. Modified `picnic-client.ts` shrinks (removes singleton). `page.tsx` adds sign-out button (~10 lines). All under 300 lines. |
-| **III. No Deep Nesting** | PASS | Login page has flat rendering. Middleware uses early returns for unauthenticated/excluded paths. |
-| **III. No Magic Numbers** | PASS | Cookie name, cookie max-age, and public paths extracted as named constants. |
-| **III. No Error Swallowing** | PASS | Token validation errors are caught, classified (invalid vs. unreachable), and surfaced to the user. API route 401/403 responses trigger redirect with message. |
-| **III. No Implicit Global State** | PASS | The mutable module-level singleton (`let instance`) is removed. `buildPicnicClient` is a pure factory function — no cached state. |
-| **IV. Self-Refactor** | ACKNOWLEDGED | Will be applied during implementation. |
-| **V. Readability** | PASS | Explicit cookie reading, clear guard clauses in middleware, straightforward login form. No clever constructs. |
+| Principle                         | Status       | Assessment                                                                                                                                                                                                                                     |
+| --------------------------------- | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **I. SRP**                        | PASS         | Each new file has a single responsibility: middleware (route gating), login page (token entry UI), auth API routes (cookie CRUD), picnic-client factory (client instantiation). No existing file gains compound responsibilities.              |
+| **I. DRY**                        | PASS         | Token-from-cookie extraction is a single utility function shared by all API routes. PicnicClient creation logic remains in one factory function.                                                                                               |
+| **I. Dependency Injection**       | PASS         | `getPicnicClient()` is refactored to accept `authToken` as a parameter instead of reading from `process.env` internally. API routes inject the token they read from cookies.                                                                   |
+| **II. Naming**                    | PASS         | `buildPicnicClient(authToken)` — verb-first camelCase. `isAuthenticated` — boolean prefix. `AUTH_COOKIE_NAME` — UPPER_SNAKE_CASE constant. Files: `middleware.ts`, `login/page.tsx`, `auth/login/route.ts` — kebab-case or Next.js convention. |
+| **III. No God Files**             | PASS         | Login page estimated ~80 lines. Middleware ~40 lines. Auth routes ~40 lines each. Modified `picnic-client.ts` shrinks (removes singleton). `page.tsx` adds sign-out button (~10 lines). All under 300 lines.                                   |
+| **III. No Deep Nesting**          | PASS         | Login page has flat rendering. Middleware uses early returns for unauthenticated/excluded paths.                                                                                                                                               |
+| **III. No Magic Numbers**         | PASS         | Cookie name, cookie max-age, and public paths extracted as named constants.                                                                                                                                                                    |
+| **III. No Error Swallowing**      | PASS         | Token validation errors are caught, classified (invalid vs. unreachable), and surfaced to the user. API route 401/403 responses trigger redirect with message.                                                                                 |
+| **III. No Implicit Global State** | PASS         | The mutable module-level singleton (`let instance`) is removed. `buildPicnicClient` is a pure factory function — no cached state.                                                                                                              |
+| **IV. Self-Refactor**             | ACKNOWLEDGED | Will be applied during implementation.                                                                                                                                                                                                         |
+| **V. Readability**                | PASS         | Explicit cookie reading, clear guard clauses in middleware, straightforward login form. No clever constructs.                                                                                                                                  |
 
 ### Post-Phase 1 Gate Re-Evaluation
 
-| Principle | Status | Assessment |
-|-----------|--------|------------|
-| **I. SRP** | PASS | Design confirms clean separation: middleware for gating, auth routes for cookie management, login page for UI, client factory for instantiation. |
-| **I. DRY** | PASS | Cookie reading utility (`readAuthToken`) used by all API routes and middleware. `buildPicnicClient` used by all API routes. No duplication. |
-| **I. Dependency Injection** | PASS | Confirmed — `buildPicnicClient(authToken)` replaces `getPicnicClient()` singleton. Token is injected, not read from environment. |
-| **III. No Implicit Global State** | PASS | Singleton removed. Each request creates its own client instance. |
-| All others | PASS | No changes from pre-Phase 0 assessment. |
+| Principle                         | Status | Assessment                                                                                                                                       |
+| --------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **I. SRP**                        | PASS   | Design confirms clean separation: middleware for gating, auth routes for cookie management, login page for UI, client factory for instantiation. |
+| **I. DRY**                        | PASS   | Cookie reading utility (`readAuthToken`) used by all API routes and middleware. `buildPicnicClient` used by all API routes. No duplication.      |
+| **I. Dependency Injection**       | PASS   | Confirmed — `buildPicnicClient(authToken)` replaces `getPicnicClient()` singleton. Token is injected, not read from environment.                 |
+| **III. No Implicit Global State** | PASS   | Singleton removed. Each request creates its own client instance.                                                                                 |
+| All others                        | PASS   | No changes from pre-Phase 0 assessment.                                                                                                          |
 
 **Gate result: ALL PASS. No violations to track.**
 
@@ -102,20 +102,20 @@ src/
 
 ## Design Decisions (from research.md)
 
-| # | Decision | Rationale |
-|---|----------|-----------|
-| R-001 | HTTP-only cookie for token storage | Auto-sent with every request; enables middleware-level gating; immune to XSS-based token theft via `document.cookie` |
-| R-002 | Next.js middleware for route gating | Runs before rendering; intercepts all routes at the edge; cleaner than per-page auth checks |
+| #     | Decision                                                      | Rationale                                                                                                                                          |
+| ----- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| R-001 | HTTP-only cookie for token storage                            | Auto-sent with every request; enables middleware-level gating; immune to XSS-based token theft via `document.cookie`                               |
+| R-002 | Next.js middleware for route gating                           | Runs before rendering; intercepts all routes at the edge; cleaner than per-page auth checks                                                        |
 | R-003 | Replace singleton with `buildPicnicClient(authToken)` factory | Singleton caches one token — incompatible with per-user tokens; factory pattern is stateless and constitution-compliant (no implicit global state) |
-| R-004 | Token validation via test API call (`getSuggestions("")`) | No JWT secret available client-side; only the Picnic API can confirm a token works; empty suggestion query is lightweight |
-| R-005 | Separate `/api/auth/login` and `/api/auth/logout` routes | SRP — one route sets cookie, one clears it; enables future extension (e.g., token refresh) |
-| R-006 | `readAuthToken(request)` utility in `src/lib/auth.ts` | DRY — shared by middleware and all API routes; single place to update cookie name or parsing logic |
-| R-007 | Sign-out button in site header via `page.tsx` | Spec requirement (FR-007, clarification); visible on every page; triggers POST to `/api/auth/logout` then redirects to `/login` |
+| R-004 | Token validation via test API call (`getSuggestions("")`)     | No JWT secret available client-side; only the Picnic API can confirm a token works; empty suggestion query is lightweight                          |
+| R-005 | Separate `/api/auth/login` and `/api/auth/logout` routes      | SRP — one route sets cookie, one clears it; enables future extension (e.g., token refresh)                                                         |
+| R-006 | `readAuthToken(request)` utility in `src/lib/auth.ts`         | DRY — shared by middleware and all API routes; single place to update cookie name or parsing logic                                                 |
+| R-007 | Sign-out button in site header via `page.tsx`                 | Spec requirement (FR-007, clarification); visible on every page; triggers POST to `/api/auth/logout` then redirects to `/login`                    |
 
 ## Complexity Tracking
 
 > No violations detected. Table intentionally left empty.
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
-|-----------|------------|-------------------------------------|
-| — | — | — |
+| --------- | ---------- | ------------------------------------ |
+| —         | —          | —                                    |

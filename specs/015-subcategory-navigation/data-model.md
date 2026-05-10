@@ -31,15 +31,15 @@ Added to `src/lib/category-types.ts`:
 ```typescript
 /** Response shape for GET /api/categories/[categoryId]/subcategories. */
 export type SubcategoriesApiResponse = {
-  title: string;              // Parent category name from page header (e.g., "Fruit")
-  subcategories: CategoryItem[];  // L1 sub-categories
+  title: string; // Parent category name from page header (e.g., "Fruit")
+  subcategories: CategoryItem[]; // L1 sub-categories
 };
 ```
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | `string` | Parent category name from `FusionPage.header.title` |
-| `subcategories` | `CategoryItem[]` | Ordered list of sub-categories within this parent |
+| Field           | Type             | Description                                         |
+| --------------- | ---------------- | --------------------------------------------------- |
+| `title`         | `string`         | Parent category name from `FusionPage.header.title` |
+| `subcategories` | `CategoryItem[]` | Ordered list of sub-categories within this parent   |
 
 ### New Type: Client-side Navigation State
 
@@ -51,9 +51,9 @@ type CategoryNavState =
   | { level: "l1"; categoryId: string; categoryName: string };
 ```
 
-| Variant | When |
-|---------|------|
-| `{ level: "top" }` | Viewing top-level categories (default) |
+| Variant                | When                                        |
+| ---------------------- | ------------------------------------------- |
+| `{ level: "top" }`     | Viewing top-level categories (default)      |
 | `{ level: "l1", ... }` | Viewing sub-categories of a specific parent |
 
 ## Field Mapping
@@ -62,25 +62,26 @@ type CategoryNavState =
 
 The `L1-category-page-root?category_id={id}` returns a FusionPage. Mapping:
 
-| Raw field path | Response field | Extraction |
-|---|---|---|
-| `FusionPage.header.title` | `title` | Direct string read |
+| Raw field path                                   | Response field  | Extraction                                             |
+| ------------------------------------------------ | --------------- | ------------------------------------------------------ |
+| `FusionPage.header.title`                        | `title`         | Direct string read                                     |
 | `body → core-L1-category-page-list → children[]` | `subcategories` | Same extraction as top-level categories (reuse parser) |
 
 ### L1 Sub-category PMLItem → CategoryItem
 
 Identical mapping to top-level categories (feature 014):
 
-| Raw PML field path | CategoryItem field | Extraction |
-|---|---|---|
-| `PMLItem.id` | `id` | Strip prefix `"core-list-item-category-"` |
-| `PMLItem.pml.component.accessibilityLabel` | `name` | Direct string read |
-| `PMLItem.pml.component.child → IMAGE → source.id` | `imageId` | Tree traversal to first IMAGE source |
-| `PMLItem.pml.component.onPress.target` | `deepLinkTarget` | Direct string read |
+| Raw PML field path                                | CategoryItem field | Extraction                                |
+| ------------------------------------------------- | ------------------ | ----------------------------------------- |
+| `PMLItem.id`                                      | `id`               | Strip prefix `"core-list-item-category-"` |
+| `PMLItem.pml.component.accessibilityLabel`        | `name`             | Direct string read                        |
+| `PMLItem.pml.component.child → IMAGE → source.id` | `imageId`          | Tree traversal to first IMAGE source      |
+| `PMLItem.pml.component.onPress.target`            | `deepLinkTarget`   | Direct string read                        |
 
 ## PML Tree Structure Reference
 
 ### L1 Category Page
+
 ```
 FusionPage (id: "L1-category-tree-generic-root-js")
   header.title: "{parent category name}"
@@ -94,6 +95,7 @@ FusionPage (id: "L1-category-tree-generic-root-js")
 ```
 
 Each sub-category PMLItem:
+
 ```
 PMLItem (type: "PML", id: "core-list-item-category-{id}")
   pml.component: TOUCHABLE
@@ -110,14 +112,14 @@ PMLItem (type: "PML", id: "core-list-item-category-{id}")
 
 ### Sub-category View (L1 level)
 
-| Condition | Display |
-|-----------|---------|
-| Sub-categories loading | `<LoadingSpinner />` |
-| Sub-categories loaded, count > 0 | Back button + category title heading + sub-category list |
-| Sub-categories loaded, count === 0 | Empty state message + back button |
-| Sub-categories fetch failed | `<ErrorView />` with retry + back button |
-| User taps a sub-category (L2 link) | No-op (leaf node, product listing out of scope) |
-| User taps back | Return to top-level categories view |
+| Condition                          | Display                                                  |
+| ---------------------------------- | -------------------------------------------------------- |
+| Sub-categories loading             | `<LoadingSpinner />`                                     |
+| Sub-categories loaded, count > 0   | Back button + category title heading + sub-category list |
+| Sub-categories loaded, count === 0 | Empty state message + back button                        |
+| Sub-categories fetch failed        | `<ErrorView />` with retry + back button                 |
+| User taps a sub-category (L2 link) | No-op (leaf node, product listing out of scope)          |
+| User taps back                     | Return to top-level categories view                      |
 
 ## No Changes to Existing Types
 

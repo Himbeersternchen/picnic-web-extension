@@ -13,15 +13,15 @@ This feature introduces delivery slot types, a slot parser, and adds delivery sl
 
 Our application-level representation of a single delivery slot, extracted defensively from the raw API response.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `slotId` | `string` | Unique slot identifier |
-| `windowStart` | `string` | ISO 8601 start time of the delivery window |
-| `windowEnd` | `string` | ISO 8601 end time of the delivery window |
-| `cutOffTime` | `string` | ISO 8601 cut-off time for selecting this slot |
-| `isAvailable` | `boolean` | Whether the slot can be selected |
-| `isSelected` | `boolean` | Whether this slot is currently selected |
-| `isGreenChoice` | `boolean` | Whether this is the eco-friendly (wider window) option |
+| Field               | Type             | Description                                            |
+| ------------------- | ---------------- | ------------------------------------------------------ |
+| `slotId`            | `string`         | Unique slot identifier                                 |
+| `windowStart`       | `string`         | ISO 8601 start time of the delivery window             |
+| `windowEnd`         | `string`         | ISO 8601 end time of the delivery window               |
+| `cutOffTime`        | `string`         | ISO 8601 cut-off time for selecting this slot          |
+| `isAvailable`       | `boolean`        | Whether the slot can be selected                       |
+| `isSelected`        | `boolean`        | Whether this slot is currently selected                |
+| `isGreenChoice`     | `boolean`        | Whether this is the eco-friendly (wider window) option |
 | `minimumOrderValue` | `number \| null` | Minimum order value in cents, or null if not specified |
 
 ```typescript
@@ -41,13 +41,13 @@ export type DeliverySlotData = {
 
 Summary of the currently selected slot for the banner.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `slotId` | `string` | Selected slot's identifier |
-| `state` | `string` | Selection state: `"IMPLICIT"`, `"ACTIVE"`, or `"EXPLICIT"` |
-| `windowStart` | `string \| null` | ISO 8601 start time, or null if slot not found in `delivery_slots` |
-| `windowEnd` | `string \| null` | ISO 8601 end time, or null if slot not found |
-| `isExplicitSelection` | `boolean` | `true` if user actively chose this slot (state !== "IMPLICIT") |
+| Field                 | Type             | Description                                                        |
+| --------------------- | ---------------- | ------------------------------------------------------------------ |
+| `slotId`              | `string`         | Selected slot's identifier                                         |
+| `state`               | `string`         | Selection state: `"IMPLICIT"`, `"ACTIVE"`, or `"EXPLICIT"`         |
+| `windowStart`         | `string \| null` | ISO 8601 start time, or null if slot not found in `delivery_slots` |
+| `windowEnd`           | `string \| null` | ISO 8601 end time, or null if slot not found                       |
+| `isExplicitSelection` | `boolean`        | `true` if user actively chose this slot (state !== "IMPLICIT")     |
 
 ```typescript
 export type SelectedSlotData = {
@@ -63,13 +63,13 @@ export type SelectedSlotData = {
 
 Slots grouped by calendar day for the picker UI.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `date` | `string` | ISO date string (YYYY-MM-DD) for this day |
-| `dayLabel` | `string` | Display label: "Vandaag", "Morgen", or Dutch day name |
-| `dateLabel` | `string` | Abbreviated date: "16 apr", "17 apr" |
-| `greenSlots` | `DeliverySlotData[]` | Eco-friendly (wider window) slots for this day |
-| `regularSlots` | `DeliverySlotData[]` | Standard (narrower window) slots for this day |
+| Field          | Type                 | Description                                           |
+| -------------- | -------------------- | ----------------------------------------------------- |
+| `date`         | `string`             | ISO date string (YYYY-MM-DD) for this day             |
+| `dayLabel`     | `string`             | Display label: "Vandaag", "Morgen", or Dutch day name |
+| `dateLabel`    | `string`             | Abbreviated date: "16 apr", "17 apr"                  |
+| `greenSlots`   | `DeliverySlotData[]` | Eco-friendly (wider window) slots for this day        |
+| `regularSlots` | `DeliverySlotData[]` | Standard (narrower window) slots for this day         |
 
 ```typescript
 export type SlotDayGroup = {
@@ -85,9 +85,9 @@ export type SlotDayGroup = {
 
 Complete data set for the slot picker modal, returned by the delivery slots API route.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `dayGroups` | `SlotDayGroup[]` | Available slots grouped by day |
+| Field          | Type                       | Description                           |
+| -------------- | -------------------------- | ------------------------------------- |
+| `dayGroups`    | `SlotDayGroup[]`           | Available slots grouped by day        |
 | `selectedSlot` | `SelectedSlotData \| null` | Currently selected slot info, or null |
 
 ```typescript
@@ -103,10 +103,10 @@ export type DeliverySlotPickerData = {
 
 Add two fields to the existing type. These are populated from the cart response (not the dedicated slots endpoint).
 
-| Field | Type | Default | Description |
-|-------|------|---------|-------------|
-| `selectedSlot` | `SelectedSlotData \| null` | `null` | Selected delivery slot summary for the banner. `null` when no slot data in response. |
-| `deliveryBannerText` | `string` | `"Kies je bezorgmoment"` | Pre-formatted banner text. Either the prompt or the formatted time window. |
+| Field                | Type                       | Default                  | Description                                                                          |
+| -------------------- | -------------------------- | ------------------------ | ------------------------------------------------------------------------------------ |
+| `selectedSlot`       | `SelectedSlotData \| null` | `null`                   | Selected delivery slot summary for the banner. `null` when no slot data in response. |
+| `deliveryBannerText` | `string`                   | `"Kies je bezorgmoment"` | Pre-formatted banner text. Either the prompt or the formatted time window.           |
 
 ```typescript
 // Added to CartData:
@@ -123,46 +123,46 @@ export type CartData = {
 
 ### Raw Cart API → CartData (delivery slot fields)
 
-| Raw API field | CartData field | Extraction |
-|--------------|----------------|------------|
-| `rawData["selected_slot"]` | `selectedSlot` | `parseSelectedSlot(rawData)` — extracts slot_id, state, matches against delivery_slots for window times |
+| Raw API field                                            | CartData field       | Extraction                                                                                                |
+| -------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------------------------------------- |
+| `rawData["selected_slot"]`                               | `selectedSlot`       | `parseSelectedSlot(rawData)` — extracts slot_id, state, matches against delivery_slots for window times   |
 | `rawData["selected_slot"]` + `rawData["delivery_slots"]` | `deliveryBannerText` | If explicit selection: `formatBannerText(windowStart, windowEnd)`. If implicit: `"Kies je bezorgmoment"`. |
 
 ### Raw Delivery Slots API → DeliverySlotPickerData
 
-| Raw API field | Picker field | Extraction |
-|--------------|-------------|------------|
-| `result["delivery_slots"]` | `dayGroups` | Group by day, identify green slots, sort by time |
-| `result["selected_slot"]` | `selectedSlot` | Same parsing as cart response |
+| Raw API field              | Picker field   | Extraction                                       |
+| -------------------------- | -------------- | ------------------------------------------------ |
+| `result["delivery_slots"]` | `dayGroups`    | Group by day, identify green slots, sort by time |
+| `result["selected_slot"]`  | `selectedSlot` | Same parsing as cart response                    |
 
 ### DeliverySlotPickerData → Slot Picker Component
 
-| Data field | Component usage |
-|------------|----------------|
-| `dayGroups` | Day tabs (horizontal scroll) + slot lists per day |
-| `dayGroups[n].greenSlots` | "Groenste keuze voor jouw buurt" section |
-| `dayGroups[n].regularSlots` | "Of kies een ander moment" section |
-| `selectedSlot` | "Geselecteerd door jou" section (when selected slot is on current day tab) |
+| Data field                  | Component usage                                                            |
+| --------------------------- | -------------------------------------------------------------------------- |
+| `dayGroups`                 | Day tabs (horizontal scroll) + slot lists per day                          |
+| `dayGroups[n].greenSlots`   | "Groenste keuze voor jouw buurt" section                                   |
+| `dayGroups[n].regularSlots` | "Of kies een ander moment" section                                         |
+| `selectedSlot`              | "Geselecteerd door jou" section (when selected slot is on current day tab) |
 
 ## Display Rules
 
 ### Banner
 
-| Condition | Display |
-|-----------|---------|
-| `selectedSlot === null` | "Kies je bezorgmoment" |
-| `selectedSlot.isExplicitSelection === false` | "Kies je bezorgmoment" |
-| `selectedSlot.isExplicitSelection === true` | Formatted time window (e.g., "Morgen 14:40 - 15:40") |
+| Condition                                    | Display                                              |
+| -------------------------------------------- | ---------------------------------------------------- |
+| `selectedSlot === null`                      | "Kies je bezorgmoment"                               |
+| `selectedSlot.isExplicitSelection === false` | "Kies je bezorgmoment"                               |
+| `selectedSlot.isExplicitSelection === true`  | Formatted time window (e.g., "Morgen 14:40 - 15:40") |
 
 ### Picker — Day Grouping
 
-| Condition | Display |
-|-----------|---------|
-| Day has green slots AND regular slots | Two sections: "Groenste keuze..." + "Of kies een ander moment" |
-| Day has only regular slots (no green) | Single section: "Of kies een ander moment" |
-| Day has only green slots | Single section: "Groenste keuze..." |
-| Selected slot is on current day tab | Replace sections with: "Geselecteerd door jou" + "Of kies een ander moment" |
-| Selected slot is on different day tab | Show normal green/regular grouping |
+| Condition                             | Display                                                                     |
+| ------------------------------------- | --------------------------------------------------------------------------- |
+| Day has green slots AND regular slots | Two sections: "Groenste keuze..." + "Of kies een ander moment"              |
+| Day has only regular slots (no green) | Single section: "Of kies een ander moment"                                  |
+| Day has only green slots              | Single section: "Groenste keuze..."                                         |
+| Selected slot is on current day tab   | Replace sections with: "Geselecteerd door jou" + "Of kies een ander moment" |
+| Selected slot is on different day tab | Show normal green/regular grouping                                          |
 
 ## State Transitions
 
@@ -196,6 +196,7 @@ User taps X
 ## Existing Types Referenced
 
 From `src/lib/types.ts` (unchanged):
+
 - `CartItem` — not affected
 - `DepositEntry` — not affected
 - `FeeEntry` — not affected

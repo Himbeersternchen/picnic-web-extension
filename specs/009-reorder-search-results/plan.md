@@ -21,27 +21,27 @@ Display the "Opnieuw bestellen" (reorder) section in search results when the ups
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP / DRY / Dependency Injection | PASS | Changes scoped to search parser (`parse-fusion-search.ts`). No new components expected — existing `ProductGrid`, `SectionNavBar`, `ProductCard` already handle sections generically. Shared utilities (`containerToProduct`, `extractProductsFromWrappers`) are reused. |
-| II. Naming Conventions | PASS | All existing names follow verb-first camelCase for functions, descriptive nouns for variables. No new names expected to violate. |
-| III. Forbidden Anti-Patterns | PASS | `parse-fusion-search.ts` is 275 lines (under 300 limit). Parser changes are scoped additions, not expanding the file significantly. No deep nesting, no magic strings (constants already extracted). |
-| IV. Mandatory Self-Refactor Protocol | PASS | Will be enforced during implementation. |
-| V. Readability Over Cleverness | PASS | Parser uses explicit loops and guard clauses. No clever constructs. |
+| Principle                            | Status | Notes                                                                                                                                                                                                                                                                   |
+| ------------------------------------ | ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. SRP / DRY / Dependency Injection  | PASS   | Changes scoped to search parser (`parse-fusion-search.ts`). No new components expected — existing `ProductGrid`, `SectionNavBar`, `ProductCard` already handle sections generically. Shared utilities (`containerToProduct`, `extractProductsFromWrappers`) are reused. |
+| II. Naming Conventions               | PASS   | All existing names follow verb-first camelCase for functions, descriptive nouns for variables. No new names expected to violate.                                                                                                                                        |
+| III. Forbidden Anti-Patterns         | PASS   | `parse-fusion-search.ts` is 275 lines (under 300 limit). Parser changes are scoped additions, not expanding the file significantly. No deep nesting, no magic strings (constants already extracted).                                                                    |
+| IV. Mandatory Self-Refactor Protocol | PASS   | Will be enforced during implementation.                                                                                                                                                                                                                                 |
+| V. Readability Over Cleverness       | PASS   | Parser uses explicit loops and guard clauses. No clever constructs.                                                                                                                                                                                                     |
 
 **Gate result**: PASS — proceed to Phase 0.
 
 ### Post-Design Re-Check (after Phase 1)
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP / DRY / DI | PASS | No new entities, no new components. Changes scoped to parser functions. Existing shared utilities reused. |
-| II. Naming Conventions | PASS | No new public APIs. Any new helpers follow existing verb-first camelCase convention. |
-| III. Forbidden Anti-Patterns | PASS | File stays under 300 lines. No new nesting, no magic strings. |
-| IV. Self-Refactor Protocol | PASS | Enforced during implementation. |
-| V. Readability Over Cleverness | PASS | No change to existing explicit style. |
+| Principle                      | Status | Notes                                                                                                     |
+| ------------------------------ | ------ | --------------------------------------------------------------------------------------------------------- |
+| I. SRP / DRY / DI              | PASS   | No new entities, no new components. Changes scoped to parser functions. Existing shared utilities reused. |
+| II. Naming Conventions         | PASS   | No new public APIs. Any new helpers follow existing verb-first camelCase convention.                      |
+| III. Forbidden Anti-Patterns   | PASS   | File stays under 300 lines. No new nesting, no magic strings.                                             |
+| IV. Self-Refactor Protocol     | PASS   | Enforced during implementation.                                                                           |
+| V. Readability Over Cleverness | PASS   | No change to existing explicit style.                                                                     |
 
 **Post-design gate result**: PASS — no violations, no complexity tracking entries needed.
 

@@ -5,7 +5,7 @@
 **Status**: Clarified  
 **Input**: User description: "Add 'Opnieuw bestellen' section to search results. These are in the app but I don't see them in the search results here yet. Try with search terms 'Roomboter' and 'Tomaten'"
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Display "Opnieuw bestellen" Section in Search Results (Priority: P1)
 
@@ -63,7 +63,7 @@ Products that appear in the "Opnieuw bestellen" section are not duplicated in th
 - What happens when the API response structure for re-order products differs from regular product tiles? The parser must handle variant PML structures and still extract product data.
 - What happens when the user is not logged in? The search API requires authentication; unauthenticated users are redirected to login and never see search results.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -83,7 +83,7 @@ Products that appear in the "Opnieuw bestellen" section are not duplicated in th
 - **Search Section**: A titled group of products within search results. Sections include both re-order sections and category sections. Each has a title and a list of products.
 - **Product**: A purchasable item with image, name, price, quantity, badges, and availability status. Identical structure whether in a re-order section or category section.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
@@ -106,10 +106,10 @@ Products that appear in the "Opnieuw bestellen" section are not duplicated in th
 
 Completed: 2026-04-10
 
-| # | Topic | Decision |
-|---|-------|----------|
-| 1 | Parser approach | Debug existing parser by inspecting actual API response before any rewrite |
-| 2 | Cart actions in re-order | Re-order products get full cart action controls (add-to-cart / quantity stepper), same as regular search products |
-| 3 | Deduplication | Trust API deduplication; no client-side dedup unless proven necessary during research |
-| 4 | Section type field | Keep `SearchSection` type unchanged; rely on array position and title |
-| 5 | Research phase | Include explicit research phase (capture & inspect raw API response) as a prerequisite before implementation |
+| #   | Topic                    | Decision                                                                                                          |
+| --- | ------------------------ | ----------------------------------------------------------------------------------------------------------------- |
+| 1   | Parser approach          | Debug existing parser by inspecting actual API response before any rewrite                                        |
+| 2   | Cart actions in re-order | Re-order products get full cart action controls (add-to-cart / quantity stepper), same as regular search products |
+| 3   | Deduplication            | Trust API deduplication; no client-side dedup unless proven necessary during research                             |
+| 4   | Section type field       | Keep `SearchSection` type unchanged; rely on array position and title                                             |
+| 5   | Research phase           | Include explicit research phase (capture & inspect raw API response) as a prerequisite before implementation      |

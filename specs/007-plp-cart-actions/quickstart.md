@@ -18,35 +18,35 @@ Then navigate to `http://localhost:3000?q=roomboter` to see search results with 
 
 ## Key Files to Create
 
-| File | Purpose |
-|------|---------|
-| `src/contexts/cart-context.tsx` | CartProvider + useCart hook: manages cart state, optimistic mutations, bundle data |
-| `src/lib/mutation-queue.ts` | Per-product sequential mutation queue utility (pure logic, no React) |
-| `src/components/quantity-stepper.tsx` | Minus/count/plus control overlay for product cards |
-| `src/components/bundle-dots.tsx` | Dot indicators showing progress toward bundle threshold |
-| `src/components/savings-label.tsx` | "€X.XX bespaard" label for active bundle discounts |
-| `src/components/cart-toast.tsx` | Global toast for cart mutation error feedback |
+| File                                  | Purpose                                                                            |
+| ------------------------------------- | ---------------------------------------------------------------------------------- |
+| `src/contexts/cart-context.tsx`       | CartProvider + useCart hook: manages cart state, optimistic mutations, bundle data |
+| `src/lib/mutation-queue.ts`           | Per-product sequential mutation queue utility (pure logic, no React)               |
+| `src/components/quantity-stepper.tsx` | Minus/count/plus control overlay for product cards                                 |
+| `src/components/bundle-dots.tsx`      | Dot indicators showing progress toward bundle threshold                            |
+| `src/components/savings-label.tsx`    | "€X.XX bespaard" label for active bundle discounts                                 |
+| `src/components/cart-toast.tsx`       | Global toast for cart mutation error feedback                                      |
 
 ## Key Files to Modify
 
-| File | Change |
-|------|--------|
-| `src/app/api/cart/route.ts` | Add `POST` handler for cart mutations (add/remove product) |
-| `src/app/page.tsx` | Wrap content with `CartProvider`; fetch initial cart on mount |
-| `src/components/product-card.tsx` | Add cart action overlay (add button or quantity stepper) |
-| `src/components/shared-header.tsx` | Subscribe to `CartContext` for reactive cart badge updates when available |
-| `src/lib/types.ts` | Add `CartMutationRequest`, `BundleProgress`, `BundleThreshold`, `CartContextState` types |
+| File                               | Change                                                                                   |
+| ---------------------------------- | ---------------------------------------------------------------------------------------- |
+| `src/app/api/cart/route.ts`        | Add `POST` handler for cart mutations (add/remove product)                               |
+| `src/app/page.tsx`                 | Wrap content with `CartProvider`; fetch initial cart on mount                            |
+| `src/components/product-card.tsx`  | Add cart action overlay (add button or quantity stepper)                                 |
+| `src/components/shared-header.tsx` | Subscribe to `CartContext` for reactive cart badge updates when available                |
+| `src/lib/types.ts`                 | Add `CartMutationRequest`, `BundleProgress`, `BundleThreshold`, `CartContextState` types |
 
 ## Existing Files to Reference (Do Not Modify)
 
-| File | Why |
-|------|-----|
-| `src/lib/parse-cart.ts` | Reuse for parsing cart mutation responses (same shape as GET /cart) |
+| File                              | Why                                                                 |
+| --------------------------------- | ------------------------------------------------------------------- |
+| `src/lib/parse-cart.ts`           | Reuse for parsing cart mutation responses (same shape as GET /cart) |
 | `src/lib/extract-product-data.ts` | Reference for `extractBundles()` — bundle extraction from PDP pages |
-| `src/app/api/search/route.ts` | Reference for `sendRequest` cast pattern |
-| `src/lib/picnic-client.ts` | Use `buildPicnicClient(token)` in API route |
-| `src/lib/auth.ts` | Use `readAuthToken(request)` in API route |
-| `src/lib/api-error.ts` | Use `isApiAuthError(error)` for auth error detection |
+| `src/app/api/search/route.ts`     | Reference for `sendRequest` cast pattern                            |
+| `src/lib/picnic-client.ts`        | Use `buildPicnicClient(token)` in API route                         |
+| `src/lib/auth.ts`                 | Use `readAuthToken(request)` in API route                           |
+| `src/lib/api-error.ts`            | Use `isApiAuthError(error)` for auth error detection                |
 
 ## Lint Check
 

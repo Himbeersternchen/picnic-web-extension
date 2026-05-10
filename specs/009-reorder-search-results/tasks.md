@@ -19,9 +19,9 @@
 
 **Purpose**: Prepare the debugging environment to capture and inspect the raw API response.
 
-- [X] T001 Add temporary debug logging to capture raw Fusion page response in `src/app/api/search/route.ts`
-- [X] T002 Search for "Roomboter" via the browser and capture the full JSON response from the server console output
-- [X] T003 Save the captured API response to `specs/009-reorder-search-results/debug/roomboter-response.json` for analysis
+- [x] T001 Add temporary debug logging to capture raw Fusion page response in `src/app/api/search/route.ts`
+- [x] T002 Search for "Roomboter" via the browser and capture the full JSON response from the server console output
+- [x] T003 Save the captured API response to `specs/009-reorder-search-results/debug/roomboter-response.json` for analysis
 
 **Checkpoint**: Raw API response captured and available for analysis. ✅ Used existing `/tmp/picnic-test3.json` (Tomaten search).
 
@@ -33,10 +33,10 @@
 
 **⚠️ CRITICAL**: No parser changes until the PML tree structure is understood.
 
-- [X] T004 Analyze the PML tree in the captured response: locate the `structured-selling-unit-search-result` container and document its direct children (node IDs, types, structure)
-- [X] T005 Identify the re-order section nodes: document whether they use the expected ID patterns (`client-side-filtering-section-header-wrapper-*` and `client-side-filtering-section-wrapper-*`) or different patterns
-- [X] T006 Inspect re-order product tiles: document whether they have `type: "PML"`, `id` starting with `selling-unit-` containing `-tile`, and `content.sellingUnit` with product data — compare to category section tiles
-- [X] T007 Document the root cause in `specs/009-reorder-search-results/research.md` (update the "Unresolved Items" section with concrete findings)
+- [x] T004 Analyze the PML tree in the captured response: locate the `structured-selling-unit-search-result` container and document its direct children (node IDs, types, structure)
+- [x] T005 Identify the re-order section nodes: document whether they use the expected ID patterns (`client-side-filtering-section-header-wrapper-*` and `client-side-filtering-section-wrapper-*`) or different patterns
+- [x] T006 Inspect re-order product tiles: document whether they have `type: "PML"`, `id` starting with `selling-unit-` containing `-tile`, and `content.sellingUnit` with product data — compare to category section tiles
+- [x] T007 Document the root cause in `specs/009-reorder-search-results/research.md` (update the "Unresolved Items" section with concrete findings)
 
 **Checkpoint**: Root cause identified. ✅ **Finding: Parser already works correctly. No bug exists.** All three hypothesized failure points were disproven. See research.md for details.
 
@@ -53,8 +53,8 @@
 - [~] T008 [US1] Fix re-order section extraction in `parseFusionSearchSections` in `src/lib/parse-fusion-search.ts` based on root cause analysis from T004-T007 — **NOT NEEDED: parser already works correctly**
 - [~] T009 [US1] If needed: update `findSellingUnitContainers` in `src/lib/pml-helpers.ts` to detect re-order product tile containers (if they use different ID patterns than `selling-unit-*-tile`) — **NOT NEEDED: tiles use standard pattern**
 - [~] T010 [US1] If needed: update `containerToProduct` or tile data extraction in `src/lib/extract-tile-data.ts` to handle variant PML structures in re-order tiles — **NOT NEEDED: tiles have standard content.sellingUnit**
-- [X] T011 [US1] Verify the section title is extracted from the API response (FR-008: not hardcoded) via `extractSectionTitle` in `src/lib/parse-fusion-search.ts`
-- [X] T012 [US1] Verify empty re-order sections (header but no products) are not rendered — confirm the existing `products.length > 0` guard at line 184 of `src/lib/parse-fusion-search.ts` handles this
+- [x] T011 [US1] Verify the section title is extracted from the API response (FR-008: not hardcoded) via `extractSectionTitle` in `src/lib/parse-fusion-search.ts`
+- [x] T012 [US1] Verify empty re-order sections (header but no products) are not rendered — confirm the existing `products.length > 0` guard at line 184 of `src/lib/parse-fusion-search.ts` handles this
 - [ ] T013 [US1] Manual validation: search "Roomboter" — verify "Opnieuw bestellen" section appears at top with full product cards
 - [ ] T014 [US1] Manual validation: search "Tomaten" — verify "Opnieuw bestellen" section appears at top with full product cards
 - [ ] T015 [US1] Manual validation: search a term with no re-order data (e.g., "Waspoeder") — verify only category sections appear (no regression)
@@ -71,7 +71,7 @@
 
 ### Implementation for User Story 2
 
-- [X] T016 [US2] Verify the section nav bar renders the "Opnieuw bestellen" pill — since `SectionNavBar` in `src/components/section-nav-bar.tsx` renders dynamically from the `sections` array, this works automatically
+- [x] T016 [US2] Verify the section nav bar renders the "Opnieuw bestellen" pill — since `SectionNavBar` in `src/components/section-nav-bar.tsx` renders dynamically from the `sections` array, this works automatically
 - [ ] T017 [US2] Manual validation: search "Roomboter" — verify the nav bar shows the "Opnieuw bestellen" pill and tapping it scrolls to the section
 - [ ] T018 [US2] Manual validation: search a term with no re-order data — verify no "Opnieuw bestellen" pill appears in the nav bar
 
@@ -87,7 +87,7 @@
 
 ### Implementation for User Story 3
 
-- [X] T019 [US3] Verify the existing `seenIds` deduplication mechanism in `parseFusionSearchSections` in `src/lib/parse-fusion-search.ts` (lines 153, 128-129) correctly prevents re-order products from appearing in category sections — **confirmed via parser test: 189 unique products across 8 sections**
+- [x] T019 [US3] Verify the existing `seenIds` deduplication mechanism in `parseFusionSearchSections` in `src/lib/parse-fusion-search.ts` (lines 153, 128-129) correctly prevents re-order products from appearing in category sections — **confirmed via parser test: 189 unique products across 8 sections**
 - [ ] T020 [US3] Manual validation: search "Roomboter" — verify no product appears in both the "Opnieuw bestellen" section and a category section
 - [ ] T021 [US3] Manual validation: if a category section would be empty after deduplication, verify it is omitted entirely (not shown with zero products)
 
@@ -99,11 +99,11 @@
 
 **Purpose**: Clean up debug artifacts, run lint/build, verify no regressions.
 
-- [X] T022 Remove temporary debug logging from `src/app/api/search/route.ts`
+- [x] T022 Remove temporary debug logging from `src/app/api/search/route.ts`
 - [~] T023 Delete the debug response file `specs/009-reorder-search-results/debug/roomboter-response.json` (or move to a test fixtures directory if useful for future reference) — **N/A: debug dir was never populated**
-- [X] T024 Verify `src/lib/parse-fusion-search.ts` remains under 300 lines (constitution Principle III) — **275 lines ✅**
-- [X] T025 Run `npm run lint` and fix any linting violations — **passes clean ✅**
-- [X] T026 Run `npm run build` and fix any build errors — **builds successfully ✅**
+- [x] T024 Verify `src/lib/parse-fusion-search.ts` remains under 300 lines (constitution Principle III) — **275 lines ✅**
+- [x] T025 Run `npm run lint` and fix any linting violations — **passes clean ✅**
+- [x] T026 Run `npm run build` and fix any build errors — **builds successfully ✅**
 - [ ] T027 Final end-to-end validation: search "Roomboter", "Tomaten", and a no-reorder term — verify all acceptance scenarios from spec.md pass
 
 ---

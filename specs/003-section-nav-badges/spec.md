@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "I would like to add navigation badges to the top of the search result page, one for each header. This bar should be sticky so that when you scroll down you can still easily navigate to other sections. The active badge should dynamically change when you scroll over the page, to whatever section you are at that moment looking at. And of course clicking a badge should move you to that section. The active badge should be the red primary picnic colour."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Click Badge to Navigate to Section (Priority: P1)
 
@@ -64,7 +64,7 @@ As a user scrolling through search results, I want the badge corresponding to th
 - What happens when the user resizes the browser window? The badge bar adapts; horizontal overflow behavior adjusts to the new width.
 - What happens during the loading state (before results arrive)? The badge bar is not displayed until sections are available.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -85,7 +85,7 @@ As a user scrolling through search results, I want the badge corresponding to th
 - **SectionBadge**: Represents a single navigation badge — displays a section title and links to the corresponding section in the results list.
 - **BadgeBar**: The horizontal container holding all section badges — sticky-positioned, horizontally scrollable, manages active badge state.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

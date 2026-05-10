@@ -21,6 +21,7 @@ with "all the latest patterns." As of March 2026:
   plugin is `@tailwindcss/postcss`.
 
 **Alternatives considered**:
+
 - Next.js 15 (older, missing Cache Components and PPR improvements)
 - Tailwind CSS 3 (older config model, not the latest)
 - CSS Modules (viable but Tailwind is more productive for rapid UI development)
@@ -45,6 +46,7 @@ search bar and results display. Data flows through server-side Route
 Handlers that call `picnic-api` methods.
 
 **Alternatives considered**:
+
 - Server Components with `async/await` (rejected: search is interactive,
   requires client-side state for typing/debounce/suggestions)
 - Server Actions (rejected: better suited for mutations, not GET queries)
@@ -62,19 +64,19 @@ points."
 The `picnic-api` `catalog.search()` method returns `SellingUnit[]` by
 extracting objects via JSONPath from the Fusion page response. This provides:
 
-| Field | Source | Available from `search()` |
-|-------|--------|---------------------------|
-| Name | `sellingUnit.name` | Yes |
-| Image | `sellingUnit.image_id` | Yes |
-| Current price | `sellingUnit.display_price` (cents) | Yes |
-| Unit/quantity | `sellingUnit.unit_quantity` | Yes |
-| Labels/badges | `sellingUnit.decorators[]` | Yes |
-| Original price | `decorators` with `type: "PRICE"` | Yes |
-| Base price text | `decorators` with `type: "BASE_PRICE"` | Yes |
-| Size label | `decorators` with `type: "PRODUCT_SIZE"` | Yes |
-| Freshness | `decorators` with `type: "FRESH_LABEL"` | Yes |
-| Availability | `decorators` with `type: "UNAVAILABLE"` | Yes |
-| Brand/company | NOT in `SellingUnit` | No |
+| Field           | Source                                   | Available from `search()` |
+| --------------- | ---------------------------------------- | ------------------------- |
+| Name            | `sellingUnit.name`                       | Yes                       |
+| Image           | `sellingUnit.image_id`                   | Yes                       |
+| Current price   | `sellingUnit.display_price` (cents)      | Yes                       |
+| Unit/quantity   | `sellingUnit.unit_quantity`              | Yes                       |
+| Labels/badges   | `sellingUnit.decorators[]`               | Yes                       |
+| Original price  | `decorators` with `type: "PRICE"`        | Yes                       |
+| Base price text | `decorators` with `type: "BASE_PRICE"`   | Yes                       |
+| Size label      | `decorators` with `type: "PRODUCT_SIZE"` | Yes                       |
+| Freshness       | `decorators` with `type: "FRESH_LABEL"`  | Yes                       |
+| Availability    | `decorators` with `type: "UNAVAILABLE"`  | Yes                       |
+| Brand/company   | NOT in `SellingUnit`                     | No                        |
 
 **Brand/company gap**: The `SellingUnit` type does not contain a brand field.
 Brand is only available from the product details page PML tree. However, the
@@ -98,6 +100,7 @@ tree does not reliably contain brand info, we gracefully omit it (matching
 Option C behavior). This avoids N+1 API calls while extracting maximum data.
 
 **Alternatives considered**:
+
 - Using `catalog.search()` as-is (rejected: misses brand and crossed-out
   price context from PML tree)
 - Calling `getProductDetails()` per result (rejected: N+1 API calls,
@@ -112,6 +115,7 @@ based on the extracted data points." We build our own React components that
 consume structured data (extracted from the API), not PML node trees.
 
 Components needed:
+
 - `SearchBar` — input with debounce and suggestion dropdown
 - `ProductCard` — displays product image, name, brand, price, unit, labels
 - `ProductGrid` — layout container for product cards
@@ -123,6 +127,7 @@ Styling uses Tailwind CSS 4 with custom `@theme` tokens for Picnic brand
 colors and spacing.
 
 **Alternatives considered**:
+
 - Re-using the PML rendering engine from the previous v2 attempt (rejected:
   user explicitly said not to)
 - Using a UI library like shadcn/ui (viable but unnecessary for the small
@@ -143,6 +148,7 @@ colors and spacing.
 5. Pressing Enter triggers full search with current input
 
 **Alternatives considered**:
+
 - Server Component with streaming (rejected: requires client-side
   interactivity for typing and dropdown)
 - SWR/React Query (viable but adds dependency; native `useState` +
@@ -160,6 +166,7 @@ Available sizes: `tiny`, `small`, `medium`, `large`, `extra-large`.
 Default to `medium` for product cards.
 
 **Alternatives considered**:
+
 - Proxying images through our server (rejected: unnecessary bandwidth,
   latency; CDN is publicly accessible)
 - Using `getImageAsDataUri()` (rejected: base64 encoding inflates payload
@@ -170,6 +177,7 @@ Default to `medium` for product cards.
 ### Decision: Extract price data from SellingUnit + decorators
 
 **Price display rules**:
+
 1. `sellingUnit.display_price` is the current (possibly discounted) price
    in cents.
 2. If a `PRICE` decorator exists with a different `display_price`, one of
@@ -185,16 +193,16 @@ Default to `medium` for product cards.
 
 ### Decision: Map relevant decorator types to visual badges
 
-| Decorator Type | Badge Display |
-|----------------|---------------|
-| `LABEL` | Show `text` as promotional badge |
-| `PRODUCT_SIZE` | Show `text` as size badge |
-| `FRESH_LABEL` | Show freshness badge with `period` |
-| `BASE_PRICE` | Show `base_price_text` as unit price |
-| `UNAVAILABLE` | Show availability notice with `reason` |
-| `PRODUCT_CHARACTERISTICS` | Show relevant characteristics |
-| `QUANTITY` | Show quantity indicator |
-| `VALIDITY_LABEL` | Show promotion validity date |
+| Decorator Type            | Badge Display                          |
+| ------------------------- | -------------------------------------- |
+| `LABEL`                   | Show `text` as promotional badge       |
+| `PRODUCT_SIZE`            | Show `text` as size badge              |
+| `FRESH_LABEL`             | Show freshness badge with `period`     |
+| `BASE_PRICE`              | Show `base_price_text` as unit price   |
+| `UNAVAILABLE`             | Show availability notice with `reason` |
+| `PRODUCT_CHARACTERISTICS` | Show relevant characteristics          |
+| `QUANTITY`                | Show quantity indicator                |
+| `VALIDITY_LABEL`          | Show promotion validity date           |
 
 Decorators not relevant for search card display (ignored):
 `BACKGROUND_IMAGE`, `BANNERS`, `TITLE_STYLE`, `MORE_BUTTON`, `IMMUTABLE`,

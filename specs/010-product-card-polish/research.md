@@ -11,11 +11,11 @@
 
 **Options evaluated**:
 
-| Approach | Description | Pros | Cons |
-|----------|-------------|------|------|
-| A. `mt-auto` wrapper | Wrap price + badges in a `div` with `mt-auto` that pushes them to the bottom of the flex column | Simple, one structural change, works with existing flex layout | Adds one wrapper div |
-| B. CSS subgrid | Use `display: subgrid` on cards so rows align across grid cells | Perfect alignment of every row (name, brand, price) | Browser support incomplete, complex, overkill for this feature |
-| C. Fixed-height text area | Give the text content area a fixed height and let it overflow-clip | Simple | Fragile, doesn't adapt to varying content, wastes space on minimal cards |
+| Approach                  | Description                                                                                     | Pros                                                           | Cons                                                                     |
+| ------------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- | ------------------------------------------------------------------------ |
+| A. `mt-auto` wrapper      | Wrap price + badges in a `div` with `mt-auto` that pushes them to the bottom of the flex column | Simple, one structural change, works with existing flex layout | Adds one wrapper div                                                     |
+| B. CSS subgrid            | Use `display: subgrid` on cards so rows align across grid cells                                 | Perfect alignment of every row (name, brand, price)            | Browser support incomplete, complex, overkill for this feature           |
+| C. Fixed-height text area | Give the text content area a fixed height and let it overflow-clip                              | Simple                                                         | Fragile, doesn't adapt to varying content, wastes space on minimal cards |
 
 **Decision**: Option A — `mt-auto` wrapper around price + badges.
 
@@ -67,13 +67,13 @@ Fixed-height text area (Option C) is fragile and wasteful — it forces cards wi
 
 ## Summary of Findings
 
-| Question | Finding | Action |
-|----------|---------|--------|
-| RQ-1: Layout technique | `mt-auto` wrapper around price + badges | Implement in product-card.tsx |
-| RQ-2: Specific changes | Add wrapper div, move `mt-auto`, adjust spacing | 3 changes in one file |
-| RQ-3: Cart overlay compat | No conflict — overlay is absolute-positioned | No action needed |
-| RQ-4: Unavailability compat | No conflict — overlay is absolute-positioned | No action needed |
-| RQ-5: Visual polish scope | Spacing balance, no color/typography changes | Minor spacing adjustments |
+| Question                    | Finding                                         | Action                        |
+| --------------------------- | ----------------------------------------------- | ----------------------------- |
+| RQ-1: Layout technique      | `mt-auto` wrapper around price + badges         | Implement in product-card.tsx |
+| RQ-2: Specific changes      | Add wrapper div, move `mt-auto`, adjust spacing | 3 changes in one file         |
+| RQ-3: Cart overlay compat   | No conflict — overlay is absolute-positioned    | No action needed              |
+| RQ-4: Unavailability compat | No conflict — overlay is absolute-positioned    | No action needed              |
+| RQ-5: Visual polish scope   | Spacing balance, no color/typography changes    | Minor spacing adjustments     |
 
 ## Unresolved Items
 

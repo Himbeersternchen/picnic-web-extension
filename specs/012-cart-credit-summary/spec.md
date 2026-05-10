@@ -5,7 +5,7 @@
 **Status**: Draft  
 **Input**: User description: "the cart api response returns something like 'verekening picnic-tegoed'. Add this to the cart summary."
 
-## User Scenarios & Testing *(mandatory)*
+## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - View Picnic Credit Settlement in Cart Summary (Priority: P1)
 
@@ -43,7 +43,7 @@ When Picnic credit is applied, the total displayed in the cart summary already a
 - What happens when the API does not return a credit settlement field at all (e.g., older API versions or accounts without credit)? The line should not appear and no error should occur.
 - What happens when the credit amount exceeds the order value? The system should display whatever the API returns — the API handles the calculation; the frontend only displays it.
 
-## Requirements *(mandatory)*
+## Requirements _(mandatory)_
 
 ### Functional Requirements
 
@@ -59,7 +59,7 @@ When Picnic credit is applied, the total displayed in the cart summary already a
 
 - **Credit Settlement**: The amount of Picnic credit (tegoed) applied to the current order. Attributes: label (string from API), amount (monetary value). Relationship: reduces the checkout total shown to the user.
 
-## Success Criteria *(mandatory)*
+## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 

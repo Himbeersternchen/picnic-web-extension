@@ -13,9 +13,9 @@ Picnic API.
 
 ### Request
 
-| Parameter | Location | Type | Required | Description |
-|-----------|----------|------|----------|-------------|
-| `q` | query string | string | Yes | Search term (e.g., "tomaten") |
+| Parameter | Location     | Type   | Required | Description                   |
+| --------- | ------------ | ------ | -------- | ----------------------------- |
+| `q`       | query string | string | Yes      | Search term (e.g., "tomaten") |
 
 ### Response (200 OK)
 
@@ -72,9 +72,9 @@ Returned when the upstream Picnic API is unreachable or returns an error.
 
 ### Request
 
-| Parameter | Location | Type | Required | Description |
-|-----------|----------|------|----------|-------------|
-| `q` | query string | string | Yes | Partial search term (minimum 2 characters) |
+| Parameter | Location     | Type   | Required | Description                                |
+| --------- | ------------ | ------ | -------- | ------------------------------------------ |
+| `q`       | query string | string | Yes      | Partial search term (minimum 2 characters) |
 
 ### Response (200 OK)
 
@@ -119,11 +119,11 @@ URLs directly:
 https://storefront-prod.{countryCode}.picnicinternational.com/static/images/{imageId}/{size}.png
 ```
 
-| Parameter | Values |
-|-----------|--------|
-| `countryCode` | `nl` or `de` (from environment config) |
-| `imageId` | The `imageId` field from the Product entity |
-| `size` | `tiny`, `small`, `medium` (default), `large`, `extra-large` |
+| Parameter     | Values                                                      |
+| ------------- | ----------------------------------------------------------- |
+| `countryCode` | `nl` or `de` (from environment config)                      |
+| `imageId`     | The `imageId` field from the Product entity                 |
+| `size`        | `tiny`, `small`, `medium` (default), `large`, `extra-large` |
 
 The country code is provided to the client via a public environment
 variable (`NEXT_PUBLIC_PICNIC_COUNTRY_CODE`).

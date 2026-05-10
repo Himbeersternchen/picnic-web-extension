@@ -27,15 +27,15 @@ custom design system (not Fusion/PML-based) built on extracted data points.
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. Architectural Integrity (SRP, DRY, DI) | PASS | Each file has a single responsibility: route handlers, extraction logic, UI components, hooks, and types are all separate. PicnicClient is injected via factory function. |
-| II. Naming Conventions | PASS | All files use kebab-case, functions use verb-first camelCase (`extractProducts`, `buildImageUrl`, `fetchSuggestions`), constants use UPPER_SNAKE_CASE, booleans use `is`/`has` prefixes. |
-| III. Forbidden Anti-Patterns | PASS | No file exceeds 300 lines. No deep nesting (max 3 levels). Magic numbers extracted as constants (e.g., `CENTS_DIVISOR`, `DEBOUNCE_DELAY_MS`). Error handling is explicit in route handlers and UI. |
-| IV. Mandatory Self-Refactor Protocol | PASS | Applied during implementation: all code reviewed against principles before output. |
-| V. Readability Over Cleverness | PASS | Explicit control flow with early returns. No clever constructs. Comments explain "why" (e.g., why we parse the raw Fusion response instead of using `search()`). |
+| Principle                                 | Status | Notes                                                                                                                                                                                              |
+| ----------------------------------------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| I. Architectural Integrity (SRP, DRY, DI) | PASS   | Each file has a single responsibility: route handlers, extraction logic, UI components, hooks, and types are all separate. PicnicClient is injected via factory function.                          |
+| II. Naming Conventions                    | PASS   | All files use kebab-case, functions use verb-first camelCase (`extractProducts`, `buildImageUrl`, `fetchSuggestions`), constants use UPPER_SNAKE_CASE, booleans use `is`/`has` prefixes.           |
+| III. Forbidden Anti-Patterns              | PASS   | No file exceeds 300 lines. No deep nesting (max 3 levels). Magic numbers extracted as constants (e.g., `CENTS_DIVISOR`, `DEBOUNCE_DELAY_MS`). Error handling is explicit in route handlers and UI. |
+| IV. Mandatory Self-Refactor Protocol      | PASS   | Applied during implementation: all code reviewed against principles before output.                                                                                                                 |
+| V. Readability Over Cleverness            | PASS   | Explicit control flow with early returns. No clever constructs. Comments explain "why" (e.g., why we parse the raw Fusion response instead of using `search()`).                                   |
 
 ## Project Structure
 
@@ -90,6 +90,7 @@ route handlers act as the API proxy layer. All source code lives under
 
 No constitution violations to justify. The design stays within all
 principle boundaries:
+
 - All files are under 300 lines
 - Single responsibility per file
 - PicnicClient injected via factory (`getPicnicClient()`)

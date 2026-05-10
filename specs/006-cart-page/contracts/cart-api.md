@@ -23,12 +23,12 @@ GET /api/cart
 ```typescript
 type CartApiResponse = {
   items: CartItem[];
-  totalPrice: number;          // checkout_total_price in cents
+  totalPrice: number; // checkout_total_price in cents
   totalCount: number;
-  totalDiscount: number;       // calculated, in cents
-  depositTotal: number;        // calculated, in cents
+  totalDiscount: number; // calculated, in cents
+  depositTotal: number; // calculated, in cents
   depositBreakdown: DepositEntry[];
-  membershipSavings: number;   // in cents
+  membershipSavings: number; // in cents
   minimumOrderValue: number | null; // in cents, or null
   suggestions: SliderProduct[];
 };
@@ -48,9 +48,7 @@ type CartApiResponse = {
       "displayPrice": 119,
       "originalPrice": null,
       "quantity": 2,
-      "badges": [
-        { "text": "6 dagen vers", "variant": "freshness" }
-      ],
+      "badges": [{ "text": "6 dagen vers", "variant": "freshness" }],
       "isUnavailable": false,
       "unavailableExplanation": null,
       "replacements": []
@@ -60,9 +58,7 @@ type CartApiResponse = {
   "totalCount": 5,
   "totalDiscount": 420,
   "depositTotal": 50,
-  "depositBreakdown": [
-    { "type": "BAG", "value": 25, "count": 2, "total": 50 }
-  ],
+  "depositBreakdown": [{ "type": "BAG", "value": 25, "count": 2, "total": 50 }],
   "membershipSavings": 100,
   "minimumOrderValue": 3500,
   "suggestions": [
@@ -130,7 +126,7 @@ const rawCart = await (
       method: string,
       path: string,
       body: null,
-      includePicnicHeaders: boolean,
+      includePicnicHeaders: boolean
     ) => Promise<unknown>;
   }
 ).sendRequest("GET", "/cart", null, false);
@@ -140,11 +136,11 @@ const rawCart = await (
 
 ### Error Handling
 
-| Upstream Error | Detection | Response |
-|---------------|-----------|----------|
+| Upstream Error          | Detection                                                    | Response                   |
+| ----------------------- | ------------------------------------------------------------ | -------------------------- |
 | 401/403 from Picnic API | `isApiAuthError(error)` (shared from `src/lib/api-error.ts`) | 401 + `TOKEN_EXPIRED` code |
-| Network/timeout | `catch` block fallthrough | 502 + Dutch error message |
-| Unknown error | `catch` block fallthrough | 502 + Dutch error message |
+| Network/timeout         | `catch` block fallthrough                                    | 502 + Dutch error message  |
+| Unknown error           | `catch` block fallthrough                                    | 502 + Dutch error message  |
 
 ## Page Route: `/cart`
 
@@ -197,6 +193,7 @@ useEffect(mount) → fetch("/api/cart") → parse JSON
 ```
 
 **Cart Icon Badge**:
+
 - Shows red badge with total cart price (from `checkout_total_price`, formatted in Dutch locale)
 - Hidden when cart is empty (totalCount === 0)
 - Hidden while loading or on fetch failure

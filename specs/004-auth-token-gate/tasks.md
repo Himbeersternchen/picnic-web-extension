@@ -19,9 +19,9 @@
 
 **Purpose**: Create shared auth utilities and refactor the PicnicClient from singleton to per-request factory. These are the building blocks all subsequent phases depend on.
 
-- [X] T001 Create auth constants and cookie utility functions in src/lib/auth.ts — export AUTH_COOKIE_NAME ("picnic_auth_token"), AUTH_COOKIE_MAX_AGE_SECONDS (30 days), LOGIN_PATH ("/login"), and readAuthToken(request: NextRequest): string | null that reads the token from the request cookie
-- [X] T002 Refactor src/lib/picnic-client.ts — remove the singleton pattern (delete module-level `let instance`), remove `process.env.PICNIC_AUTH_TOKEN` access, rename `getPicnicClient()` to `buildPicnicClient(authToken: string)` that creates and returns a new PicnicClient instance per call
-- [X] T003 Add auth-related types to src/lib/types.ts — add AuthApiResponse type ({ success: boolean; error?: string }), AuthErrorCode union type ("TOKEN_EXPIRED" | "TOKEN_INVALID" | "API_UNREACHABLE"), and ApiErrorResponse extension with optional `code` field for error classification
+- [x] T001 Create auth constants and cookie utility functions in src/lib/auth.ts — export AUTH_COOKIE_NAME ("picnic_auth_token"), AUTH_COOKIE_MAX_AGE_SECONDS (30 days), LOGIN_PATH ("/login"), and readAuthToken(request: NextRequest): string | null that reads the token from the request cookie
+- [x] T002 Refactor src/lib/picnic-client.ts — remove the singleton pattern (delete module-level `let instance`), remove `process.env.PICNIC_AUTH_TOKEN` access, rename `getPicnicClient()` to `buildPicnicClient(authToken: string)` that creates and returns a new PicnicClient instance per call
+- [x] T003 Add auth-related types to src/lib/types.ts — add AuthApiResponse type ({ success: boolean; error?: string }), AuthErrorCode union type ("TOKEN_EXPIRED" | "TOKEN_INVALID" | "API_UNREACHABLE"), and ApiErrorResponse extension with optional `code` field for error classification
 
 ---
 
@@ -31,9 +31,9 @@
 
 **CRITICAL**: No user story work can begin until this phase is complete.
 
-- [X] T004 Create Next.js middleware in src/middleware.ts — import AUTH_COOKIE_NAME and LOGIN_PATH from src/lib/auth.ts, read token from request.cookies, redirect to LOGIN_PATH if token is missing, pass through if token exists. Export a matcher config that excludes /login, /api/auth/:path*, /_next/:path*, and /favicon.ico
-- [X] T005 [P] Create POST /api/auth/login route in src/app/api/auth/login/route.ts — read { token } from request body, validate token by calling buildPicnicClient(token).catalog.getSuggestions(""), on success set HTTP-only cookie (using AUTH_COOKIE_NAME, AUTH_COOKIE_MAX_AGE_SECONDS, httpOnly, sameSite lax, path /, secure in production) and return { success: true }, on 401/403 return { success: false, error: "TOKEN_INVALID" }, on network error return { success: false, error: "API_UNREACHABLE" }
-- [X] T006 [P] Create POST /api/auth/logout route in src/app/api/auth/logout/route.ts — clear the auth cookie by setting it with maxAge 0 and return { success: true }
+- [x] T004 Create Next.js middleware in src/middleware.ts — import AUTH_COOKIE_NAME and LOGIN_PATH from src/lib/auth.ts, read token from request.cookies, redirect to LOGIN_PATH if token is missing, pass through if token exists. Export a matcher config that excludes /login, /api/auth/:path*, /\_next/:path*, and /favicon.ico
+- [x] T005 [P] Create POST /api/auth/login route in src/app/api/auth/login/route.ts — read { token } from request body, validate token by calling buildPicnicClient(token).catalog.getSuggestions(""), on success set HTTP-only cookie (using AUTH_COOKIE_NAME, AUTH_COOKIE_MAX_AGE_SECONDS, httpOnly, sameSite lax, path /, secure in production) and return { success: true }, on 401/403 return { success: false, error: "TOKEN_INVALID" }, on network error return { success: false, error: "API_UNREACHABLE" }
+- [x] T006 [P] Create POST /api/auth/logout route in src/app/api/auth/logout/route.ts — clear the auth cookie by setting it with maxAge 0 and return { success: true }
 
 **Checkpoint**: Auth infrastructure ready — middleware gates all routes, login/logout API routes handle cookie CRUD.
 
@@ -47,12 +47,12 @@
 
 ### Implementation for User Story 1
 
-- [X] T007 [US1] Create login page in src/app/login/page.tsx — client component ("use client") with: Picnic logo, "Picnic Auth Token" label, masked input field (type="password") with show/hide toggle button, "Inloggen" submit button, loading state (disabled button + spinner during validation). On submit: POST to /api/auth/login with { token }, on success redirect via window.location.href to "/" (or ?redirect= param if present). Read ?expired=true query param to show expiry message on load.
-- [X] T008 [US1] Update src/app/api/search/route.ts — replace getPicnicClient() with readAuthToken(request) + buildPicnicClient(token), return 401 with { error: "Authentication required", code: "TOKEN_EXPIRED" } if token is missing, detect 401/403 from Picnic API and return { error: "Your token has expired", code: "TOKEN_EXPIRED" } instead of generic 502
-- [X] T009 [US1] Update src/app/api/suggestions/route.ts — same changes as T008: replace getPicnicClient() with readAuthToken(request) + buildPicnicClient(token), handle missing token with 401, detect 401/403 from Picnic API and return TOKEN_EXPIRED error
-- [X] T010 [US1] Update src/app/page.tsx — detect TOKEN_EXPIRED error code in search/suggestions responses and redirect to /login?expired=true via window.location.href
-- [X] T011 [US1] Remove PICNIC_AUTH_TOKEN from .env file — delete the line containing PICNIC_AUTH_TOKEN (keep any other env vars if present). This fulfills FR-001.
-- [X] T012 [US1] Run validation: npm run lint && npx tsc --noEmit && npm run build — fix any type errors from the getPicnicClient → buildPicnicClient migration and auth.ts imports
+- [x] T007 [US1] Create login page in src/app/login/page.tsx — client component ("use client") with: Picnic logo, "Picnic Auth Token" label, masked input field (type="password") with show/hide toggle button, "Inloggen" submit button, loading state (disabled button + spinner during validation). On submit: POST to /api/auth/login with { token }, on success redirect via window.location.href to "/" (or ?redirect= param if present). Read ?expired=true query param to show expiry message on load.
+- [x] T008 [US1] Update src/app/api/search/route.ts — replace getPicnicClient() with readAuthToken(request) + buildPicnicClient(token), return 401 with { error: "Authentication required", code: "TOKEN_EXPIRED" } if token is missing, detect 401/403 from Picnic API and return { error: "Your token has expired", code: "TOKEN_EXPIRED" } instead of generic 502
+- [x] T009 [US1] Update src/app/api/suggestions/route.ts — same changes as T008: replace getPicnicClient() with readAuthToken(request) + buildPicnicClient(token), handle missing token with 401, detect 401/403 from Picnic API and return TOKEN_EXPIRED error
+- [x] T010 [US1] Update src/app/page.tsx — detect TOKEN_EXPIRED error code in search/suggestions responses and redirect to /login?expired=true via window.location.href
+- [x] T011 [US1] Remove PICNIC_AUTH_TOKEN from .env file — delete the line containing PICNIC_AUTH_TOKEN (keep any other env vars if present). This fulfills FR-001.
+- [x] T012 [US1] Run validation: npm run lint && npx tsc --noEmit && npm run build — fix any type errors from the getPicnicClient → buildPicnicClient migration and auth.ts imports
 
 **Checkpoint**: User Story 1 complete — unauthenticated users are redirected to /login, can enter a valid token, and access the full application. Token persists across sessions.
 
@@ -66,9 +66,9 @@
 
 ### Implementation for User Story 2
 
-- [X] T013 [US2] Enhance error display in src/app/login/page.tsx — display error messages from the API response: map "TOKEN_INVALID" to "Token is ongeldig. Probeer opnieuw.", map "API_UNREACHABLE" to "Kan token niet verifiëren. Probeer het later opnieuw.", show client-side validation "Voer een token in" for empty submissions. Style error text in red below the form. Clear error when user starts typing.
-- [X] T014 [US2] Verify error classification in src/app/api/auth/login/route.ts — ensure the catch block distinguishes between Picnic API auth errors (401/403 → TOKEN_INVALID) and network/timeout errors (→ API_UNREACHABLE). Test by reviewing error handling paths.
-- [X] T015 [US2] Run validation: npm run lint && npx tsc --noEmit && npm run build
+- [x] T013 [US2] Enhance error display in src/app/login/page.tsx — display error messages from the API response: map "TOKEN_INVALID" to "Token is ongeldig. Probeer opnieuw.", map "API_UNREACHABLE" to "Kan token niet verifiëren. Probeer het later opnieuw.", show client-side validation "Voer een token in" for empty submissions. Style error text in red below the form. Clear error when user starts typing.
+- [x] T014 [US2] Verify error classification in src/app/api/auth/login/route.ts — ensure the catch block distinguishes between Picnic API auth errors (401/403 → TOKEN_INVALID) and network/timeout errors (→ API_UNREACHABLE). Test by reviewing error handling paths.
+- [x] T015 [US2] Run validation: npm run lint && npx tsc --noEmit && npm run build
 
 **Checkpoint**: User Story 2 complete — invalid tokens show specific error messages, unreachable API shows distinct message, empty submissions are caught client-side.
 
@@ -82,8 +82,8 @@
 
 ### Implementation for User Story 3
 
-- [X] T016 [US3] Add sign-out button to site header in src/app/page.tsx — add an "Uitloggen" button next to the Picnic logo in the sticky header. On click: POST to /api/auth/logout, then redirect via window.location.href = "/login" for full page reload. Style as a text button (not primary) to avoid visual conflict with search.
-- [X] T017 [US3] Run validation: npm run lint && npx tsc --noEmit && npm run build
+- [x] T016 [US3] Add sign-out button to site header in src/app/page.tsx — add an "Uitloggen" button next to the Picnic logo in the sticky header. On click: POST to /api/auth/logout, then redirect via window.location.href = "/login" for full page reload. Style as a text button (not primary) to avoid visual conflict with search.
+- [x] T017 [US3] Run validation: npm run lint && npx tsc --noEmit && npm run build
 
 **Checkpoint**: User Story 3 complete — sign-out clears the cookie, redirects to login, and prevents access until a new token is entered.
 
@@ -93,10 +93,10 @@
 
 **Purpose**: Edge cases, deep link support, and final validation across all stories.
 
-- [X] T018 Add deep link redirect support to src/middleware.ts — when redirecting an unauthenticated user to /login, append the original URL as a ?redirect= query parameter (e.g., /login?redirect=%2F%3Fq%3Dmelk). The login page (T007) already reads this param and redirects after successful login.
-- [X] T019 [P] Verify middleware excludes static assets — confirm /_next/static, /_next/image, and /favicon.ico are not gated by the middleware matcher config. Test by loading the login page CSS/JS without a cookie.
-- [X] T020 Run full validation: npm run lint && npx tsc --noEmit && npm run build — ensure all changes compile cleanly with no lint errors
-- [X] T021 Run quickstart.md manual validation — walk through all 5 test scenarios from specs/004-auth-token-gate/quickstart.md (happy path, invalid token, sign out, expired token, deep link)
+- [x] T018 Add deep link redirect support to src/middleware.ts — when redirecting an unauthenticated user to /login, append the original URL as a ?redirect= query parameter (e.g., /login?redirect=%2F%3Fq%3Dmelk). The login page (T007) already reads this param and redirects after successful login.
+- [x] T019 [P] Verify middleware excludes static assets — confirm /\_next/static, /\_next/image, and /favicon.ico are not gated by the middleware matcher config. Test by loading the login page CSS/JS without a cookie.
+- [x] T020 Run full validation: npm run lint && npx tsc --noEmit && npm run build — ensure all changes compile cleanly with no lint errors
+- [x] T021 Run quickstart.md manual validation — walk through all 5 test scenarios from specs/004-auth-token-gate/quickstart.md (happy path, invalid token, sign out, expired token, deep link)
 
 ---
 

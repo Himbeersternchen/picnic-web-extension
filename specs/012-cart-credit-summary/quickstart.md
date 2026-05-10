@@ -34,7 +34,7 @@ export type CartData = {
   depositTotal: number;
   depositBreakdown: DepositEntry[];
   membershipSavings: number;
-  creditSettlement: number;    // NEW: Picnic credit applied, in cents
+  creditSettlement: number; // NEW: Picnic credit applied, in cents
   minimumOrderValue: number | null;
   suggestions: SliderProduct[];
 };
@@ -68,7 +68,7 @@ type OrderSummaryProps = {
   depositTotal: number;
   depositBreakdown: DepositEntry[];
   membershipSavings: number;
-  creditSettlement: number;    // NEW
+  creditSettlement: number; // NEW
   minimumOrderValue: number | null;
 };
 ```
@@ -76,13 +76,17 @@ type OrderSummaryProps = {
 Add the credit settlement row after the membership savings row (after line ~78), before the minimum order value row:
 
 ```tsx
-{/* Credit settlement row */}
-{creditSettlement > 0 && (
-  <div className="flex justify-between text-picnic-green">
-    <span>Verrekening Picnic Tegoed</span>
-    <span>−{formatPrice(creditSettlement)}</span>
-  </div>
-)}
+{
+  /* Credit settlement row */
+}
+{
+  creditSettlement > 0 && (
+    <div className="text-picnic-green flex justify-between">
+      <span>Verrekening Picnic Tegoed</span>
+      <span>−{formatPrice(creditSettlement)}</span>
+    </div>
+  );
+}
 ```
 
 ### `src/app/cart/page.tsx`
@@ -97,7 +101,7 @@ Pass `creditSettlement` to the `OrderSummary` component (around line ~304-312):
   depositTotal={cart.depositTotal}
   depositBreakdown={cart.depositBreakdown}
   membershipSavings={cart.membershipSavings}
-  creditSettlement={cart.creditSettlement}    // NEW
+  creditSettlement={cart.creditSettlement} // NEW
   minimumOrderValue={cart.minimumOrderValue}
 />
 ```

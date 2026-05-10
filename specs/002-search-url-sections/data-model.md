@@ -9,12 +9,13 @@
 
 A named group of products returned by the Fusion API. Represents a category-level grouping of search results (e.g., "Tros- en pruimtomaten", "Cherrytomaten").
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | `string` | Yes | Display text for the section header, extracted from PML RICH_TEXT markdown (e.g., "In blik / Heinz"). Stripped of color tags and formatting. |
-| `products` | `Product[]` | Yes | Ordered list of products in this section. Always non-empty (sections with 0 products are excluded during parsing). |
+| Field      | Type        | Required | Description                                                                                                                                  |
+| ---------- | ----------- | -------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `title`    | `string`    | Yes      | Display text for the section header, extracted from PML RICH_TEXT markdown (e.g., "In blik / Heinz"). Stripped of color tags and formatting. |
+| `products` | `Product[]` | Yes      | Ordered list of products in this section. Always non-empty (sections with 0 products are excluded during parsing).                           |
 
 **Constraints**:
+
 - `products.length > 0` — filter-only sections (Bio, Acties) with zero products are excluded at parse time.
 - `title` is unique per search response — duplicate PML section names (e.g., two "Heinz" sections) are disambiguated by their full display text ("In blik / Heinz" vs "Passata / Heinz").
 - Section order matches the Fusion API response order: "Opnieuw bestellen" first (if present), then category sections, then "Bekijk ook" last.
@@ -29,11 +30,11 @@ The existing `Product` type defined in `src/lib/types.ts` is unchanged. Products
 
 The internal API response from `/api/search` gains a `sections` field.
 
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `products` | `Product[]` | Yes | **Retained for backward compatibility.** Flat list of all unique products across all sections. |
-| `sections` | `SearchSection[]` | Yes | Ordered list of sections with their products. Empty array when no results. |
-| `query` | `string` | Yes | The search term that produced these results. |
+| Field      | Type              | Required | Description                                                                                    |
+| ---------- | ----------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| `products` | `Product[]`       | Yes      | **Retained for backward compatibility.** Flat list of all unique products across all sections. |
+| `sections` | `SearchSection[]` | Yes      | Ordered list of sections with their products. Empty array when no results.                     |
+| `query`    | `string`          | Yes      | The search term that produced these results.                                                   |
 
 **Design decision**: Keeping the flat `products` array alongside `sections` allows the total count display ("X resultaten") to use `products.length` without summing across sections. The page component uses `sections` for rendering and `products.length` for the count.
 
@@ -41,11 +42,12 @@ The internal API response from `/api/search` gains a `sections` field.
 
 ### Search Query Parameter
 
-| Parameter | Type | Location | Description |
-|-----------|------|----------|-------------|
-| `q` | `string` | URL query string | The active search term. Absent or empty means no active search (show landing page). |
+| Parameter | Type     | Location         | Description                                                                         |
+| --------- | -------- | ---------------- | ----------------------------------------------------------------------------------- |
+| `q`       | `string` | URL query string | The active search term. Absent or empty means no active search (show landing page). |
 
 **Behavior**:
+
 - **New search**: `router.push("/?q=" + encodeURIComponent(query))` — creates a browser history entry.
 - **Clear search**: `router.push("/")` — removes the parameter entirely.
 - **Page load**: Read `searchParams.get("q")` — if non-empty, trigger search automatically.

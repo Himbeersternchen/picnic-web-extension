@@ -45,7 +45,7 @@
 
 **Independent Test**: Run `npm run build && npm run lint`; open the app and confirm pages load
 
-*This story is satisfied by Phase 1 (T001, T002). No additional tasks needed.*
+_This story is satisfied by Phase 1 (T001, T002). No additional tasks needed._
 
 **Checkpoint**: picnic-api 4.3.0 installed and working
 

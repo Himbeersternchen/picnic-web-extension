@@ -21,15 +21,15 @@ Make "Snel naar" shortcut tiles clickable so they navigate to the corresponding 
 
 ## Constitution Check
 
-*GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
+_GATE: Must pass before Phase 0 research. Re-check after Phase 1 design._
 
-| Principle | Status | Notes |
-|-----------|--------|-------|
-| I. SRP/DRY/DI | PASS | Deep-link parser is a separate utility (SRP). Navigation callback pattern reused from CategoryGrid (DRY). |
-| II. Naming | PASS | `onShortcutTap`, `handleShortcutTap`, `parseCategoryIdFromDeepLink` — verb-first camelCase, descriptive. |
-| III. Forbidden Anti-Patterns | PASS | No god objects, no deep nesting, no magic strings. All files stay well under 300 lines. |
-| IV. Self-Refactor | PASS | Will apply before output. |
-| V. Readability | PASS | Follows established patterns; no clever constructs. |
+| Principle                    | Status | Notes                                                                                                     |
+| ---------------------------- | ------ | --------------------------------------------------------------------------------------------------------- |
+| I. SRP/DRY/DI                | PASS   | Deep-link parser is a separate utility (SRP). Navigation callback pattern reused from CategoryGrid (DRY). |
+| II. Naming                   | PASS   | `onShortcutTap`, `handleShortcutTap`, `parseCategoryIdFromDeepLink` — verb-first camelCase, descriptive.  |
+| III. Forbidden Anti-Patterns | PASS   | No god objects, no deep nesting, no magic strings. All files stay well under 300 lines.                   |
+| IV. Self-Refactor            | PASS   | Will apply before output.                                                                                 |
+| V. Readability               | PASS   | Follows established patterns; no clever constructs.                                                       |
 
 **Post-Phase 1 re-check**: PASS — no violations introduced by design decisions.
 
