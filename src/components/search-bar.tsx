@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
+import { useTranslations } from "@/contexts/country-context";
 import { useDebounce } from "@/hooks/use-debounce";
 import { TOKEN_EXPIRED_REDIRECT } from "@/lib/constants";
 import type { ApiErrorResponse, SearchSuggestion, SuggestionsApiResponse } from "@/lib/types";
@@ -16,6 +17,7 @@ type SearchBarProps = {
 };
 
 export function SearchBar({ onSearch, isLoading, initialQuery }: SearchBarProps) {
+  const t = useTranslations();
   const [inputValue, setInputValue] = useState(initialQuery ?? "");
   const [rawSuggestions, setRawSuggestions] = useState<SearchSuggestion[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -121,14 +123,14 @@ export function SearchBar({ onSearch, isLoading, initialQuery }: SearchBarProps)
                 setShowSuggestions(true);
               }
             }}
-            placeholder="Zoek producten..."
-            aria-label="Zoek producten"
+            placeholder={t.searchPlaceholder}
+            aria-label={t.searchAriaLabel}
             className="border-input-border text-foreground focus:border-input-focus focus:ring-input-focus/20 w-full rounded-full border bg-white px-4 py-2 pr-12 text-sm shadow-sm transition-shadow outline-none placeholder:text-gray-400 focus:ring-2"
           />
           <button
             type="submit"
             disabled={isLoading}
-            aria-label="Zoeken"
+            aria-label={t.searchButtonAriaLabel}
             className="bg-picnic-red hover:bg-picnic-red-dark absolute top-1/2 right-1.5 -translate-y-1/2 rounded-full p-1.5 text-white transition-colors disabled:opacity-50"
           >
             <SearchIcon />

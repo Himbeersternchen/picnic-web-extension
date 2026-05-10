@@ -8,6 +8,9 @@
  * When bundle progress data is provided, shows dot indicators below the
  * count and a savings label above the stepper.
  */
+"use client";
+
+import { useTranslations } from "@/contexts/country-context";
 import type { BundleProgress } from "@/lib/types";
 
 import { BundleDots } from "./bundle-dots";
@@ -79,6 +82,7 @@ export function QuantityStepper({
   bundleProgress,
   regularPrice,
 }: QuantityStepperProps) {
+  const t = useTranslations();
   const isAtMax = quantity >= maxCount;
 
   const hasBundleData = bundleProgress && bundleProgress.thresholds.length > 0;
@@ -95,7 +99,7 @@ export function QuantityStepper({
           type="button"
           onClick={onDecrement}
           className="text-foreground flex h-8 w-8 items-center justify-center text-base font-semibold transition-opacity active:opacity-60"
-          aria-label="Verwijder 1"
+          aria-label={t.removeOneAriaLabel}
         >
           −
         </button>
@@ -113,7 +117,7 @@ export function QuantityStepper({
           className={`flex h-8 w-8 items-center justify-center text-base font-semibold transition-opacity ${
             isAtMax ? "cursor-not-allowed text-gray-300" : "text-foreground active:opacity-60"
           }`}
-          aria-label="Voeg 1 toe"
+          aria-label={t.addOneAriaLabel}
         >
           +
         </button>
@@ -135,7 +139,7 @@ export function QuantityStepper({
           type="button"
           onClick={onDecrement}
           className="text-text-muted flex h-7 w-7 items-center justify-center text-base font-semibold transition-opacity active:opacity-60"
-          aria-label="Verwijder 1"
+          aria-label={t.removeOneAriaLabel}
         >
           −
         </button>
@@ -156,7 +160,7 @@ export function QuantityStepper({
           className={`flex h-7 w-7 items-center justify-center text-base font-semibold transition-opacity ${
             isAtMax ? "cursor-not-allowed text-gray-300" : "text-text-muted active:opacity-60"
           }`}
-          aria-label="Voeg 1 toe"
+          aria-label={t.addOneAriaLabel}
         >
           +
         </button>

@@ -10,20 +10,22 @@ import type { CategoryProductsState } from "@/components/category-products-view"
 import { SectionNavBar } from "@/components/section-nav-bar";
 import { SharedHeader } from "@/components/shared-header";
 import { CartProvider } from "@/contexts/cart-context";
+import { useTranslations } from "@/contexts/country-context";
 import { usePageTitle } from "@/hooks/use-page-title";
 import { TOKEN_EXPIRED_REDIRECT } from "@/lib/constants";
 import type { ApiErrorResponse, CategoryProductsApiResponse } from "@/lib/types";
 
 export default function ShortcutProductsPage() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const router = useRouter();
 
   const pageId = searchParams.get("pageId") ?? "";
-  const title = searchParams.get("title") ?? "Producten";
+  const title = searchParams.get("title") ?? t.defaultPageTitle;
 
   const initialStatus: CategoryProductsState = pageId
     ? { status: "loading" }
-    : { status: "error", message: "Geen pagina opgegeven." };
+    : { status: "error", message: t.noPageSpecified };
 
   const [state, setState] = useState<CategoryProductsState>(initialStatus);
   const [retryCount, setRetryCount] = useState(0);
@@ -62,12 +64,12 @@ export default function ShortcutProductsPage() {
         if (err instanceof DOMException && err.name === "AbortError") return;
         setState({
           status: "error",
-          message: "Kan producten niet laden.",
+          message: t.productsLoadError,
         });
       });
 
     return () => controller.abort();
-  }, [pageId, title, retryCount]);
+  }, [pageId, title, retryCount, t.productsLoadError]);
 
   const handleBack = useCallback(() => {
     router.push("/");

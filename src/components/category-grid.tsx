@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 
-import { useCountryCode } from "@/contexts/country-context";
+import { useCountryCode, useTranslations } from "@/contexts/country-context";
 import type { CategoryItem } from "@/lib/category-types";
 import { buildImageUrl } from "@/lib/image-url";
 
@@ -12,9 +12,10 @@ type CategoryGridProps = {
 };
 
 export function CategoryGrid({ categories, onCategoryTap }: CategoryGridProps) {
+  const t = useTranslations();
   return (
     <div>
-      <h2 className="text-foreground mb-3 text-lg font-semibold">Alle categorieën</h2>
+      <h2 className="text-foreground mb-3 text-lg font-semibold">{t.allCategoriesTitle}</h2>
       <div className="overflow-hidden rounded-xl bg-white shadow-sm">
         {categories.map((category, index) => (
           <CategoryRow

@@ -8,6 +8,8 @@
  */
 import { useEffect } from "react";
 
+import { useTranslations } from "@/contexts/country-context";
+
 const AUTO_DISMISS_MS = 3000;
 
 type CartToastProps = {
@@ -18,6 +20,7 @@ type CartToastProps = {
 };
 
 export function CartToast({ message, onDismiss }: CartToastProps) {
+  const t = useTranslations();
   useEffect(() => {
     if (!message) return;
 
@@ -35,7 +38,7 @@ export function CartToast({ message, onDismiss }: CartToastProps) {
           type="button"
           onClick={onDismiss}
           className="ml-2 font-bold text-white/70 transition-colors hover:text-white"
-          aria-label="Sluiten"
+          aria-label={t.dismissAriaLabel}
         >
           ×
         </button>

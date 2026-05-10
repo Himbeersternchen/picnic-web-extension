@@ -11,18 +11,14 @@
 import { useCallback, useEffect, useState } from "react";
 
 import {
-  CLOSE_ARIA_LABEL,
   CloseIcon,
   DayTabs,
   DefaultDayView,
-  FREE_DELIVERY_LABEL,
-  NO_SLOTS_LABEL,
-  PICKER_TITLE,
-  RETRY_LABEL,
   SelectedDayView,
   findSlotInDay,
   getAllSlots,
 } from "@/components/slot-picker-parts";
+import { useTranslations } from "@/contexts/country-context";
 import type { DeliverySlotPickerData } from "@/lib/delivery-slot-types";
 import type { ApiErrorResponse, CartData } from "@/lib/types";
 
@@ -150,18 +146,19 @@ export function DeliverySlotPicker({ onClose, onSlotSelected }: DeliverySlotPick
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
 function PickerHeader({ onClose }: { onClose: () => void }) {
+  const t = useTranslations();
   return (
     <div className="border-b border-gray-200 px-4 pt-4 pb-3">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-foreground text-lg font-bold">{PICKER_TITLE}</h2>
-          <p className="text-sm text-green-700">{FREE_DELIVERY_LABEL}</p>
+          <h2 className="text-foreground text-lg font-bold">{t.pickerTitle}</h2>
+          <p className="text-sm text-green-700">{t.freeDeliveryLabel}</p>
         </div>
         <button
           type="button"
           onClick={onClose}
           className="rounded-full p-1 text-gray-500 hover:bg-gray-100"
-          aria-label={CLOSE_ARIA_LABEL}
+          aria-label={t.closeAriaLabel}
         >
           <CloseIcon />
         </button>
@@ -179,6 +176,7 @@ function LoadingBody() {
 }
 
 function ErrorBody({ message, onRetry }: { message: string; onRetry: () => void }) {
+  const t = useTranslations();
   return (
     <div className="flex min-h-[200px] flex-1 flex-col items-center justify-center gap-3 px-6 text-center">
       <p className="text-sm text-gray-600">{message}</p>
@@ -187,7 +185,7 @@ function ErrorBody({ message, onRetry }: { message: string; onRetry: () => void 
         onClick={onRetry}
         className="bg-picnic-red rounded-lg px-4 py-2 text-sm font-medium text-white"
       >
-        {RETRY_LABEL}
+        {t.retryLabel}
       </button>
     </div>
   );
@@ -208,10 +206,12 @@ function SlotListBody({
   onDayChange: (index: number) => void;
   onSelectSlot: (slotId: string) => void;
 }) {
+  const t = useTranslations();
+
   if (data.dayGroups.length === 0) {
     return (
       <div className="flex min-h-[200px] flex-1 items-center justify-center px-6 text-center">
-        <p className="text-sm text-gray-500">{NO_SLOTS_LABEL}</p>
+        <p className="text-sm text-gray-500">{t.noSlotsLabel}</p>
       </div>
     );
   }

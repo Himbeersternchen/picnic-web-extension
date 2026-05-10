@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { useCart } from "@/contexts/cart-context";
-import { useCountryCode } from "@/contexts/country-context";
+import { useCountryCode, useTranslations } from "@/contexts/country-context";
 import { buildImageUrl } from "@/lib/image-url";
 import type { BundleProgress, Product } from "@/lib/types";
 
@@ -200,6 +200,7 @@ function CartActionOverlay({
   bundleProgress,
   regularPrice,
 }: CartActionOverlayProps) {
+  const t = useTranslations();
   // Prevent click from propagating to the Link wrapper
   const stopPropagation = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -213,7 +214,7 @@ function CartActionOverlay({
           type="button"
           onClick={onAdd}
           className="text-text-dark flex h-8 w-8 items-center justify-center rounded-full bg-white text-lg font-bold shadow-md transition-colors hover:bg-gray-100 active:bg-gray-200"
-          aria-label="Toevoegen aan winkelwagen"
+          aria-label={t.addToCartAriaLabel}
         >
           +
         </button>

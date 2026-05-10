@@ -2,6 +2,7 @@
 
 import { forwardRef, useEffect, useRef } from "react";
 
+import { useTranslations } from "@/contexts/country-context";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import type { SearchSection } from "@/lib/types";
 import { buildSectionId } from "@/lib/types";
@@ -11,6 +12,7 @@ type SectionNavBarProps = {
 };
 
 export function SectionNavBar({ sections }: SectionNavBarProps) {
+  const t = useTranslations();
   const activeSectionIndex = useScrollSpy(sections.length);
   const badgeRefs = useRef<Map<number, HTMLAnchorElement>>(new Map());
 
@@ -55,6 +57,7 @@ export function SectionNavBar({ sections }: SectionNavBarProps) {
             index={index}
             title={section.title}
             isActive={index === activeSectionIndex}
+            goToPrefix={t.sectionNavGoTo}
           />
         ))}
       </div>
@@ -66,17 +69,18 @@ type SectionBadgeProps = {
   index: number;
   title: string;
   isActive: boolean;
+  goToPrefix: string;
 };
 
 const SectionBadge = forwardRef<HTMLAnchorElement, SectionBadgeProps>(function SectionBadge(
-  { index, title, isActive },
+  { index, title, isActive, goToPrefix },
   ref
 ) {
   return (
     <a
       ref={ref}
       href={`#${buildSectionId(index)}`}
-      aria-label={`Ga naar ${title}`}
+      aria-label={`${goToPrefix} ${title}`}
       aria-current={isActive ? "true" : undefined}
       className={`shrink-0 rounded-full px-3 py-1 text-sm font-medium whitespace-nowrap no-underline transition-colors ${
         isActive ? "bg-picnic-red text-white" : "bg-gray-100 text-gray-700 hover:bg-gray-200"

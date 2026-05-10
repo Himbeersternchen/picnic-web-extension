@@ -13,6 +13,7 @@ import { SectionNavBar } from "@/components/section-nav-bar";
 import { SharedHeader } from "@/components/shared-header";
 import { ShortcutList } from "@/components/shortcut-list";
 import { CartProvider } from "@/contexts/cart-context";
+import { useTranslations } from "@/contexts/country-context";
 import { usePageTitle } from "@/hooks/use-page-title";
 import type { CategoryItem, ShortcutItem } from "@/lib/category-types";
 import { TOKEN_EXPIRED_REDIRECT } from "@/lib/constants";
@@ -45,6 +46,7 @@ export default function Home() {
 }
 
 function SearchPage() {
+  const t = useTranslations();
   const searchParams = useSearchParams();
   const router = useRouter();
   const urlQuery = searchParams.get("q") ?? "";
@@ -106,11 +108,11 @@ function SearchPage() {
         setSearchState({
           status: "error",
           query: trimmed,
-          message: "Er is iets misgegaan. Probeer het later opnieuw.",
+          message: t.searchError,
         });
       }
     },
-    [router]
+    [router, t.searchError]
   );
 
   // Auto-search when the page loads with ?q= or when URL changes (back/forward)
@@ -155,10 +157,10 @@ function SearchPage() {
       .catch(() => {
         setCategoriesState({
           status: "error",
-          message: "Kan categorieën niet laden.",
+          message: t.categoriesLoadError,
         });
       });
-  }, [searchState.status, categoriesState.status]);
+  }, [searchState.status, categoriesState.status, t.categoriesLoadError]);
 
   const handleCategoryTap = useCallback(
     (category: CategoryItem) => {

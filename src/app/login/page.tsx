@@ -5,6 +5,7 @@ import { Suspense, useCallback, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
 import { usePageTitle } from "@/hooks/use-page-title";
+import { type Translations, getTranslations } from "@/lib/i18n";
 import {
   COUNTRY_COOKIE_NAME,
   type CountryCode,
@@ -23,8 +24,6 @@ export default function LoginPage() {
 }
 
 function LoginForm() {
-  usePageTitle("Inloggen");
-
   const searchParams = useSearchParams();
   const redirectTo = searchParams.get("redirect") ?? DEFAULT_REDIRECT;
   const isExpired = searchParams.get("expired") === "true";
@@ -40,6 +39,11 @@ function LoginForm() {
     }
     return DEFAULT_COUNTRY_CODE;
   });
+
+  const t = getTranslations(countryCode);
+
+  usePageTitle(t.loginTitle);
+
   const [credentialsMode, setCredentialsMode] = useState(false);
   const webClickCount = useRef(0);
   const webClickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,9 +54,7 @@ function LoginForm() {
   const [twoFactorCode, setTwoFactorCode] = useState("");
   const [partialToken, setPartialToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(
-    isExpired ? "Je sessie is verlopen. Log opnieuw in." : null
-  );
+  const [error, setError] = useState<string | null>(isExpired ? t.sessionExpired : null);
 
   const clearError = useCallback(() => {
     if (error) setError(null);
@@ -61,12 +63,13 @@ function LoginForm() {
   const handleSubmit = useCallback(
     async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
+      const t = getTranslations(countryCode);
       setError(null);
 
       // ── 2FA verification step ──────────────────────────────────────────
       if (partialToken) {
         if (twoFactorCode.trim() === "") {
-          setError("Voer de verificatiecode in");
+          setError(t.enter2FACode);
           return;
         }
 
@@ -89,9 +92,9 @@ function LoginForm() {
             return;
           }
 
-          setError(mapErrorMessage(data.error));
+          setError(mapErrorMessage(data.error, t));
         } catch {
-          setError("Verificatie mislukt. Probeer het later opnieuw.");
+          setError(t.verificationFailed);
         } finally {
           setIsLoading(false);
         }
@@ -101,7 +104,7 @@ function LoginForm() {
       // ── Credentials login ──────────────────────────────────────────────
       if (credentialsMode) {
         if (email.trim() === "" || password === "") {
-          setError("Vul je e-mailadres en wachtwoord in");
+          setError(t.enterEmailAndPassword);
           return;
         }
 
@@ -127,9 +130,9 @@ function LoginForm() {
             return;
           }
 
-          setError(mapErrorMessage(data.error));
+          setError(mapErrorMessage(data.error, t));
         } catch {
-          setError("Inloggen mislukt. Probeer het later opnieuw.");
+          setError(t.loginFailed);
         } finally {
           setIsLoading(false);
         }
@@ -139,7 +142,7 @@ function LoginForm() {
       // ── Token login ────────────────────────────────────────────────────
       const trimmed = token.trim();
       if (trimmed === "") {
-        setError("Voer een token in");
+        setError(t.enterToken);
         return;
       }
 
@@ -159,9 +162,9 @@ function LoginForm() {
           return;
         }
 
-        setError(mapErrorMessage(data.error));
+        setError(mapErrorMessage(data.error, t));
       } catch {
-        setError("Kan token niet verifiëren. Probeer het later opnieuw.");
+        setError(t.tokenVerifyFailed);
       } finally {
         setIsLoading(false);
       }
@@ -228,14 +231,12 @@ function LoginForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           {showTwoFactor ? (
             <div>
-              <p className="mb-3 text-sm text-gray-600">
-                Er is een verificatiecode naar je telefoon gestuurd via SMS.
-              </p>
+              <p className="mb-3 text-sm text-gray-600">{t.smsSent}</p>
               <label
                 htmlFor="two-factor-code"
                 className="text-foreground mb-1 block text-sm font-medium"
               >
-                Verificatiecode
+                {t.verificationCodeLabel}
               </label>
               <input
                 id="two-factor-code"
@@ -247,7 +248,7 @@ function LoginForm() {
                   setTwoFactorCode(e.target.value);
                   clearError();
                 }}
-                placeholder="Voer de code in"
+                placeholder={t.verificationCodePlaceholder}
                 disabled={isLoading}
                 autoFocus
                 className="border-input-border text-foreground focus:border-input-focus focus:ring-input-focus w-full rounded-lg border px-3 py-2 text-sm placeholder:text-gray-400 focus:ring-1 focus:outline-none disabled:opacity-50"
@@ -257,7 +258,7 @@ function LoginForm() {
             <>
               <div>
                 <label htmlFor="email" className="text-foreground mb-1 block text-sm font-medium">
-                  E-mailadres
+                  {t.emailLabel}
                 </label>
                 <input
                   id="email"
@@ -267,7 +268,7 @@ function LoginForm() {
                     setEmail(e.target.value);
                     clearError();
                   }}
-                  placeholder="je-email@voorbeeld.nl"
+                  placeholder={t.emailPlaceholder}
                   disabled={isLoading}
                   autoFocus
                   className="border-input-border text-foreground focus:border-input-focus focus:ring-input-focus w-full rounded-lg border px-3 py-2 text-sm placeholder:text-gray-400 focus:ring-1 focus:outline-none disabled:opacity-50"
@@ -278,7 +279,7 @@ function LoginForm() {
                   htmlFor="password"
                   className="text-foreground mb-1 block text-sm font-medium"
                 >
-                  Wachtwoord
+                  {t.passwordLabel}
                 </label>
                 <input
                   id="password"
@@ -288,7 +289,7 @@ function LoginForm() {
                     setPassword(e.target.value);
                     clearError();
                   }}
-                  placeholder="Je wachtwoord"
+                  placeholder={t.passwordPlaceholder}
                   disabled={isLoading}
                   className="border-input-border text-foreground focus:border-input-focus focus:ring-input-focus w-full rounded-lg border px-3 py-2 text-sm placeholder:text-gray-400 focus:ring-1 focus:outline-none disabled:opacity-50"
                 />
@@ -311,7 +312,7 @@ function LoginForm() {
                     setToken(e.target.value);
                     clearError();
                   }}
-                  placeholder="Plak je token hier"
+                  placeholder={t.tokenPlaceholder}
                   disabled={isLoading}
                   autoFocus
                   className="border-input-border text-foreground focus:border-input-focus focus:ring-input-focus w-full rounded-lg border px-3 py-2 pr-10 text-sm placeholder:text-gray-400 focus:ring-1 focus:outline-none disabled:opacity-50"
@@ -321,7 +322,7 @@ function LoginForm() {
                   onClick={() => setShowToken((prev) => !prev)}
                   disabled={isLoading}
                   className="absolute top-1/2 right-2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 disabled:opacity-50"
-                  aria-label={showToken ? "Token verbergen" : "Token tonen"}
+                  aria-label={showToken ? t.hideToken : t.showToken}
                 >
                   {showToken ? <EyeOffIcon /> : <EyeIcon />}
                 </button>
@@ -340,17 +341,17 @@ function LoginForm() {
             disabled={isLoading}
             className="bg-picnic-red hover:bg-picnic-red-dark focus:ring-picnic-red flex w-full items-center justify-center rounded-lg px-4 py-2 text-sm font-semibold text-white transition-colors focus:ring-2 focus:ring-offset-2 focus:outline-none disabled:opacity-50"
           >
-            {isLoading ? <Spinner /> : showTwoFactor ? "Verifiëren" : "Inloggen"}
+            {isLoading ? <Spinner /> : showTwoFactor ? t.verifyButton : t.loginButton}
           </button>
         </form>
 
         {!credentialsMode && (
           <>
-            <TokenInstructions countryCode={countryCode} />
-            <WhyAuthToken />
+            <TokenInstructions countryCode={countryCode} t={t} />
+            <WhyAuthToken t={t} />
           </>
         )}
-        <Disclaimer />
+        <Disclaimer t={t} />
       </div>
     </div>
   );
@@ -360,14 +361,14 @@ function LoginForm() {
 
 const PICNIC_API_NPM_URL = "https://www.npmjs.com/package/picnic-api";
 
-function TokenInstructions({ countryCode }: { countryCode: CountryCode }) {
-  const snippet = `import PicnicClient from "picnic-api";\n\nconst client = new PicnicClient({ countryCode: "${countryCode}" });\nawait client.auth.login("je-email", "je-wachtwoord");\nconsole.log(client.authKey);`;
+function TokenInstructions({ countryCode, t }: { countryCode: CountryCode; t: Translations }) {
+  const snippet = `import PicnicClient from "picnic-api";\n\nconst client = new PicnicClient({ countryCode: "${countryCode}" });\nawait client.auth.login("${t.codeSnippetEmail}", "${t.codeSnippetPassword}");\nconsole.log(client.authKey);`;
   return (
     <details className="border-card-border mt-6 rounded-lg border bg-white p-4 text-sm text-gray-600">
-      <summary className="text-foreground font-medium">Hoe krijg ik een auth token?</summary>
+      <summary className="text-foreground font-medium">{t.howToGetToken}</summary>
       <div className="mt-3 space-y-3">
         <p>
-          Gebruik de{" "}
+          {t.npmPackageUseBefore}{" "}
           <a
             href={PICNIC_API_NPM_URL}
             target="_blank"
@@ -376,14 +377,14 @@ function TokenInstructions({ countryCode }: { countryCode: CountryCode }) {
           >
             picnic-api
           </a>{" "}
-          npm package om in te loggen met je Picnic account:
+          {t.npmPackageText}
         </p>
         <pre className="overflow-x-auto rounded-md bg-gray-100 p-3 text-xs leading-relaxed">
           <code>{snippet}</code>
         </pre>
         <p>
-          Kopieer de <code className="rounded bg-gray-100 px-1">authKey</code> waarde en plak deze
-          hierboven in.
+          {t.copyAuthKeyBefore} <code className="rounded bg-gray-100 px-1">authKey</code>{" "}
+          {t.copyAuthKeyAfter}
         </p>
       </div>
     </details>
@@ -392,17 +393,12 @@ function TokenInstructions({ countryCode }: { countryCode: CountryCode }) {
 
 // ─── Why Auth Token ──────────────────────────────────────────────────────────
 
-function WhyAuthToken() {
+function WhyAuthToken({ t }: { t: Translations }) {
   return (
     <details className="border-card-border mt-3 rounded-lg border bg-white p-4 text-sm text-gray-600">
-      <summary className="text-foreground font-medium">Waarom heb ik een auth token nodig?</summary>
+      <summary className="text-foreground font-medium">{t.whyAuthToken}</summary>
       <div className="mt-3 space-y-3">
-        <p>
-          Om veiligheidsredenen tonen we geen standaard inlogformulier met e-mailadres en
-          wachtwoord. Een auth token zorgt ervoor dat je inloggegevens nooit via deze website worden
-          verstuurd. Het token kan op elk moment worden ingetrokken zonder je wachtwoord te
-          wijzigen.
-        </p>
+        <p>{t.whyAuthTokenBody}</p>
       </div>
     </details>
   );
@@ -412,14 +408,13 @@ function WhyAuthToken() {
 
 const GITHUB_PROJECT_URL = "https://github.com/MRVDH/picnic-web";
 
-function Disclaimer() {
+function Disclaimer({ t }: { t: Translations }) {
   return (
     <details className="border-card-border mt-3 rounded-lg border bg-white p-4 text-sm text-gray-600">
-      <summary className="text-foreground font-medium">Is dit de officiële Picnic website?</summary>
+      <summary className="text-foreground font-medium">{t.isOfficialSite}</summary>
       <div className="mt-3 space-y-3">
         <p>
-          Nee, dit is niet de officiële Picnic website. Dit is een onafhankelijk open-source project
-          en is op geen enkele manier verbonden aan Picnic. Bekijk de broncode op{" "}
+          {t.isOfficialSiteBody}{" "}
           <a
             href={GITHUB_PROJECT_URL}
             target="_blank"
@@ -437,18 +432,18 @@ function Disclaimer() {
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 
-function mapErrorMessage(code: string | undefined): string {
+function mapErrorMessage(code: string | undefined, t: Translations): string {
   switch (code) {
     case "TOKEN_INVALID":
-      return "Token is ongeldig. Probeer opnieuw.";
+      return t.tokenInvalid;
     case "CREDENTIALS_INVALID":
-      return "E-mailadres of wachtwoord is onjuist. Probeer opnieuw.";
+      return t.credentialsInvalid;
     case "2FA_INVALID":
-      return "Verificatiecode is onjuist. Probeer opnieuw.";
+      return t.twoFAInvalid;
     case "API_UNREACHABLE":
-      return "Kan niet verbinden met Picnic. Probeer het later opnieuw.";
+      return t.apiUnreachable;
     default:
-      return "Er is iets misgegaan. Probeer het later opnieuw.";
+      return t.genericError;
   }
 }
 

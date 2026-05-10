@@ -8,6 +8,7 @@ import { DeliverySlotPicker } from "@/components/delivery-slot-picker";
 import { ErrorView } from "@/components/error-view";
 import { LoadingSpinner } from "@/components/loading-spinner";
 import { SharedHeader } from "@/components/shared-header";
+import { useTranslations } from "@/contexts/country-context";
 import { usePageTitle } from "@/hooks/use-page-title";
 import { TOKEN_EXPIRED_MESSAGE, TOKEN_EXPIRED_REDIRECT } from "@/lib/constants";
 import { createMutationQueue } from "@/lib/mutation-queue";
@@ -19,9 +20,7 @@ type CartPageState =
   | { status: "empty" }
   | { status: "error"; message: string };
 
-const CART_MUTATION_ERROR_MESSAGE = "Er ging iets mis. Probeer het opnieuw.";
-
-async function fetchCart(): Promise<CartPageState> {
+async function fetchCart(loadErrorMessage: string): Promise<CartPageState> {
   try {
     const response = await fetch("/api/cart");
     const data: CartData | ApiErrorResponse = await response.json();
@@ -39,10 +38,7 @@ async function fetchCart(): Promise<CartPageState> {
 
     return { status: "success", cart: data };
   } catch {
-    return {
-      status: "error",
-      message: "Er is iets misgegaan. Probeer het later opnieuw.",
-    };
+    return { status: "error", message: loadErrorMessage };
   }
 }
 
@@ -62,9 +58,11 @@ async function postCartMutation(productId: string, action: "add" | "remove"): Pr
 }
 
 export default function CartPage() {
-  usePageTitle("Winkelwagen");
+  const t = useTranslations();
+  usePageTitle(t.cartTitle);
 
   const [pageState, setPageState] = useState<CartPageState>({ status: "loading" });
+  const cartMutationErrorRef = useRef(t.cartMutationError);
   const [retryCount, setRetryCount] = useState(0);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [isPickerOpen, setIsPickerOpen] = useState(false);
@@ -103,7 +101,7 @@ export default function CartPage() {
     queueRef.current = createMutationQueue<CartData>((productId, result, error) => {
       if (error) {
         rollbackProduct(productId);
-        setToastMessage(CART_MUTATION_ERROR_MESSAGE);
+        setToastMessage(cartMutationErrorRef.current);
         return;
       }
 
@@ -116,7 +114,7 @@ export default function CartPage() {
   useEffect(() => {
     let isCancelled = false;
 
-    fetchCart().then((result) => {
+    fetchCart(t.cartLoadError).then((result) => {
       if (isCancelled) return;
 
       if (result.status === "error" && result.message === TOKEN_EXPIRED_MESSAGE) {
@@ -134,7 +132,7 @@ export default function CartPage() {
     return () => {
       isCancelled = true;
     };
-  }, [retryCount]);
+  }, [retryCount, t.cartLoadError]);
 
   const handleRetry = useCallback(() => {
     setPageState({ status: "loading" });

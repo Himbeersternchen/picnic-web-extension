@@ -7,19 +7,9 @@
 
 "use client";
 
+import { useTranslations } from "@/contexts/country-context";
 import type { DeliverySlotData, SlotDayGroup } from "@/lib/delivery-slot-types";
 import { formatTime } from "@/lib/format-delivery-window";
-
-// ─── Dutch UI constants ──────────────────────────────────────────────────────
-
-export const PICKER_TITLE = "Kies je bezorgmoment";
-export const FREE_DELIVERY_LABEL = "Altijd gratis bezorgd!";
-export const SELECTED_SECTION_LABEL = "Geselecteerd door jou";
-export const OTHER_MOMENT_LABEL = "Of kies een ander moment";
-export const GREEN_CHOICE_LABEL = "Groenste keuze voor jouw buurt";
-export const NO_SLOTS_LABEL = "Geen bezorgmomenten beschikbaar.";
-export const CLOSE_ARIA_LABEL = "Sluiten";
-export const RETRY_LABEL = "Opnieuw proberen";
 
 // ─── Icons ───────────────────────────────────────────────────────────────────
 
@@ -176,9 +166,10 @@ export function SelectedDayView({
   selectingSlotId: string | null;
   onSelectSlot: (slotId: string) => void;
 }) {
+  const t = useTranslations();
   return (
     <>
-      <SectionHeader text={SELECTED_SECTION_LABEL} />
+      <SectionHeader text={t.selectedSectionLabel} />
       <SlotRow
         slot={selectedSlot}
         isSelecting={selectingSlotId === selectedSlot.slotId}
@@ -188,7 +179,7 @@ export function SelectedDayView({
       />
       {otherSlots.length > 0 && (
         <>
-          <SectionHeader text={OTHER_MOMENT_LABEL} />
+          <SectionHeader text={t.otherMomentLabel} />
           {otherSlots.map((slot) => (
             <SlotRow
               key={slot.slotId}
@@ -214,11 +205,12 @@ export function DefaultDayView({
   selectingSlotId: string | null;
   onSelectSlot: (slotId: string) => void;
 }) {
+  const t = useTranslations();
   return (
     <>
       {day.greenSlots.length > 0 && (
         <>
-          <SectionHeader text={GREEN_CHOICE_LABEL} icon="leaf" />
+          <SectionHeader text={t.greenChoiceLabel} icon="leaf" />
           {day.greenSlots.map((slot) => (
             <SlotRow
               key={slot.slotId}
@@ -233,7 +225,7 @@ export function DefaultDayView({
       )}
       {day.regularSlots.length > 0 && (
         <>
-          <SectionHeader text={OTHER_MOMENT_LABEL} />
+          <SectionHeader text={t.otherMomentLabel} />
           {day.regularSlots.map((slot) => (
             <SlotRow
               key={slot.slotId}
