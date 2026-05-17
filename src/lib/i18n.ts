@@ -102,6 +102,10 @@ const translations = {
 
     // Product card
     addToCartAriaLabel: "Toevoegen aan winkelwagen",
+    addToCartButton: "In mandje",
+    inCartLabel: "in mandje",
+    bundleFromLabel: "Vanaf",
+    similarProductsTitle: "Vergelijkbare producten",
 
     // Category grid
     allCategoriesTitle: "Alle categorieën",
@@ -152,6 +156,24 @@ const translations = {
     // Toast / error view
     dismissAriaLabel: "Sluiten",
     retryButton: "Opnieuw proberen",
+
+    // Generic error page
+    errorHeading: "Er is iets misgegaan",
+    errorUnexpected: "Een onverwachte fout is opgetreden.",
+    errorRetry: "Probeer opnieuw",
+
+    // Category page
+    categoryFallbackTitle: "Categorie",
+    subcategoriesLoadError: "Kan subcategorieën niet laden.",
+
+    // Token login label
+    authTokenLabel: "Picnic Auth-token",
+
+    // Search results count
+    resultFor: "voor",
+
+    // Allergen badges
+    allergenTitle: "Allergenen",
   },
   DE: {
     // Search bar
@@ -254,6 +276,10 @@ const translations = {
 
     // Product card
     addToCartAriaLabel: "Zum Warenkorb hinzufügen",
+    addToCartButton: "In den Warenkorb",
+    inCartLabel: "im Warenkorb",
+    bundleFromLabel: "Ab",
+    similarProductsTitle: "Ähnliche Produkte",
 
     // Category grid
     allCategoriesTitle: "Alle Kategorien",
@@ -304,6 +330,24 @@ const translations = {
     // Toast / error view
     dismissAriaLabel: "Schließen",
     retryButton: "Erneut versuchen",
+
+    // Generic error page
+    errorHeading: "Ein Fehler ist aufgetreten",
+    errorUnexpected: "Ein unerwarteter Fehler ist aufgetreten.",
+    errorRetry: "Erneut versuchen",
+
+    // Category page
+    categoryFallbackTitle: "Kategorie",
+    subcategoriesLoadError: "Unterkategorien konnten nicht geladen werden.",
+
+    // Token login label
+    authTokenLabel: "Picnic Auth-Token",
+
+    // Search results count
+    resultFor: "für",
+
+    // Allergen badges
+    allergenTitle: "Allergene",
   },
 } as const;
 
