@@ -1,123 +1,65 @@
+@AGENTS.md
+
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+Additions to AGENTS.md. Where the two overlap, AGENTS.md wins.
 
-## Project Overview
-
-Unofficial web interface for the Picnic online supermarket, built with Next.js 16 (App Router), React 19, TypeScript 5, and Tailwind CSS 4. Wraps the [`picnic-api`](https://github.com/MRVDH/picnic-api) npm package in a server-side proxy layer so the Picnic API token never reaches the browser.
-
-## Commands
-
-```bash
-npm run dev      # development server
-npm run build    # production build
-npm run start    # start production server
-npm run lint     # ESLint (no test suite)
-```
-
-There is no test suite — `npm run lint` is the only automated check.
+Note: AGENTS.md links `src/lib/auth.ts`, `src/lib/picnic-client.ts` and
+`src/lib/api-error.ts`; these files live under `src/lib/core/`.
 
 ## UI conventions
 
-Always use the CSS variables and theme tokens defined in `src/app/globals.css` rather than hardcoded values or generic Tailwind defaults.
+Use the CSS variables and theme tokens from `src/app/globals.css` (e.g. `text-picnic-red`)
+instead of hardcoded values or generic Tailwind colours.
 
-Before writing a new component, check `src/components/` for an existing one that can be reused or extended. Generic UI primitives (modals, dialogs, overlays, etc.) belong in `src/components/` so they can be shared across pages.
+Before writing a component, check `src/components/` for one to reuse or extend. Generic UI
+primitives (modals, dialogs, overlays) belong in `src/components/ui/` so pages can share them.
 
-## Architecture
+## Country selection
 
-### Country selection
+The active country lives in the non-httpOnly `picnic_country` cookie and can be switched at
+runtime; the login page and the header show one toggle per supported country. Switching
+updates the cookie and reloads, so API calls, image CDN URLs and the checkout deeplink all
+follow it.
 
-The active Picnic country is stored in a browser cookie (`picnic_country`, non-httpOnly) and can be switched at runtime — no environment variables or config files needed.
+- `SUPPORTED_COUNTRY_CODES` and `COUNTRY_COOKIE_NAME`: [src/lib/core/types.ts](src/lib/core/types.ts)
+- Image URLs always need the country: `buildImageUrl(imageId, countryCode)` in
+  [src/lib/core/image-url.ts](src/lib/core/image-url.ts)
+- To add a country: add it to `SUPPORTED_COUNTRY_CODES` (and to the copy in
+  `src/generate-auth-key.mjs`) and add a language file under `src/lib/core/i18n/`. The
+  toggles render from the list, so no button needs touching.
 
-Supported values: `NL` (Netherlands), `DE` (Germany). Default: `NL`.
+## Auth
 
-**Switching flow:**
+[src/proxy.ts](src/proxy.ts) gates every route except `/login`, `/api/auth/*` and Next.js
+internals on the httpOnly `picnic_auth_token` cookie, and redirects to `/login?redirect=<path>`.
+Login is either a raw token (`/api/auth/login`) or email/password (`/api/auth/login-credentials`,
+2FA via `/api/auth/verify-2fa`).
 
-- Login page shows a toggle button per supported country (NL / DE / FR) — select before logging in. The selected country is sent in the login request body and persisted as a cookie on success.
-- After login, the header (`SharedHeader`) shows the same country toggles. Clicking one updates the cookie and reloads the page so all API calls, image CDN URLs, and the checkout deeplink use the new country.
+## picnic-api quirks
 
-**Key files:**
+- `picnic-api` is CJS (`export =`), so [src/lib/core/picnic-client.ts](src/lib/core/picnic-client.ts)
+  loads it with `require()` to avoid Turbopack interop issues. Build a fresh client per
+  request; don't cache instances.
+- For raw Fusion pages the typed methods don't expose, routes cast the client and call its
+  internal `sendRequest(method, path, body, includeFusion)`. Passing `true` as the fourth
+  argument adds the headers that return `decorator_overrides` (bundle discounts). Look at
+  an existing caller (e.g. [src/app/api/search/route.ts](src/app/api/search/route.ts))
+  before adding one.
 
-- [src/lib/core/types.ts](src/lib/core/types.ts) — `SUPPORTED_COUNTRY_CODES`, `CountryCode`, `COUNTRY_COOKIE_NAME`, `getImageCdnBase()`, `parseCountryCode()`
-- [src/lib/core/auth.ts](src/lib/core/auth.ts) — `readCountryCode(request)` reads the cookie server-side
-- [src/lib/core/picnic-client.ts](src/lib/core/picnic-client.ts) — `buildPicnicClient(token, countryCode)`, `buildPicnicClientAnonymous(countryCode)`
-- [src/lib/core/image-url.ts](src/lib/core/image-url.ts) — `buildImageUrl(imageId, countryCode)` — always requires country, no static base URL
-- [src/contexts/country-context.tsx](src/contexts/country-context.tsx) — `CountryCodeProvider`, `useCountryCode()`, `useSwitchCountry()`
-- [src/lib/core/i18n/](src/lib/core/i18n/) — one file per language; `nl.ts` is the reference whose keys define `Translations`
+## Fusion / PML parsing
 
-**To add a new country:** add the code to `SUPPORTED_COUNTRY_CODES` in `src/lib/core/types.ts` and add a language file under `src/lib/core/i18n/`. The country toggles render straight from `SUPPORTED_COUNTRY_CODES`, so no button needs touching.
+Fusion pages are nested PML node trees. Use the traversal helpers in `src/lib/pml/` and the
+shared extraction in [src/lib/product/extract-card-data.ts](src/lib/product/extract-card-data.ts)
+(promotions, badges, unavailability) rather than walking nodes by hand. App types in
+`src/lib/core/types.ts` are deliberately decoupled from picnic-api's types. Prices are
+always in euro cents.
 
-### Auth flow
+## Cart state
 
-[src/proxy.ts](src/proxy.ts) is the Next.js middleware. It gates every route (except `/login`, `/api/auth/*`, and Next.js internals) by checking for the `picnic_auth_token` HTTP-only cookie. Unauthenticated requests are redirected to `/login` with the original path preserved as `?redirect=`.
-
-Two login methods exist under `src/app/api/auth/`:
-
-- `POST /api/auth/login` — validates a raw Picnic auth token and sets the auth + country cookies
-- `POST /api/auth/login-credentials` — authenticates with email/password, supports 2FA via `POST /api/auth/verify-2fa`
-
-### Server-side API proxy
-
-All `src/app/api/` route handlers run server-side. They:
-
-1. Read the auth token from the request cookie via `readAuthToken()` ([src/lib/core/auth.ts](src/lib/core/auth.ts))
-2. Read the country from the request cookie via `readCountryCode()` ([src/lib/core/auth.ts](src/lib/core/auth.ts))
-3. Instantiate a fresh `PicnicClient` via `buildPicnicClient(token, countryCode)` ([src/lib/core/picnic-client.ts](src/lib/core/picnic-client.ts)) — no cached instances
-4. Call the Picnic API and transform the raw response into typed domain objects
-5. Return `ApiErrorResponse` with `code: "TOKEN_EXPIRED"` on auth failure (the client detects this and redirects to login)
-
-`picnic-api` uses `export = class PicnicClient` (CJS), so it is loaded via `require()` to avoid ESM/CJS interop issues with Turbopack.
-
-### `sendRequest` cast pattern
-
-Several routes need the raw "Fusion page" response that `picnic-api`'s typed methods don't expose. They cast the client to access the internal `sendRequest` method directly:
-
-```ts
-const raw = await (
-  client as unknown as {
-    sendRequest: (
-      method: string,
-      path: string,
-      body: unknown,
-      includeFusion: boolean
-    ) => Promise<unknown>;
-  }
-).sendRequest("GET", "/some/path", null, true);
-```
-
-The fourth argument `true` enables Picnic-specific headers that return `decorator_overrides` (bundle discounts etc.). This pattern is used in the search, cart, product, and category routes.
-
-### PML / Fusion page parsing
-
-The Picnic API returns "Fusion pages" — deeply nested PML (Picnic Markup Language) node trees. The `src/lib/` layer parses these into typed domain objects:
-
-- [src/lib/pml/pml-helpers.ts](src/lib/pml/pml-helpers.ts) — low-level tree traversal utilities
-- [src/lib/pml/pml-product-helpers.ts](src/lib/pml/pml-product-helpers.ts) — product-node extraction helpers
-- [src/lib/search/parse-fusion-search.ts](src/lib/search/parse-fusion-search.ts) — search results → `SearchResult`
-- [src/lib/product/parse-fusion-product.ts](src/lib/product/parse-fusion-product.ts) — product detail page → `ProductDetail`
-- [src/lib/cart/parse-cart.ts](src/lib/cart/parse-cart.ts) — cart response → `CartData`
-- [src/lib/category/parse-categories.ts](src/lib/category/parse-categories.ts), `parse-subcategories.ts`, `parse-category-products.ts` — category navigation
-- [src/lib/product/extract-card-data.ts](src/lib/product/extract-card-data.ts) — shared extraction logic (promotions, badges, unavailability)
-
-All application domain types are defined in [src/lib/core/types.ts](src/lib/core/types.ts), deliberately decoupled from the upstream `picnic-api` types. Prices are always in euro cents.
-
-### Cart context and optimistic updates
-
-[src/contexts/cart-context.tsx](src/contexts/cart-context.tsx) manages client-side cart state. Key design:
-
-- Optimistic updates: quantity and count are updated immediately in React state before the server responds
-- Per-product mutation queue ([src/lib/cart/mutation-queue.ts](src/lib/cart/mutation-queue.ts)): rapid +/− taps for the same product are serialized; mutations for different products run concurrently
-- On server error, state rolls back to the last confirmed snapshot and a toast is shown
-- `useCart()` throws if called outside a `CartProvider`; `useCartOptional()` returns `null` instead (used by `SharedHeader`)
-
-### Pages and routing
-
-| Route                                      | Page                                    |
-| ------------------------------------------ | --------------------------------------- |
-| `/`                                        | Home — shortcut grid and search bar     |
-| `/login`                                   | Token or credential login               |
-| `/pages`                                   | Picnic content pages (promotional)      |
-| `/categories/[categoryId]`                 | Category with subcategory list          |
-| `/categories/[categoryId]/[subcategoryId]` | Subcategory product grid                |
-| `/product/[id]`                            | Product detail                          |
-| `/cart`                                    | Shopping cart with delivery slot picker |
+[src/contexts/cart-context.tsx](src/contexts/cart-context.tsx) updates quantities
+optimistically and rolls back to the last confirmed snapshot (with a toast) on error.
+Mutations for the same product are serialized by
+[src/lib/cart/mutation-queue.ts](src/lib/cart/mutation-queue.ts); different products run
+concurrently. `useCart()` throws outside a `CartProvider`; use `useCartOptional()` where
+there may be none (e.g. the shared header).
