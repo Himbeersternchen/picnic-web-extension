@@ -5,7 +5,7 @@ import { type ComponentType, type ReactNode, useCallback, useMemo } from "react"
 import { useRouter } from "next/navigation";
 
 import { RscRenderContext } from "@/components/rsc/rsc-render-context";
-import { PromoDeepDiveContent } from "@/components/rsc/sections/promo-deep-dive-content";
+import { SellableOverviewItems } from "@/components/rsc/sections/sellable-overview-items";
 import { VerticalList } from "@/components/rsc/sections/vertical-list";
 import { useCartOptional } from "@/contexts/cart-context";
 import { resolveIntents } from "@/lib/rsc/rsc-actions";
@@ -24,8 +24,23 @@ export type RscComponentProps = {
  */
 const COMPONENTS: Record<string, ComponentType<RscComponentProps>> = {
   "vertical-list": VerticalList,
-  "promo-deep-dive-content": PromoDeepDiveContent,
+  // A category's subcategories (subcategory-page): the same row items as the category tree.
+  "category-list": VerticalList,
 };
+
+/**
+ * Web components for page-platform components whose module name is too
+ * generic to register by name, keyed by the end of their module path.
+ */
+const COMPONENTS_BY_PATH: [pathSuffix: string, component: ComponentType<RscComponentProps>][] = [
+  // The product sections of a category (category-product-overview).
+  ["/sellable-overview/components/items.tsx", SellableOverviewItems],
+];
+
+function resolveComponent(node: RscNode): ComponentType<RscComponentProps> | undefined {
+  const byPath = COMPONENTS_BY_PATH.find(([suffix]) => node.modulePath.endsWith(suffix));
+  return byPath?.[1] ?? COMPONENTS[node.component];
+}
 
 /** Cart changes from actions don't carry a max count; the cart API enforces the real limit. */
 const ACTION_MAX_COUNT = 99;
@@ -62,7 +77,7 @@ export function RscPageView({ page }: { page: RscPageModel }) {
 function RscNodes({ nodes }: { nodes: RscNode[] }) {
   return nodes.map((node) => {
     const children = <RscNodes nodes={node.children} />;
-    const Component = COMPONENTS[node.component];
+    const Component = resolveComponent(node);
     return Component ? (
       <Component key={node.id} node={node}>
         {children}
