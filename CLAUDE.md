@@ -6,6 +6,8 @@ Additions to AGENTS.md. Where the two overlap, AGENTS.md wins.
 
 Note: AGENTS.md links `src/lib/auth.ts`, `src/lib/picnic-client.ts` and
 `src/lib/api-error.ts`; these files live under `src/lib/core/`.
+It also links `src/lib/rsc/parse-rsc-page.ts`, which no longer exists: RSC pages are parsed
+by picnic-api, and the app-side types are in `src/lib/rsc/rsc-page-types.ts`.
 
 ## UI conventions
 
@@ -41,11 +43,12 @@ Login is either a raw token (`/api/auth/login`) or email/password (`/api/auth/lo
 - `picnic-api` is CJS (`export =`), so [src/lib/core/picnic-client.ts](src/lib/core/picnic-client.ts)
   loads it with `require()` to avoid Turbopack interop issues. Build a fresh client per
   request; don't cache instances.
-- For raw Fusion pages the typed methods don't expose, routes cast the client and call its
-  internal `sendRequest(method, path, body, includeFusion)`. Passing `true` as the fourth
-  argument adds the headers that return `decorator_overrides` (bundle discounts). Look at
-  an existing caller (e.g. [src/app/api/search/route.ts](src/app/api/search/route.ts))
-  before adding one.
+- Prefer picnic-api's typed namespaces (`client.catalog`, `client.cart`, `client.app`, ...),
+  e.g. `client.catalog.getSearchResults` in [src/app/api/search/route.ts](src/app/api/search/route.ts).
+  For a raw page, use `getFusionPage` or `getRscPageContent` from `picnic-client.ts`; they
+  throw `UnexpectedPageFormatError` when Picnic serves the other format.
+- Errors are `PicnicApiError`s with the HTTP `status`, Picnic's `code` and the `body`.
+  Check them with `isPicnicApiError` / `isApiAuthError`, not by matching message text.
 
 ## Fusion / PML parsing
 
